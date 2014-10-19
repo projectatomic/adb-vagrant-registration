@@ -13,8 +13,11 @@ module VagrantPlugins
 
         def call(env)
           @app.call(env)
+          @logger.info("Testing for registration_unsubscribe capability on #{@machine.name}")
           if @machine.guest.capability?(:registration_unsubscribe)
+            @logger.info("registration_unsubscribe capability exists on #{@machine.name}")
             result = @machine.guest.capability(:registration_unsubscribe)
+            @logger.info("called registration_unsubscribe capability on #{@machine.name}")
           end
         end
       end

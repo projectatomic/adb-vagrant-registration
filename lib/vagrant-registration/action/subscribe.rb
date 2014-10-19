@@ -13,8 +13,11 @@ module VagrantPlugins
 
         def call(env)
           @app.call(env)
+          @logger.info("Testing for registration_subscribe capability on #{@machine.name}")
           if @machine.guest.capability?(:registration_subscribe)
+            @logger.info("registration_subscribe capability exists on #{@machine.name}")
             result = @machine.guest.capability(:registration_subscribe)
+            @logger.info("called registration_subscribe capability on #{@machine.name}")
           end
         end
       end
