@@ -7,12 +7,12 @@ module VagrantPlugins
         error_namespace("vagrant_registration.errors")
       end
 
-      class SubscribeError < VagrantRegistrationError
-        error_key(:subscribe)
+      class RegisterError < VagrantRegistrationError
+        error_key(:register)
       end
 
-      class UnsubscribeError < VagrantRegistrationError
-        error_key(:unsubscribe)
+      class UnregisterError < VagrantRegistrationError
+        error_key(:unregister)
       end
     end
   end

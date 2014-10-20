@@ -15,31 +15,31 @@ module VagrantPlugins
       class << self
         def initialize(app, env)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_register::action::subscribe")
+          @logger = Log4r::Logger.new("vagrant_register::action::register")
         end
 
-        def subscribe(hook)
-          @logger.info("in subscribe hook")
-          hook.after(::Vagrant::Action::Builtin::ConfigValidate, VagrantPlugins::Registration::Action.subscribe)
+        def register(hook)
+          @logger.info("in register hook")
+          hook.after(::Vagrant::Action::Builtin::ConfigValidate, VagrantPlugins::Registration::Action.register)
         end
 
-        def unsubscribe(hook)
-          @logger.info("in unsubscribe hook")
-          hook.before(::Vagrant::Action::Builtin::Halt, VagrantPlugins::Registration::Action.unsubscribe)
+        def unregister(hook)
+          @logger.info("in unregister hook")
+          hook.before(::Vagrant::Action::Builtin::Halt, VagrantPlugins::Registration::Action.unregister)
         end
 
       end
 
       name "Registration"
       description <<-DESC
-      This plugin adds subscribe and unsubscribe functionality to Vagrant Guests that 
+      This plugin adds register and unregister functionality to Vagrant Guests that 
       support the capability
       DESC
 
       @logger.info("attempting to register hooks on #{@machine.name}")
-      action_hook(:registration_subscribe, :machine_action_reload, &method(:subscribe))
+      action_hook(:registration_register, :machine_action_reload, &method(:register))
 
-      action_hook(:registration_unsubscribe, :machine_action_halt, &method(:unsubscribe))
+      action_hook(:registration_unregister, :machine_action_halt, &method(:unregister))
 
       config(:registration) do
         Config
