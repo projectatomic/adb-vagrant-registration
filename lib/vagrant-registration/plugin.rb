@@ -19,13 +19,13 @@ module VagrantPlugins
         end
 
         def register(hook)
-          @logger.info("in register hook")
-          hook.after(::Vagrant::Action::Builtin::ConfigValidate, VagrantPlugins::Registration::Action.register)
+          #@logger.info("in register hook")
+          hook.after(::Vagrant::Action::Builtin::ConfigValidate, VagrantPlugins::Registration::Action.action_register)
         end
 
         def unregister(hook)
-          @logger.info("in unregister hook")
-          hook.before(::Vagrant::Action::Builtin::Halt, VagrantPlugins::Registration::Action.unregister)
+          #@logger.info("in unregister hook")
+          hook.before(::Vagrant::Action::Builtin::GracefulHalt, VagrantPlugins::Registration::Action.action_unregister)
         end
 
       end
