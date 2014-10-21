@@ -9,13 +9,13 @@ module VagrantPlugins
     class Plugin < Vagrant.plugin("2")
       def initialize(app, env)
         @app    = app
-        @logger = Log4r::Logger.new("vagrant_register::plugin::setup")
+        #@logger = Log4r::Logger.new("vagrant_register::plugin::setup")
       end
 
       class << self
         def initialize(app, env)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_register::action::register")
+          #@logger = Log4r::Logger.new("vagrant_register::action::register")
         end
 
         def register(hook)
@@ -36,7 +36,7 @@ module VagrantPlugins
       support the capability
       DESC
 
-      @logger.info("attempting to register hooks on #{@machine.name}")
+      #@logger.info("attempting to register hooks on ")
       action_hook(:registration_register, :machine_action_reload, &method(:register))
 
       action_hook(:registration_unregister, :machine_action_halt, &method(:unregister))

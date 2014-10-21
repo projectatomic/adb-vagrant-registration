@@ -1,5 +1,6 @@
 require 'vagrant-aws/util/elb'
 
+#{@machine.name}
 module VagrantPlugins
   module Registration
     module Action
@@ -13,11 +14,11 @@ module VagrantPlugins
 
         def call(env)
           @app.call(env)
-          @logger.info("Testing for registration_unregister capability on #{@machine.name}")
+          @logger.info("Testing for registration_unregister capability on ")
           if @machine.guest.capability?(:registration_unregister)
-            @logger.info("registration_unregister capability exists on #{@machine.name}")
+            @logger.info("registration_unregister capability exists on ")
             result = @machine.guest.capability(:registration_unregister)
-            @logger.info("called registration_unregister capability on #{@machine.name}")
+            @logger.info("called registration_unregister capability on ")
           end
         end
       end

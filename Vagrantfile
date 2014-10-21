@@ -17,8 +17,8 @@ Vagrant.configure('2') do |config|
 
     config.vm.synced_folder './', '/vagrant', type: 'rsync'
 
-    vagrant_host.vm.network :private_network,
-        :libvirt__network_name => 'either_nat'
+#    vagrant_host.vm.network :private_network,
+#        :libvirt__network_name => 'either_nat'
 
   end
   
