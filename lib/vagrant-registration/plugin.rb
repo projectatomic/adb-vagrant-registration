@@ -42,6 +42,7 @@ module VagrantPlugins
       action_hook(:registration_unregister, :machine_action_halt, &method(:unregister))
 
       config(:registration) do
+        require_relative 'config'
         Config
       end
 
