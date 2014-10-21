@@ -1,6 +1,3 @@
-require 'vagrant-aws/util/elb'
-
-#{@machine.name}
 module VagrantPlugins
   module Registration
     module Action
