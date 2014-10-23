@@ -15,9 +15,9 @@ module VagrantPlugins
           guest = @env[:machine].guest
           @logger.info("Testing for registration_register capability on ")
 
-          if guest.capability?(:registration_register)
+          if guest.capability?(:register)
             @logger.info("registration_register capability exists on ")
-            result = guest.capability(:registration_register)
+            result = guest.capability(:register)
             @logger.info("called registration_register capability on ")
           end
         end
