@@ -37,7 +37,7 @@ module VagrantPlugins
       DESC
 
       #@logger.info("attempting to register hooks on ")
-      action_hook(:registration_register, :machine_action_reload, &method(:register))
+      action_hook(:registration_register, :machine_action_up, &method(:register))
 
       action_hook(:registration_unregister, :machine_action_halt, &method(:unregister))
 
