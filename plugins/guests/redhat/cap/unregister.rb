@@ -4,7 +4,7 @@ module VagrantPlugins
       class Unregister
         def self.unregister(machine)
           begin
-             machine.communicate.execute("sudo subscription-manager unregister || :")
+             machine.communicate.execute("subscription-manager unregister || :", sudo: true)
           rescue IOError
           # Ignore, this probably means connection closed because it
           # shut down.
