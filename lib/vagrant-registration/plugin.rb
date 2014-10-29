@@ -25,7 +25,7 @@ module VagrantPlugins
 
         def unregister(hook)
           #@logger.info("in unregister hook")
-          hook.before(::Vagrant::Action::Builtin::GracefulHalt, VagrantPlugins::Registration::Action.action_unregister)
+          hook.prepend(VagrantPlugins::Registration::Action.action_unregister)
         end
 
       end
