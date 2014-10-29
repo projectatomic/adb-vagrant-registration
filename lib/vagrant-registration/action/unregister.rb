@@ -11,7 +11,6 @@ module VagrantPlugins
         end
 
         def call(env)
-          @app.call(env)
           guest = @env[:machine].guest
           @logger.info("Testing for registration_unregister capability on ")
 
@@ -20,6 +19,8 @@ module VagrantPlugins
             result = guest.capability(:unregister)
             @logger.info("called registration_unregister capability on ")
           end
+
+          @app.call(env)
         end
       end
     end
