@@ -38,8 +38,10 @@ module VagrantPlugins
 
       #@logger.info("attempting to register hooks on ")
       action_hook(:registration_register, :machine_action_up, &method(:register))
+      action_hook(:registration_register, :machine_action_provision, &method(:register))
 
       action_hook(:registration_unregister, :machine_action_halt, &method(:unregister))
+      action_hook(:registration_unregister, :machine_action_destroy, &method(:unregister))
 
       config(:registration) do
         require_relative 'config'
