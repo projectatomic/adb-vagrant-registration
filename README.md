@@ -14,3 +14,6 @@ The plugin is still very early alpha, so YMMV. If you try it out, and have probl
 * vagrant plugin install vagrant-registration-0.0.1.gem
 * Set SUB_USERNAME & SUB_PASSWORD env vars
 * that should be it
+
+## Support
+Currently, "capabilities" are only provided for Red Hat's Subscription Manager. To add others, one just needs to add a new guest plugin, then a cap directory with register.rb and unregister.rb. See the redhat guest for an example. 
