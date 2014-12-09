@@ -10,8 +10,8 @@ To use, make sure you have the cabilities registered, then set environment varia
 
 The plugin is still very early alpha, so YMMV. If you try it out, and have problems, please feel free to file an issue. 
 
-* Grab https://github.com/whitel/vagrant-registration/raw/v0.2-alpha/pkg/vagrant-registration-0.0.2.gem (which should be the v0.0.2 gem file).
-* vagrant plugin install vagrant-registration-0.0.2.gem
+* Grab https://github.com/whitel/vagrant-registration/raw/v0.4-alpha/pkg/vagrant-registration-0.0.4.gem (which should be the v0.0.2 gem file).
+* vagrant plugin install vagrant-registration-0.0.4.gem
 * Set SUB_USERNAME & SUB_PASSWORD env vars
 * that should be it
 
