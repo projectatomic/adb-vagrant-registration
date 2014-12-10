@@ -11,17 +11,17 @@ To use, make sure you have the capabilities registered and your subscription-man
 The plugin is still very early alpha, so YMMV. If you try it out, and have problems, please feel free to file an issue. 
 
 * vagrant plugin install vagrant-registration
-* configure subscription-manager credentieals in your Vagrantfile
+* configure subscription-manager credentials in your Vagrantfile
 * that should be it
 
 ### subscription-manager Credential Configuration
 
-You should add following entries into your Vagrantfile:
+You should add the following entries into your Vagrantfile:
 
     config.registration.subscriber_username = 'foo'
     config.registration.subscriber_password = 'bar'
 
-This should go preferably into Vagrant file in your Vagrant home directory (defaults to ~/.vagrant.d), to make it available for every project. It can be later overriden in project's Vagrant file, if needed.
+This should go, preferably, into the Vagrantfile in your Vagrant home directory (defaults to ~/.vagrant.d), to make it available for every project. It can be later overriden in an individual project's Vagrant file, if needed.
 
 If you prefer not to store your username/password on your filesystem, you can optionally configure vagrant-registration plugin to use environment variables, such as:
 
