@@ -14,15 +14,13 @@ module VagrantPlugins
       attr_accessor :subscriber_password
 
       def initialize(region_specific=false)
-        @subscriber_username    = UNSET_VALUE
-        @subscriber_password    = UNSET_VALUE
+        @subscriber_username = UNSET_VALUE
+        @subscriber_password = UNSET_VALUE
       end
 
       def finalize!
-        # Try to get user & pass from environment variables; they
-        # will default to nil if the environment variables are not present.
-        @subscriber_username = ENV['SUB_USERNAME'] if @subscriber_username == UNSET_VALUE
-        @subscriber_password = ENV['SUB_PASSWORD'] if @subscriber_password == UNSET_VALUE
+        @subscriber_username = nil if @subscriber_username == UNSET_VALUE
+        @subscriber_password = nil if @subscriber_password == UNSET_VALUE
       end
     end
   end
