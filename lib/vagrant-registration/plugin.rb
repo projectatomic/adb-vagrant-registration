@@ -19,7 +19,7 @@ module VagrantPlugins
 
         def register(hook)
           @logger.info("in register hook")
-          hook.after(::Vagrant::Action::Builtin::ConfigValidate, 
+          hook.after(::Vagrant::Action::Builtin::SyncedFolders,
                      VagrantPlugins::Registration::Action.action_register)
         end
 
