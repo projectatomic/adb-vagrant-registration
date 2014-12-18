@@ -5,11 +5,11 @@ Gem::Specification.new do |s|
   s.name          = "vagrant-registration"
   s.version       = VagrantPlugins::Registration::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.license       = "Apache-2.0"
-  s.authors       = "Langdon White"
+  s.license       = "GPL-2.0"
+  s.authors       = ["Langdon White", "et al"]
   s.email         = "langdon@fedoraproject.org"
   s.summary       = "Enables guests to have a registration capability"
-  s.description   = "Enables guests to have a registration capability"
+  s.description   = "Enables guests to have a registration capability, this is expecially useful on RHEL or SLES"
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "vagrant-registration"
