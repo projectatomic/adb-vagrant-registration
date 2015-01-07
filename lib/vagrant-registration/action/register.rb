@@ -16,6 +16,7 @@ module VagrantPlugins
           @logger.info("Testing for registration_register capability on ")
 
           if guest.capability?(:register)
+            env[:ui].info("Registering box with vagrant-registration...")
             @logger.info("registration_register capability exists on ")
             result = guest.capability(:register)
             @logger.info("called registration_register capability on ")
