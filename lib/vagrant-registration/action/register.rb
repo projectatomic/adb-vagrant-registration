@@ -1,3 +1,5 @@
+require "log4r"
+
 module VagrantPlugins
   module Registration
     module Action
