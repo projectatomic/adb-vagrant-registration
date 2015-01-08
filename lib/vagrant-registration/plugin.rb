@@ -7,10 +7,6 @@ end
 module VagrantPlugins
   module Registration
     class Plugin < Vagrant.plugin("2")
-      def initialize(app, env)
-        @app    = app
-      end
-
       class << self
         def initialize(app, env)
           @app    = app
