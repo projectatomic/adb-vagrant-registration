@@ -12,18 +12,27 @@ module VagrantPlugins
 
         def call(env)
           guest = @env[:machine].guest
-          #   @logger.info("Testing for registration_unregister capability on ")
-          if guest.capability?(:unregister) && !@env[:machine].config.registration.skip
-            env[:ui].info("Unregistering box with vagrant-registration...")
-            @logger.info("registration_unregister capability exists on ")
-            result = guest.capability(:unregister)
-            @logger.info("called registration_unregister capability on ")
+
+          if guest.capability?(:unregister)
+            if !@env[:machine].config.registration.skip
+              env[:ui].info("Unregistering box with vagrant-registration...")
+              @logger.info("registration_unregister capability exists on ")
+              result = guest.capability(:unregister)
+              @logger.info("called registration_unregister capability on ")
+            else
+              @logger.info("unregistration is skipped due to configuration")
+            end
+          else
+            @logger.info("unregistration is skipped due to missing guest capability")
           end
-          
+
           @app.call(env)
 
-        rescue Vagrant::Errors::MachineGuestNotReady => e
-          @logger.info("Machine is offline (caught error: #{e.inspect} ), no need to unreg: #{e.inspect}")
+        # Guest might not be available after halting, so log the exception and continue
+        rescue => e
+          @logger.info(e)
+          @logger.info("guest is not available, ignore unregistration")
+          @app.call(env)
         end
       end
     end
