@@ -8,7 +8,7 @@ module VagrantPlugins
 
         def initialize(app, env)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_register::action::register")
+          @logger = Log4r::Logger.new("vagrant_registration::action::register")
         end
 
         def call(env)
