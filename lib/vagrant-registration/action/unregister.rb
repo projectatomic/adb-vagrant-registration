@@ -8,15 +8,14 @@ module VagrantPlugins
 
         def initialize(app, env)
           @app    = app
-          @env    = env
           @logger = Log4r::Logger.new("vagrant_register::action::unregister")
         end
 
         def call(env)
-          guest = @env[:machine].guest
+          guest = env[:machine].guest
 
           if guest.capability?(:unregister)
-            if !@env[:machine].config.registration.skip
+            if !env[:machine].config.registration.skip
               env[:ui].info("Unregistering box with vagrant-registration...")
               @logger.info("registration_unregister capability exists on ")
               result = guest.capability(:unregister)
