@@ -1,3 +1,9 @@
+begin
+  require 'vagrant'
+rescue LoadError
+  raise 'The vagrant-registration plugin must be run within Vagrant.'
+end
+
 # This is a sanity check to make sure no one is attempting to install
 # this into an early Vagrant version.
 if Vagrant::VERSION < "1.2.0"
@@ -8,11 +14,6 @@ module VagrantPlugins
   module Registration
     class Plugin < Vagrant.plugin("2")
       class << self
-        def initialize(app, env)
-          setup_logging
-          @app    = app
-        end
-
         def register(hook)
           setup_logging
           hook.after(::Vagrant::Action::Builtin::SyncedFolders,
