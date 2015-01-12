@@ -23,10 +23,10 @@ module VagrantPlugins
               result = guest.capability(:register)
               @logger.info("called registration_register capability on ")
             else
-              @logger.info("registration skipped due to configuration")
+              @logger.debug("registration skipped due to configuration")
             end
           else
-            @logger.info("registration skipped due to missing guest capability")
+            @logger.debug("registration skipped due to missing guest capability")
           end
         end
       end

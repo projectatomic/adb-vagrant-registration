@@ -21,10 +21,10 @@ module VagrantPlugins
               result = guest.capability(:unregister)
               @logger.info("called registration_unregister capability on ")
             else
-              @logger.info("unregistration is skipped due to configuration")
+              @logger.debug("unregistration is skipped due to configuration")
             end
           else
-            @logger.info("unregistration is skipped due to missing guest capability")
+            @logger.debug("unregistration is skipped due to missing guest capability")
           end
 
           @app.call(env)
@@ -32,7 +32,7 @@ module VagrantPlugins
         # Guest might not be available after halting, so log the exception and continue
         rescue => e
           @logger.info(e)
-          @logger.info("guest is not available, ignore unregistration")
+          @logger.debug("guest is not available, ignore unregistration")
           @app.call(env)
         end
       end
