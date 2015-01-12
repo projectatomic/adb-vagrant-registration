@@ -8,11 +8,6 @@ module VagrantPlugins
   module Registration
     class Plugin < Vagrant.plugin("2")
       class << self
-        def initialize(app, env)
-          setup_logging
-          @app    = app
-        end
-
         def register(hook)
           setup_logging
           hook.after(::Vagrant::Action::Builtin::SyncedFolders,
