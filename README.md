@@ -28,5 +28,11 @@ If you prefer not to store your username/password on your filesystem, you can op
     config.registration.subscriber_username = ENV['SUB_USERNAME']
     config.registration.subscriber_password = ENV['SUB_PASSWORD']
 
+Finally, if you do not provide credentials, you will be prompted for them in the "up process." However, this is a tentative feature because if you are launching more than one VM from one Vagrantfile, the feature acts unexepectedly (appearing to hang because the prompt for creds gets lost in the scrollback). 
+
+You can also skip registration altogether if you would prefer but don't want to remove the plugin. If you want this function, please use
+
+    config.registration.skip = true
+
 ## Support
 Currently, "capabilities" are only provided for Red Hat's Subscription Manager. To add others, one just needs to add a new guest plugin, then a cap directory with register.rb and unregister.rb. See the redhat guest for an example. 
