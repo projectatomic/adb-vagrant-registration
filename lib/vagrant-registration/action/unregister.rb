@@ -14,7 +14,7 @@ module VagrantPlugins
         def call(env)
           guest = env[:machine].guest
 
-          if guest.capability?(:unregister)
+          if guest.capability?(:unregister) && guest.capability?(:subscription_manager)
             if !env[:machine].config.registration.skip
               env[:ui].info("Unregistering box with vagrant-registration...")
               @logger.info("registration_unregister capability exists on ")
