@@ -17,7 +17,13 @@ module VagrantPlugins
           guest = env[:machine].guest
           @logger.info("Testing for registration_register capability on ")
 
-          if guest.capability?(:register)
+          if guest.capability?(:register) && guest.capability?(:subscription_manager)
+
+            unless guest.capability(:subscription_manager)
+              config.skip=true
+              @logger.info("subscription-manager not found on guest")
+            end
+
             unless config.skip
               env[:ui].info("Registering box with vagrant-registration...")
 
@@ -35,7 +41,6 @@ module VagrantPlugins
                   config.subscriber_username, config.subscriber_password = register_on_screen(env[:ui])
                 end
               end
-
               result = guest.capability(:register) unless config.skip
             else
               @logger.debug("registration skipped due to configuration")
