@@ -17,6 +17,11 @@ module VagrantPlugins
         require_relative "cap/subscription_manager"
         Cap::SubscriptionManager
       end
+
+      guest_capability("redhat", "container_probe_tool") do
+        require_relative "cap/container_probe_tool"
+        Cap::ContainerProbeTool
+      end
     end
   end
 end
