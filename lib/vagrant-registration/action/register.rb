@@ -41,6 +41,7 @@ module VagrantPlugins
                   config.subscriber_username, config.subscriber_password = register_on_screen(env[:ui])
                 end
               end
+              @logger.info("Registration is forced") if config.force
               result = guest.capability(:register) unless config.skip
             else
               @logger.debug("registration skipped due to configuration")

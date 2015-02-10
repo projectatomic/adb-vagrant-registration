@@ -27,14 +27,14 @@ module VagrantPlugins
         @subscriber_username = UNSET_VALUE
         @subscriber_password = UNSET_VALUE
         @skip = UNSET_VALUE
-	@force = UNSET_VALUE
+        @force = true
       end
 
       def finalize!
         @subscriber_username = nil if @subscriber_username == UNSET_VALUE
         @subscriber_password = nil if @subscriber_password == UNSET_VALUE
         @skip = false if @skip == UNSET_VALUE
-	@force = false if @force == UNSET_VALUE
+        @force = true if @force == UNSET_VALUE
       end
     end
   end
