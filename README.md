@@ -34,5 +34,9 @@ You can also skip registration altogether if you would prefer but don't want to 
 
     config.registration.skip = true
 
+RHEL Subscription Manager will fail if you attempt to register a registered machine (see the man page for why). In order to not slow boot time, we now, by default, pass the "--force" flag when we try to subscribe. If you want to disable this feature:
+
+    config.registration.force = false 
+
 ## Support
 Currently, "capabilities" are only provided for Red Hat's Subscription Manager. To add others, one just needs to add a new guest plugin, then a cap directory with register.rb and unregister.rb. See the redhat guest for an example. 
