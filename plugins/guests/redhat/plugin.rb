@@ -20,7 +20,7 @@ module VagrantPlugins
 
       guest_capability("redhat", "rhcert") do
         require_relative "cap/redhat_certification_tool"
-        Cap::ContainerProbeTool
+        Cap::RedHatCertification
       end
     end
   end
