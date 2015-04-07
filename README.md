@@ -14,23 +14,35 @@ The plugin is still very early alpha, so YMMV. If you try it out, and have probl
 * configure subscription-manager credentials in your Vagrantfile
 * that should be it
 
-### subscription-manager Credential Configuration
+### subscription-manager Configuration
 
-You should add the following entries into your Vagrantfile:
+vagrant-registration supports all the options of subscription-manager's register command.
+You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'
+in your Vagrantfile (please see the subscription-manager's documentation for option
+description).
 
-    config.registration.subscriber_username = 'foo'
-    config.registration.subscriber_password = 'bar'
+Setting up the credentials can be done as follows:
 
-This should go, preferably, into the Vagrantfile in your Vagrant home directory (defaults to ~/.vagrant.d), to make it available for every project. It can be later overriden in an individual project's Vagrant file, if needed.
+```ruby
+    config.registration.username = 'foo'
+    config.registration.password = 'bar'
+```
 
-If you prefer not to store your username/password on your filesystem, you can optionally configure vagrant-registration plugin to use environment variables, such as:
+This should go, preferably, into the Vagrantfile in your Vagrant home directory
+(defaults to ~/.vagrant.d), to make it available for every project. It can be
+later overriden in an individual project's Vagrantfile, if needed.
 
-    config.registration.subscriber_username = ENV['SUB_USERNAME']
-    config.registration.subscriber_password = ENV['SUB_PASSWORD']
+If you prefer not to store your username and/or password on your filesystem,
+you can optionally configure vagrant-registration plugin to use environment
+variables, such as:
 
-Finally, if you do not provide credentials, you will be prompted for them in the "up process." However, this is a tentative feature because if you are launching more than one VM from one Vagrantfile, the feature acts unexepectedly (appearing to hang because the prompt for creds gets lost in the scrollback). 
+    config.registration.username = ENV['SUB_USERNAME']
+    config.registration.password = ENV['SUB_PASSWORD']
 
-You can also skip registration altogether if you would prefer but don't want to remove the plugin. If you want this function, please use
+If you do not provide credentials, you will be prompted for them in the "up process." However, this is a tentative feature because if you are launching more than one VM from one Vagrantfile, the feature acts unexepectedly (appearing to hang because the prompt for creds gets lost in the scrollback). 
+
+You can also skip the registration process altogether by setting a `skip` options
+to `true`:
 
     config.registration.skip = true
 
@@ -39,4 +51,5 @@ RHEL Subscription Manager will fail if you attempt to register a registered mach
     config.registration.force = false 
 
 ## Support
+
 Currently, "capabilities" are only provided for Red Hat's Subscription Manager. To add others, one just needs to add a new guest plugin, then a cap directory with register.rb and unregister.rb. See the redhat guest for an example. 
