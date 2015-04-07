@@ -12,8 +12,8 @@ module VagrantPlugins
         # Build additional subscription-manager options based on plugin configuration
         def self.configuration_to_options(config)
           options = []
-          options << "--username=#{config.registration.subscriber_username}"
-          options << "--password=#{config.registration.subscriber_password}"
+          options << "--username=#{config.registration.username}"
+          options << "--password=#{config.registration.password}"
           options << "--serverurl=#{config.registration.serverurl}" if config.registration.serverurl
           options << "--baseurl=#{config.registration.baseurl}" if config.registration.baseurl
           options << "--org=#{config.registration.org}" if config.registration.org

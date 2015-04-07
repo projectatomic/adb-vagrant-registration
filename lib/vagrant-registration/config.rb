@@ -6,12 +6,14 @@ module VagrantPlugins
       # The username to subscribe with (required)
       #
       # @return [String]
-      attr_accessor :subscriber_username
+      attr_accessor :username
+      attr_accessor :subscriber_username # to stay backwards compatible
 
       # The password of the subscriber (required)
       #
       # @return [String]
-      attr_accessor :subscriber_password
+      attr_accessor :password
+      attr_accessor :subscriber_password # to stay backwards compatible
 
       # Give the hostname of the subscription service to use (required for Subscription
       # Asset Manager, defaults to Customer Portal Subscription Management)
@@ -79,7 +81,9 @@ module VagrantPlugins
       attr_accessor :skip
 
       def initialize(region_specific=false)
+        @username = UNSET_VALUE
         @subscriber_username = UNSET_VALUE
+        @password = UNSET_VALUE
         @subscriber_password = UNSET_VALUE
         @serverurl = UNSET_VALUE
         @baseurl = UNSET_VALUE
@@ -96,8 +100,10 @@ module VagrantPlugins
       end
 
       def finalize!
-        @subscriber_username = nil if @subscriber_username == UNSET_VALUE
-        @subscriber_password = nil if @subscriber_password == UNSET_VALUE
+        @username = @subscriber_username if @username == UNSET_VALUE
+        @password = @subscriber_password if @password == UNSET_VALUE
+        @username = nil if @username == UNSET_VALUE
+        @password = nil if @password == UNSET_VALUE
         @serverurl = nil if @serverurl = UNSET_VALUE
         @baseurl = nil if @baseurl = UNSET_VALUE
         @org = nil if @org = UNSET_VALUE
