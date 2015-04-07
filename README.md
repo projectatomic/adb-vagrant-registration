@@ -1,6 +1,6 @@
 # vagrant-registration
 
-The vagrant-registration plugin supports new capabilities "register" and "unregister." The "register" event occurs during the "up" process, immediately after startup but before any provisioning (including built-in like rysnc). The "unregister" event occurs during the "halt" process (which also is called during the "destroy" process) immediately before the instances goes down. 
+The vagrant-registration plugin supports new capabilities "register" and "unregister." The "register" event occurs during the "up" process, immediately after startup but before any provisioning (including built-in like rsync). The "unregister" event occurs during the "halt" process (which also is called during the "destroy" process) immediately before the instances goes down.
 
 Essentially, this supports developers wanting to use linuxes that have a subscription model for updates, like RHEL.
 
