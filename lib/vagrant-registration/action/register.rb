@@ -38,7 +38,7 @@ module VagrantPlugins
                   config.skip = true
                 # Accept anything else as default
                 else
-                  config.subscriber_username, config.subscriber_password = register_on_screen(env[:ui])
+                  config.username, config.password = register_on_screen(env[:ui])
                 end
               end
               @logger.info("Registration is forced") if config.force
@@ -62,7 +62,7 @@ module VagrantPlugins
 
         # Check if username and password has been provided in Vagrantfile
         def credentials_provided?(config)
-          config.subscriber_username && config.subscriber_password
+          config.username && config.password
         end
       end
     end
