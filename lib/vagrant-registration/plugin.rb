@@ -28,7 +28,7 @@ module VagrantPlugins
 
       name "Registration"
       description <<-DESC
-      This plugin adds register and unregister functionality to Vagrant Guests that 
+      This plugin adds register and unregister functionality to Vagrant Guests that
       support the capability
       DESC
 
@@ -38,6 +38,7 @@ module VagrantPlugins
       action_hook(:registration_unregister, :machine_action_destroy, &method(:unregister))
 
       config(:registration) do
+        setup_logging
         require_relative 'config'
         Config
       end
