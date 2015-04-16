@@ -1,5 +1,4 @@
-# Spin 2 RHEL machines that will be registered, one that would skip registration
-# and one that won't register
+# Spin 2 RHEL machines that will be registered
 
 ENV['VAGRANT_DEFAULT_PROVIDER'] ||= 'libvirt'
 ENV['VAGRANT_REGISTRATION_RHEL_BOX'] ||= 'rhel-7.0'
@@ -15,15 +14,6 @@ Vagrant.configure('2') do |config|
   config.vm.define "rhel2-valid-credentials" do |c|
     c.registration.username = ENV['VAGRANT_REGISTRATION_USERNAME']
     c.registration.password = ENV['VAGRANT_REGISTRATION_PASSWORD']
-  end
-
-  config.vm.define "rhel3-valid-credentials-skipped" do |c|
-    c.registration.username = ENV['VAGRANT_REGISTRATION_USERNAME']
-    c.registration.password = ENV['VAGRANT_REGISTRATION_PASSWORD']
-    c.registration.skip = true
-  end
-
-  config.vm.define "rhel4-no-credentials" do |c|
   end
 
 end
