@@ -46,5 +46,6 @@ Gem::Specification.new do |s|
   s.files         = unignored_files
   s.executables   = unignored_files.map { |f| f[/^bin\/(.*)/, 1] }.compact
   s.require_path  = 'lib'
-end
 
+  s.add_development_dependency 'yard'
+end
