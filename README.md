@@ -47,7 +47,7 @@ variables, such as:
     config.registration.password = ENV['SUB_PASSWORD']
 ```
 
-If you do not provide credentials, you will be prompted for them in the "up process". However, this is a tentative feature because if you are launching more than one VM from one Vagrantfile, the feature acts unexepectedly (appearing to hang because the prompt for creds gets lost in the scrollback). 
+If you do not provide credentials, you will be prompted for them in the "up process". However, this is a tentative feature because if you are launching more than one VM from one Vagrantfile, the feature acts unexepectedly (appearing to hang because the prompt for creds gets lost in the scrollback).
 
 You can also skip the registration process altogether by setting a `skip` option
 to `true`:
@@ -59,8 +59,61 @@ to `true`:
 *Note:* RHEL Subscription Manager will fail if you attempt to register an already registered machine (see man page for explanation). Not to slow the boot time, vagrant-registration appends the "--force" flag when subscribing. If you would like to disable this feature, set `force` option to `false`:
 
 ```ruby
-    config.registration.force = false 
+    config.registration.force = false
 ```
+
+#### subscription-manager Options
+
+```ruby
+  # The username to subscribe with (required)
+  config.registration.username
+
+  # The password of the subscriber (required)
+  config.registration.password
+
+  # Give the hostname of the subscription service to use (required for Subscription
+  # Asset Manager, defaults to Customer Portal Subscription Management)
+  config.registration.serverurl
+
+  # Give the hostname of the content delivery server to use to receive updates
+  # (required for Satellite 6)
+  config.registration.baseurl
+
+  # Give the organization to which to join the system (required, except for
+  # hosted environments)
+  config.registration.org
+
+  # Register the system to an environment within an organization (optional)
+  config.registration.environment
+
+  # Name of the subscribed system (optional, defaults to hostname if unset)
+  config.registration.name
+
+  # Auto attach suitable subscriptions (optional, auto attach if true,
+  # defaults to true)
+  config.registration.auto_attach
+
+  # Attach existing subscriptions as part of the registration process (optional)
+  config.registration.activationkey
+
+  # Set the service level to use for subscriptions on that machine
+  # (optional, used only used with the --auto-attach)
+  config.registration.servicelevel
+
+  # Set the operating system minor release to use for subscriptions for
+  # the system (optional, used only used with the --auto-attach)
+  config.registration.release
+
+  # Force the registration (optional, force if true, defaults to true)
+  config.registration.force
+
+  # Set what type of consumer is being registered (optional, defaults to system)
+  config.registration.type
+
+  # Skip the registration (optional, skip if true, defaults to false)
+  config.registration.skip
+```
+
 
 ## Acknowledgements
 The project would like to make sure we thank [purpleidea](https://github.com/purpleidea/), [humaton](https://github.com/humaton/), [strzibny](https://github.com/strzibny), [scollier](https://github.com/scollier/), [puzzle](https://github.com/puzzle), [voxik](https://github.com/voxik), [lukaszachy](https://github.com/lukaszachy) and [goern](https://github.com/goern) (in no particular order) for their contributions of ideas, code and testing for this project.
