@@ -30,8 +30,10 @@ description).
 Setting up the credentials can be done as follows:
 
 ```ruby
-    config.registration.username = 'foo'
-    config.registration.password = 'bar'
+if Vagrant.has_plugin?('vagrant-registration')
+  config.registration.username = 'foo'
+  config.registration.password = 'bar'
+end
 ```
 
 This should go, preferably, into the Vagrantfile in your Vagrant home directory
@@ -43,26 +45,35 @@ you can optionally configure vagrant-registration plugin to use environment
 variables, such as:
 
 ```ruby
-    config.registration.username = ENV['SUB_USERNAME']
-    config.registration.password = ENV['SUB_PASSWORD']
+  config.registration.username = ENV['SUB_USERNAME']
+  config.registration.password = ENV['SUB_PASSWORD']
 ```
 
-If you do not provide credentials, you will be prompted for them in the "up process". However, this is a tentative feature because if you are launching more than one VM from one Vagrantfile, the feature acts unexepectedly (appearing to hang because the prompt for creds gets lost in the scrollback).
+If you do not provide credentials, you will be prompted for them in the "up process."
 
 You can also skip the registration process altogether by setting a `skip` option
 to `true`:
 
 ```ruby
-    config.registration.skip = true
+  config.registration.skip = true
 ```
 
-*Note:* RHEL Subscription Manager will fail if you attempt to register an already registered machine (see man page for explanation). Not to slow the boot time, vagrant-registration appends the "--force" flag when subscribing. If you would like to disable this feature, set `force` option to `false`:
+#### Default Options
+
+- **--force**: Subscription Manager will fail if you attempt to register an already registered machine (see the man page for explanation), therefore vagrant-registration appends the `--force` flag automatically when subscribing. If you would like to disable this feature, set `force` option to `false`:
 
 ```ruby
-    config.registration.force = false
+  config.registration.force = false
+```
+- **--auto-attach**: Vagrant would fail to install packages on registered RHEL system if the subscription is not attached, therefore vagrant-registration appends the
+`--auto-attach` flag automatically when subscribing. To disable this option, set `auto_attach` option to `false`:
+
+
+```ruby
+  config.registration.auto_attach = false
 ```
 
-#### subscription-manager Options
+#### subscription-manager Options Reference
 
 ```ruby
   # The username to subscribe with (required)
