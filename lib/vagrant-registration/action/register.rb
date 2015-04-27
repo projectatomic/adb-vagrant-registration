@@ -14,12 +14,12 @@ module VagrantPlugins
         def call(env)
           @app.call(env)
           config = env[:machine].config.registration
+          machine = env[:machine]
           guest = env[:machine].guest
           @logger.info("Testing for registration_register capability on ")
 
-          if guest.capability?(:register) && guest.capability?(:subscription_manager)
-
-            unless guest.capability(:subscription_manager)
+          if guest.capability?(:register) && guest.capability?(:register_manager_installed)
+            unless guest.capability(:register_manager_installed)
               config.skip=true
               @logger.info("subscription-manager not found on guest")
             end
@@ -28,7 +28,7 @@ module VagrantPlugins
               env[:ui].info("Registering box with vagrant-registration...")
 
               # Check if credentials are provided, ask user if not
-              unless credentials_provided? config
+              unless credentials_provided? machine
                 @logger.debug("credentials for registration not provided")
 
                 # Offer to register ATM or skip
@@ -38,32 +38,52 @@ module VagrantPlugins
                   config.skip = true
                 # Accept anything else as default
                 else
-                  config.username, config.password = register_on_screen(env[:ui])
+                  config = register_on_screen(machine, env[:ui])
                 end
               end
+
               @logger.info("Registration is forced") if config.force
-              result = guest.capability(:register) unless config.skip
+              @logger.info("Registration is skipped") if config.skip
+              guest.capability(:register) unless config.skip
             else
-              @logger.debug("registration skipped due to configuration")
+              @logger.debug("Registration is skipped due to the configuration")
             end
           else
-            @logger.debug("registration skipped due to missing guest capability")
+            @logger.debug("Registration is skipped due to the missing guest capability")
           end
         end
 
         private
 
-        # Ask user on username/password and return them
-        def register_on_screen(ui)
-          username = ui.ask("Subscriber username: ")
-          password = ui.ask("Subscriber password: ", echo: false)
-          [username, password]
+        # Fetch required credentials for selected manager
+        def credentials_required(machine)
+          if machine.guest.capability?(:register_credentials)
+            machine.guest.capability(:register_credentials)
+          else
+            []
+          end
         end
 
-        # Check if username and password has been provided in Vagrantfile
-        def credentials_provided?(config)
-          config.username && config.password
+        # Check if required credentials has been provided in Vagrantfile
+        def credentials_provided?(machine)
+          credentials_required(machine).each do |option|
+            return false unless machine.config.registration.send option
+          end
+          true
         end
+
+        # Ask user on required credentials and return them
+        def register_on_screen(machine, ui)
+          credentials_required(machine).each do |option|
+            # Skip options that are provided by Vagrantfile
+            unless machine.config.registration.send(option)
+              response = ui.ask("#{option}: ", echo: true)
+              machine.config.registration.send("#{option.to_s}=".to_sym, response)
+            end
+          end
+          machine.config.registration
+        end
+
       end
     end
   end

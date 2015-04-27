@@ -4,7 +4,6 @@ require "ostruct"
 module VagrantPlugins
   module Registration
     class Config < Vagrant.plugin("2", :config)
-
       def initialize(region_specific=false)
         @conf = OpenStruct.new
         @logger = Log4r::Logger.new("vagrant_registration::config")
@@ -12,8 +11,8 @@ module VagrantPlugins
 
       def finalize!
         @conf.force = true unless @conf.force
-        @conf.skip = false unless @conf.skip
         @conf.auto_attach = true unless @conf.auto_attach
+        @conf.skip = false unless @conf.skip
         @logger.info "Final registration configuration: #{@conf.inspect}"
       end
 
