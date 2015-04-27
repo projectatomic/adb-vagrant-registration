@@ -27,30 +27,6 @@ DIR=$(dirname $(readlink -f "$0"))
 
 setup_tests
 
-# Check that we have credentials to run the test suite
-if [ "$VAGRANT_REGISTRATION_USERNAME" = "" ] || [ "$VAGRANT_REGISTRATION_PASSWORD" = "" ]; then
-  echo "VAGRANT_REGISTRATION_USERNAME and VAGRANT_REGISTRATION_PASSWORD needs to be provided."
-  exit 1
-fi
-
-# Install Vagrant if it's not present
-PLUGIN_INSTALLED=$(vagrant --help)
-if [ $? -ne 0 ]; then
-  sudo yum install vagrant-libvirt -y
-fi
-
-# Uninstall vagrant-registration if installed
-# TODO: Uninstall RPM package if needed
-PLUGIN_INSTALLED=$(vagrant plugin list | grep vagrant-registration)
-if [ -z "$PLUGIN_INSTALLED" ]; then
-  vagrant plugin uninstall vagrant-registration
-fi
-
-# Install vagrant-registration from current sources
-rm -rf pkg
-rake build
-vagrant plugin install pkg/vagrant-registration*.gem
-
 # Test correct credentials
 clean_up
 export VAGRANT_VAGRANTFILE=$DIR/vagrantfiles/Vagrantfile.rhel_multi_machine

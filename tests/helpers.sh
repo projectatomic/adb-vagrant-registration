@@ -1,4 +1,8 @@
+# Set up test environment
 function setup_tests() {
+  check_credentials
+  install_dependencies
+
   # Test results that should be printed at the end
   TEST_RESULTS=''
   FAILED=0
@@ -6,6 +10,7 @@ function setup_tests() {
   EXIT_CODE=0
 }
 
+# Print test results
 function print_results() {
   if [ "$TEST_RESULTS" != "" ]; then
     printf "\n$TEST_RESULTS\n"
@@ -14,9 +19,39 @@ function print_results() {
   exit $EXIT_CODE
 }
 
+# Clean up before each test
 function clean_up() {
   # Clean up Vagrant metadata
   rm -rf $DIR/.vagrant
+}
+
+# Check that we have credentials to run the test suite
+function check_credentials() {
+  if [ "$VAGRANT_REGISTRATION_USERNAME" = "" ] || [ "$VAGRANT_REGISTRATION_PASSWORD" = "" ]; then
+    echo "VAGRANT_REGISTRATION_USERNAME and VAGRANT_REGISTRATION_PASSWORD needs to be provided."
+    exit 1
+  fi
+}
+
+# Install vagrant and vagrant-registration
+function install_dependencies() {
+  # Install Vagrant if it's not present
+  PLUGIN_INSTALLED=$(vagrant --help)
+  if [ $? -ne 0 ]; then
+    sudo yum install vagrant-libvirt -y
+  fi
+
+  # Uninstall vagrant-registration if installed
+  # TODO: Uninstall RPM package if needed
+  PLUGIN_INSTALLED=$(vagrant plugin list | grep vagrant-registration)
+  if [ -z "$PLUGIN_INSTALLED" ]; then
+    vagrant plugin uninstall vagrant-registration
+  fi
+
+  # Install vagrant-registration from current sources
+  rm -rf pkg
+  rake build
+  vagrant plugin install pkg/vagrant-registration*.gem
 }
 
 # Test that command succeded
