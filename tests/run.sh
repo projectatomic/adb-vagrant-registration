@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # This tests test vagrant-registration plugin running on Fedora
 # with libvirt. If you do not have Vagrant installed or if you
 # have vagrant-libvirt package on your system, Vagrant will be
@@ -17,6 +19,7 @@
 # NOTE: This will install a development version of
 # vagrant-registration on your system.
 #
+
 DIR=$(dirname $(readlink -f "$0"))
 
 # Import test helpers
