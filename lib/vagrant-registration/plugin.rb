@@ -44,7 +44,7 @@ module VagrantPlugins
       end
 
       # This sets up our log level to be whatever VAGRANT_LOG is
-      # for loggers prepended with 'vagrant_libvirt'
+      # for loggers prepended with 'vagrant_registration'
       def self.setup_logging
         require 'log4r'
         level = nil
