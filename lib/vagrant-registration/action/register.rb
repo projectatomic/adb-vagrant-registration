@@ -18,8 +18,8 @@ module VagrantPlugins
           guest = env[:machine].guest
           @logger.info("Testing for registration capability")
 
-          if guest.capability?(:register) && guest.capability?(:register_manager_installed)
-            unless guest.capability(:register_manager_installed)
+          if guest.capability?(:registration_register) && guest.capability?(:registration_manager_installed)
+            unless guest.capability(:registration_manager_installed)
               config.skip=true
               @logger.info("Registration manager not found on guest")
             end
@@ -44,7 +44,7 @@ module VagrantPlugins
 
               @logger.info("Registration is forced") if config.force
               @logger.info("Registration is skipped") if config.skip
-              guest.capability(:register) unless config.skip
+              guest.capability(:registration_register) unless config.skip
             else
               @logger.debug("Registration is skipped due to the configuration")
             end
@@ -57,8 +57,8 @@ module VagrantPlugins
 
         # Fetch required credentials for selected manager
         def credentials_required(machine)
-          if machine.guest.capability?(:register_credentials)
-            machine.guest.capability(:register_credentials)
+          if machine.guest.capability?(:registration_credentials)
+            machine.guest.capability(:registration_credentials)
           else
             []
           end

@@ -1,9 +1,9 @@
 module VagrantPlugins
   module GuestRedHat
     module Cap
-      class Register
-        def self.register(machine)
-          cap = "#{self.register_manager(machine).to_s}_register".to_sym
+      class Registration
+        def self.registration_register(machine)
+          cap = "#{self.registration_manager(machine).to_s}_register".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap)
           else
@@ -11,8 +11,8 @@ module VagrantPlugins
           end
         end
 
-        def self.register_unregister(machine)
-          cap = "#{self.register_manager(machine).to_s}_unregister".to_sym
+        def self.registration_unregister(machine)
+          cap = "#{self.registration_manager(machine).to_s}_unregister".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap)
           else
@@ -21,8 +21,8 @@ module VagrantPlugins
         end
 
         # Check that the machine has the selected registration manager installed
-        def self.register_manager_installed(machine)
-          cap = "#{self.register_manager(machine).to_s}".to_sym
+        def self.registration_manager_installed(machine)
+          cap = "#{self.registration_manager(machine).to_s}".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap)
           else
@@ -31,8 +31,8 @@ module VagrantPlugins
         end
 
         # Required configuration options of the registration manager
-        def self.register_credentials(machine)
-          cap = "#{self.register_manager(machine).to_s}_credentials".to_sym
+        def self.registration_credentials(machine)
+          cap = "#{self.registration_manager(machine).to_s}_credentials".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap)
           else
@@ -41,8 +41,8 @@ module VagrantPlugins
         end
 
         # Return selected registration manager or default
-        def self.register_manager(machine)
-          machine.config.registration.manager || :subscription_manager
+        def self.registration_manager(machine)
+          (machine.config.registration.manager || 'subscription_manager').to_sym
         end
       end
     end

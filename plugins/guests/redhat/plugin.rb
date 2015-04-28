@@ -3,29 +3,29 @@ require "vagrant"
 module VagrantPlugins
   module GuestRedHat
     class Plugin < Vagrant.plugin("2")
-      guest_capability("redhat", "register") do
-        require_relative "cap/register"
-        Cap::Register
+      guest_capability("redhat", "registration_register") do
+        require_relative "cap/registration"
+        Cap::Registration
       end
 
-      guest_capability("redhat", "register_unregister") do
-        require_relative "cap/register"
-        Cap::Register
+      guest_capability("redhat", "registration_unregister") do
+        require_relative "cap/registration"
+        Cap::Registration
       end
 
-      guest_capability("redhat", "register_manager_installed") do
-        require_relative "cap/register"
-        Cap::Register
+      guest_capability("redhat", "registration_manager_installed") do
+        require_relative "cap/registration"
+        Cap::Registration
       end
 
-      guest_capability("redhat", "register_credentials") do
-        require_relative "cap/register"
-        Cap::Register
+      guest_capability("redhat", "registration_credentials") do
+        require_relative "cap/registration"
+        Cap::Registration
       end
 
-      guest_capability("redhat", "register_manager") do
-        require_relative "cap/register"
-        Cap::Register
+      guest_capability("redhat", "registration_manager") do
+        require_relative "cap/registration"
+        Cap::Registration
       end
 
       guest_capability("redhat", "subscription_manager") do
