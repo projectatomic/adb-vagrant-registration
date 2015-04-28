@@ -16,12 +16,12 @@ module VagrantPlugins
           config = env[:machine].config.registration
           machine = env[:machine]
           guest = env[:machine].guest
-          @logger.info("Testing for registration_register capability on ")
+          @logger.info("Testing for registration capability")
 
           if guest.capability?(:register) && guest.capability?(:register_manager_installed)
             unless guest.capability(:register_manager_installed)
               config.skip=true
-              @logger.info("subscription-manager not found on guest")
+              @logger.info("Registration manager not found on guest")
             end
 
             unless config.skip
@@ -29,7 +29,7 @@ module VagrantPlugins
 
               # Check if credentials are provided, ask user if not
               unless credentials_provided? machine
-                @logger.debug("credentials for registration not provided")
+                @logger.debug("Credentials for registration not provided")
 
                 # Offer to register ATM or skip
                 register_now = env[:ui].ask("Would you like to register the system now (default: yes)? [y|n] ")

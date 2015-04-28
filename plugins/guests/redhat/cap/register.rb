@@ -11,6 +11,15 @@ module VagrantPlugins
           end
         end
 
+        def self.register_unregister(machine)
+          cap = "#{self.register_manager(machine).to_s}_unregister".to_sym
+          if machine.guest.capability?(cap)
+            machine.guest.capability(cap)
+          else
+            false
+          end
+        end
+
         # Check that the machine has the selected registration manager installed
         def self.register_manager_installed(machine)
           cap = "#{self.register_manager(machine).to_s}".to_sym
