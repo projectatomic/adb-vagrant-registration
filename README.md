@@ -23,6 +23,14 @@ That being said, this plugin currently ships only with registration capability f
 
 *Note:* This plugin is still alpha. Please help us to find and fix any bugs.
 
+### Plugin Configuration
+
+- **skip**: If you wish to skip the registration process altogether, you can do so by setting a `skip` option to `true`:
+
+```ruby
+  config.registration.skip = true
+```
+
 ### subscription-manager Configuration
 
 vagrant-registration supports all the options of subscription-manager's register command.
@@ -54,14 +62,7 @@ variables, such as:
 
 If you do not provide credentials, you will be prompted for them in the "up process."
 
-You can also skip the registration process altogether by setting a `skip` option
-to `true`:
-
-```ruby
-  config.registration.skip = true
-```
-
-#### Default Options
+#### subscription-manager Default Options
 
 - **--force**: Subscription Manager will fail if you attempt to register an already registered machine (see the man page for explanation), therefore vagrant-registration appends the `--force` flag automatically when subscribing. If you would like to disable this feature, set `force` option to `false`:
 
