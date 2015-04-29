@@ -23,6 +23,11 @@ module VagrantPlugins
         Cap::Registration
       end
 
+      guest_capability("redhat", "registration_secrets") do
+        require_relative "cap/registration"
+        Cap::Registration
+      end
+
       guest_capability("redhat", "registration_manager") do
         require_relative "cap/registration"
         Cap::Registration
@@ -44,6 +49,11 @@ module VagrantPlugins
       end
 
       guest_capability("redhat", "subscription_manager_credentials") do
+        require_relative "cap/subscription_manager"
+        Cap::SubscriptionManager
+      end
+
+      guest_capability("redhat", "subscription_manager_secrets") do
         require_relative "cap/subscription_manager"
         Cap::SubscriptionManager
       end

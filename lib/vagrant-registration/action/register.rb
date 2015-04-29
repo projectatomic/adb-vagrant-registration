@@ -64,6 +64,15 @@ module VagrantPlugins
           end
         end
 
+        # Secret options for selected manager
+        def secrets(machine)
+          if machine.guest.capability?(:registration_secrets)
+            machine.guest.capability(:registration_secrets)
+          else
+            []
+          end
+        end
+
         # Check if required credentials has been provided in Vagrantfile
         def credentials_provided?(machine)
           credentials_required(machine).each do |option|
@@ -72,18 +81,18 @@ module VagrantPlugins
           true
         end
 
-        # Ask user on required credentials and return them
+        # Ask user on required credentials and return them,
+        # skip options that are provided by Vagrantfile
         def register_on_screen(machine, ui)
           credentials_required(machine).each do |option|
-            # Skip options that are provided by Vagrantfile
             unless machine.config.registration.send(option)
-              response = ui.ask("#{option}: ", echo: true)
+              echo = !(secrets(machine).include? option)
+              response = ui.ask("#{option}: ", echo: echo)
               machine.config.registration.send("#{option.to_s}=".to_sym, response)
             end
           end
           machine.config.registration
         end
-
       end
     end
   end

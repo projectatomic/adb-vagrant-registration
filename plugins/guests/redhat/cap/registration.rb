@@ -40,6 +40,16 @@ module VagrantPlugins
           end
         end
 
+        # Return secret options for the registration manager
+        def self.registration_secrets(machine)
+          cap = "#{self.registration_manager(machine).to_s}_secrets".to_sym
+          if machine.guest.capability?(cap)
+            machine.guest.capability(cap)
+          else
+            []
+          end
+        end
+
         # Return selected registration manager or default
         def self.registration_manager(machine)
           (machine.config.registration.manager || 'subscription_manager').to_sym

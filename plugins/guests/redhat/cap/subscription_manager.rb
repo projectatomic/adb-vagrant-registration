@@ -23,6 +23,11 @@ module VagrantPlugins
           [:username, :password]
         end
 
+        # Return secret options for subscription-manager
+        def self.subscription_manager_secrets(machine)
+          [:password]
+        end
+
         private
 
         # Build additional subscription-manager options based on plugin configuration
