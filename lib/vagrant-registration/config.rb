@@ -10,8 +10,6 @@ module VagrantPlugins
       end
 
       def finalize!
-        @conf.force = true unless @conf.force
-        @conf.auto_attach = true unless @conf.auto_attach
         @conf.skip = false unless @conf.skip
         @logger.info "Final registration configuration: #{@conf.inspect}"
       end

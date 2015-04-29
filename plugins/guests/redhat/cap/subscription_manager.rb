@@ -32,6 +32,10 @@ module VagrantPlugins
 
         # Build additional subscription-manager options based on plugin configuration
         def self.configuration_to_options(config)
+          # Defaults
+          config.force = true unless config.force
+          config.auto_attach = true unless config.auto_attach
+
           options = []
           options << "--username=#{config.username}"
           options << "--password=#{config.password}"
