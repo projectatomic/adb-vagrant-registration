@@ -1,7 +1,13 @@
 module VagrantPlugins
   module GuestRedHat
     module Cap
+      # This provides registration capabilities for vagrant-registration
+      #
+      # As we might support more registration options (managers), this
+      # just calls the capabilities of the selected registration manager
+      # (from config.registration.manager).
       class Registration
+        # Register the given machine
         def self.registration_register(machine)
           cap = "#{self.registration_manager(machine).to_s}_register".to_sym
           if machine.guest.capability?(cap)
@@ -11,6 +17,7 @@ module VagrantPlugins
           end
         end
 
+        # Unregister the given machine
         def self.registration_unregister(machine)
           cap = "#{self.registration_manager(machine).to_s}_unregister".to_sym
           if machine.guest.capability?(cap)
