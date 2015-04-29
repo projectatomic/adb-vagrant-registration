@@ -5,7 +5,6 @@ module VagrantPlugins
     module Action
       # This registers the guest if the guest plugin supports it
       class Register
-
         def initialize(app, env)
           @app    = app
           @logger = Log4r::Logger.new("vagrant_registration::action::register")
@@ -13,47 +12,54 @@ module VagrantPlugins
 
         def call(env)
           @app.call(env)
+
+          # Configuration from Vagrantfile
           config = env[:machine].config.registration
           machine = env[:machine]
           guest = env[:machine].guest
-          @logger.info("Testing for registration capability")
 
-          if guest.capability?(:registration_register) && guest.capability?(:registration_manager_installed)
-            unless guest.capability(:registration_manager_installed)
-              config.skip=true
-              @logger.info("Registration manager not found on guest")
-            end
+          if capabilities_provided?(guest) && manager_installed?(guest) && !config.skip
+            env[:ui].info("Registering box with vagrant-registration...")
 
-            unless config.skip
-              env[:ui].info("Registering box with vagrant-registration...")
+            unless credentials_provided? machine
+              @logger.debug("Credentials for registration not provided")
 
-              # Check if credentials are provided, ask user if not
-              unless credentials_provided? machine
-                @logger.debug("Credentials for registration not provided")
+              # Offer to register ATM or skip
+              register_now = env[:ui].ask("Would you like to register the system now (default: yes)? [y|n] ")
 
-                # Offer to register ATM or skip
-                register_now = env[:ui].ask("Would you like to register the system now (default: yes)? [y|n] ")
-
-                if register_now == 'n'
-                  config.skip = true
-                # Accept anything else as default
-                else
-                  config = register_on_screen(machine, env[:ui])
-                end
+              if register_now == 'n'
+                config.skip = true
+              else
+                config = register_on_screen(machine, env[:ui])
               end
-
-              @logger.info("Registration is forced") if config.force
-              @logger.info("Registration is skipped") if config.skip
-              guest.capability(:registration_register) unless config.skip
-            else
-              @logger.debug("Registration is skipped due to the configuration")
             end
-          else
-            @logger.debug("Registration is skipped due to the missing guest capability")
+            guest.capability(:registration_register) unless config.skip
           end
+
+          @logger.debug("Registration is skipped due to the configuration") if config.skip
         end
 
         private
+
+        # Check if registration capabilities are available
+        def capabilities_provided?(guest)
+          if guest.capability?(:registration_register) && guest.capability?(:registration_manager_installed)
+            true
+          else
+            @logger.debug("Registration is skipped due to the missing guest capability")
+            return false
+          end
+        end
+
+        # Check if selected registration manager is installed
+        def manager_installed?(guest)
+          if guest.capability(:registration_manager_installed)
+            true
+          else
+            @logger.debug("Registration manager not found on guest")
+            false
+          end
+        end
 
         # Fetch required credentials for selected manager
         def credentials_required(machine)
