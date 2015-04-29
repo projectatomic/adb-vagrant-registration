@@ -1,14 +1,14 @@
 # vagrant-registration
 
-The vagrant-registration plugin supports new capabilities "register" and "unregister." The "register" event occurs during the "up" process, immediately after startup but before any provisioning (including built-in like rsync). The "unregister" event occurs during the "halt" process (which also is called during the "destroy" process) immediately before the instances goes down.
+vagrant-registration plugin for Vagrant allows developers to easily register their guests for updates on systems with a subscription model (like Red Hat Enterprise Linux).
 
-This allows developers to easily register their guests that use subscription model for updates, like Red Hat Enterprise Linux.
-
+This plugin would run *register* action on `vagrant up` before any provisioning
+and *unregister* on `vagrant halt` or `vagrant destroy`. The actions then call the registration capabilities that have to be provided for given OS.
 
 
 ## Installation
 
-Install as any other Vagrant plugin:
+Install vagrant-registration as any other Vagrant plugin:
 
 ```ruby
 vagrant plugin install vagrant-registration
@@ -16,9 +16,12 @@ vagrant plugin install vagrant-registration
 
 ## Usage
 
-*Note:* This plugin is still alpha. Please help us to find and fix any bugs.
+The plugin is designed in an registration-manager-agnostic way which means that plugin itself does not depend on any OS nor way of registration. vagrant-registration only calls registration capabilities for given guest, passes the configuration options to them and handles
+interactive registration.
 
-- Only RHEL Subscription Manager is currectly supported.
+That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager. Feel free to submit others.
+
+*Note:* This plugin is still alpha. Please help us to find and fix any bugs.
 
 ### subscription-manager Configuration
 
@@ -125,6 +128,6 @@ to `true`:
   config.registration.skip
 ```
 
-
 ## Acknowledgements
+
 The project would like to make sure we thank [purpleidea](https://github.com/purpleidea/), [humaton](https://github.com/humaton/), [strzibny](https://github.com/strzibny), [scollier](https://github.com/scollier/), [puzzle](https://github.com/puzzle), [voxik](https://github.com/voxik), [lukaszachy](https://github.com/lukaszachy) and [goern](https://github.com/goern) (in no particular order) for their contributions of ideas, code and testing for this project.
