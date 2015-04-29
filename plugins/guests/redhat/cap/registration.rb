@@ -5,7 +5,7 @@ module VagrantPlugins
         def self.registration_register(machine)
           cap = "#{self.registration_manager(machine).to_s}_register".to_sym
           if machine.guest.capability?(cap)
-            machine.guest.capability(cap)
+            machine.guest.capability(cap, machine.config.registration)
           else
             false
           end

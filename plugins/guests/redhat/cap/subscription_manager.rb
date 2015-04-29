@@ -7,11 +7,13 @@ module VagrantPlugins
           machine.communicate.test("/sbin/subscription-manager", sudo: true)
         end
 
-        def self.subscription_manager_register(machine)
-          command = "subscription-manager register #{configuration_to_options(machine.config)}"
+        # Register the machine using 'register' option, config is (Open)Struct
+        def self.subscription_manager_register(machine, config)
+          command = "subscription-manager register #{configuration_to_options(config)}"
           machine.communicate.execute("cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi", sudo: true)
         end
 
+        # Unregister the machine using 'unregister' option
         def self.subscription_manager_unregister(machine)
           machine.communicate.execute("subscription-manager unregister || :", sudo: true)
         end
@@ -26,19 +28,19 @@ module VagrantPlugins
         # Build additional subscription-manager options based on plugin configuration
         def self.configuration_to_options(config)
           options = []
-          options << "--username=#{config.registration.username}"
-          options << "--password=#{config.registration.password}"
-          options << "--serverurl=#{config.registration.serverurl}" if config.registration.serverurl
-          options << "--baseurl=#{config.registration.baseurl}" if config.registration.baseurl
-          options << "--org=#{config.registration.org}" if config.registration.org
-          options << "--environment=#{config.registration.environment}" if config.registration.environment
-          options << "--name=#{config.registration.name}" if config.registration.name
-          options << "--auto-attach" if config.registration.auto_attach
-          options << "--activationkey=#{config.registration.activationkey}" if config.registration.activationkey
-          options << "--servicelevel=#{config.registration.servicelevel}" if config.registration.servicelevel
-          options << "--release=#{config.registration.release}" if config.registration.release
-          options << "--force" if config.registration.force
-          options << "--type=#{config.registration.type}" if config.registration.type
+          options << "--username=#{config.username}"
+          options << "--password=#{config.password}"
+          options << "--serverurl=#{config.serverurl}" if config.serverurl
+          options << "--baseurl=#{config.baseurl}" if config.baseurl
+          options << "--org=#{config.org}" if config.org
+          options << "--environment=#{config.environment}" if config.environment
+          options << "--name=#{config.name}" if config.name
+          options << "--auto-attach" if config.auto_attach
+          options << "--activationkey=#{config.activationkey}" if config.activationkey
+          options << "--servicelevel=#{config.servicelevel}" if config.servicelevel
+          options << "--release=#{config.release}" if config.release
+          options << "--force" if config.force
+          options << "--type=#{config.type}" if config.type
           options.join(' ')
         end
       end
