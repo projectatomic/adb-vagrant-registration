@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.description   = "Enables guests to have a registration capability, this is expecially useful on RHEL or SLES"
 
   s.required_rubygems_version = ">= 1.3.6"
-  s.rubyforge_project         = "vagrant-registration"
 
   # this gemspec is, and parsing out the ignored files from the gitignore.
   # Note that the entire gitignore(5) syntax is not supported, specifically
