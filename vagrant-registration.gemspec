@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.email         = "langdon@fedoraproject.org"
   s.summary       = "Enables guests to have a registration capability"
   s.description   = "Enables guests to have a registration capability, this is expecially useful on RHEL or SLES"
-
+  s.homepage      = "https://github.com/projectatomic/adb-vagrant-registration"
   s.required_rubygems_version = ">= 1.3.6"
 
   # this gemspec is, and parsing out the ignored files from the gitignore.
