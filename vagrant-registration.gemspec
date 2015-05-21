@@ -6,14 +6,13 @@ Gem::Specification.new do |s|
   s.version       = VagrantPlugins::Registration::VERSION
   s.platform      = Gem::Platform::RUBY
   s.license       = "GPL-2.0"
-  s.authors       = ["Langdon White", "et al"]
-  s.email         = "langdon@fedoraproject.org"
-  s.summary       = "Enables guests to have a registration capability"
-  s.description   = "Enables guests to have a registration capability, this is expecially useful on RHEL or SLES"
+  s.authors       = ["Langdon White", "Josef Strzibny", "et al"]
+  s.email         = ["langdon@fedoraproject.org", "strzibny@strzibny.name"]
+  s.summary       = "Automatic guest registration for Vagrant"
+  s.description   = "Enables guests to be registered automatically which is especially useful for RHEL or SLES guests."
   s.homepage      = "https://github.com/projectatomic/adb-vagrant-registration"
   s.required_rubygems_version = ">= 1.3.6"
 
-  # this gemspec is, and parsing out the ignored files from the gitignore.
   # Note that the entire gitignore(5) syntax is not supported, specifically
   # the "!" syntax, but it should mostly work correctly.
   root_path      = File.dirname(__FILE__)
