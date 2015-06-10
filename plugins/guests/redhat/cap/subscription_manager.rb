@@ -37,19 +37,19 @@ module VagrantPlugins
           config.auto_attach = true unless config.auto_attach
 
           options = []
-          options << "--username=#{config.username}"
-          options << "--password=#{config.password}"
-          options << "--serverurl=#{config.serverurl}" if config.serverurl
-          options << "--baseurl=#{config.baseurl}" if config.baseurl
-          options << "--org=#{config.org}" if config.org
-          options << "--environment=#{config.environment}" if config.environment
-          options << "--name=#{config.name}" if config.name
+          options << "--username='#{config.username}'"
+          options << "--password='#{config.password}'"
+          options << "--serverurl='#{config.serverurl}'" if config.serverurl
+          options << "--baseurl='#{config.baseurl}'" if config.baseurl
+          options << "--org='#{config.org}'" if config.org
+          options << "--environment='#{config.environment}'" if config.environment
+          options << "--name='#{config.name}'" if config.name
           options << "--auto-attach" if config.auto_attach
-          options << "--activationkey=#{config.activationkey}" if config.activationkey
-          options << "--servicelevel=#{config.servicelevel}" if config.servicelevel
-          options << "--release=#{config.release}" if config.release
+          options << "--activationkey='#{config.activationkey}'" if config.activationkey
+          options << "--servicelevel='#{config.servicelevel}'" if config.servicelevel
+          options << "--release='#{config.release}'" if config.release
           options << "--force" if config.force
-          options << "--type=#{config.type}" if config.type
+          options << "--type='#{config.type}'" if config.type
           options.join(' ')
         end
       end
