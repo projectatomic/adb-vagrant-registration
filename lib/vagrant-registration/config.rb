@@ -10,19 +10,25 @@ module VagrantPlugins
       end
 
       def finalize!
+        get_config
         @conf.skip = false unless @conf.skip
         @logger.info "Final registration configuration: #{@conf.inspect}"
       end
 
       def method_missing(method_sym, *arguments, &block)
-        # Don't set this in initialize to preserve config hierarchy
-        @conf = OpenStruct.new if @conf == UNSET_VALUE
+        get_config
         command = "@conf.#{method_sym} #{adjust_arguments(arguments)}"
         @logger.info "Evaluating registration configuration: #{command}"
         eval command
       end
 
       private
+
+        # Don't set @conf to OpenStruct in initialize
+        # to preserve config hierarchy
+        def get_config
+          @conf = OpenStruct.new if @conf == UNSET_VALUE
+        end
 
         def adjust_arguments(args)
           return '' if args.size < 1
