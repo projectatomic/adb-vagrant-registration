@@ -57,11 +57,6 @@ module VagrantPlugins
         require_relative "cap/subscription_manager"
         Cap::SubscriptionManager
       end
-
-      guest_capability("redhat", "rhcert") do
-        require_relative "cap/redhat_certification_tool"
-        Cap::RedHatCertification
-      end
     end
   end
 end
