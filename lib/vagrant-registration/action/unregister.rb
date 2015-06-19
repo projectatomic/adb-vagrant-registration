@@ -37,7 +37,7 @@ module VagrantPlugins
             true
           else
             @logger.debug("Unregistration is skipped due to the missing guest capability")
-            return false
+            false
           end
         end
 
