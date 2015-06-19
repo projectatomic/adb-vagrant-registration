@@ -20,7 +20,7 @@ module VagrantPlugins
 
         # Return required configuration options for subscription-manager
         def self.subscription_manager_credentials(machine)
-          [:username, :password]
+          [[:username, :password], [:org, :activationkey]]
         end
 
         # Return secret options for subscription-manager
@@ -37,8 +37,8 @@ module VagrantPlugins
           config.auto_attach = true unless config.auto_attach
 
           options = []
-          options << "--username='#{config.username}'"
-          options << "--password='#{config.password}'"
+          options << "--username='#{config.username}'" if config.username
+          options << "--password='#{config.password}'" if config.password
           options << "--serverurl='#{config.serverurl}'" if config.serverurl
           options << "--baseurl='#{config.baseurl}'" if config.baseurl
           options << "--org='#{config.org}'" if config.org
