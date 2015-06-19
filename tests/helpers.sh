@@ -31,6 +31,10 @@ function check_credentials() {
     echo "VAGRANT_REGISTRATION_USERNAME and VAGRANT_REGISTRATION_PASSWORD needs to be provided."
     exit 1
   fi
+  if [ "$VAGRANT_REGISTRATION_ORG" = "" ] || [ "$VAGRANT_REGISTRATION_ACTIVATIONKEY" = "" ]; then
+    echo "VAGRANT_REGISTRATION_ORG and VAGRANT_REGISTRATION_ACTIVATIONKEY needs to be provided."
+    exit 1
+  fi
 }
 
 # Install vagrant and vagrant-registration

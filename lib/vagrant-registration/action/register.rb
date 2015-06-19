@@ -80,17 +80,25 @@ module VagrantPlugins
         end
 
         # Check if required credentials has been provided in Vagrantfile
+        #
+        # Checks if at least one of the registration options is able to
+        # register.
         def credentials_provided?(machine)
-          credentials_required(machine).each do |option|
-            return false unless machine.config.registration.send option
+          provided = true
+          credentials_required(machine).each do |registration_option|
+            provided = true
+            registration_option.each do |value|
+              provided = false unless machine.config.registration.send value
+            end
+            break if provided
           end
-          true
+          provided ? true : false
         end
 
         # Ask user on required credentials and return them,
         # skip options that are provided by Vagrantfile
         def register_on_screen(machine, ui)
-          credentials_required(machine).each do |option|
+          credentials_required(machine)[0].each do |option|
             unless machine.config.registration.send(option)
               echo = !(secrets(machine).include? option)
               response = ui.ask("#{option}: ", echo: echo)

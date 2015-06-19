@@ -1,4 +1,4 @@
-# Spin 2 RHEL machines that will be registered
+# Spin 3 RHEL machines that will be registered
 
 ENV['VAGRANT_DEFAULT_PROVIDER'] ||= 'libvirt'
 ENV['VAGRANT_REGISTRATION_RHEL_BOX'] ||= 'rhel-7.0'
@@ -12,8 +12,8 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.define "rhel2-valid-credentials" do |c|
-    c.registration.username = ENV['VAGRANT_REGISTRATION_USERNAME']
-    c.registration.password = ENV['VAGRANT_REGISTRATION_PASSWORD']
+    c.registration.org = ENV['VAGRANT_REGISTRATION_ORG']
+    c.registration.activationkey = ENV['VAGRANT_REGISTRATION_ACTIVATIONKEY']
   end
 
 end

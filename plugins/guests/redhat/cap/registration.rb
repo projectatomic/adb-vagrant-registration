@@ -38,6 +38,11 @@ module VagrantPlugins
         end
 
         # Required configuration options of the registration manager
+        #
+        # This is array of arrays of all possible registration combinations.
+        # First one is the default used in interactive mode.
+        #
+        # e.g. [[:username, :password]]
         def self.registration_credentials(machine)
           cap = "#{self.registration_manager(machine).to_s}_credentials".to_sym
           if machine.guest.capability?(cap)

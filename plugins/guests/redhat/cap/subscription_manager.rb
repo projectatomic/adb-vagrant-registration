@@ -32,9 +32,14 @@ module VagrantPlugins
 
         # Build additional subscription-manager options based on plugin configuration
         def self.configuration_to_options(config)
-          # Defaults
           config.force = true unless config.force
-          config.auto_attach = true unless config.auto_attach
+
+          # --auto-attach cannot be used in case of org/activationkey registration
+          if config.org && config.activationkey
+            config.auto_attach = false
+          else
+            config.auto_attach = true unless config.auto_attach
+          end
 
           options = []
           options << "--username='#{config.username}'" if config.username
