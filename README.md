@@ -2,22 +2,26 @@
 
 vagrant-registration plugin for Vagrant allows developers to easily register their guests for updates on systems with a subscription model (like Red Hat Enterprise Linux).
 
-This plugin would run *register* action on `vagrant up` before any provisioning
-and *unregister* on `vagrant halt` or `vagrant destroy`. The actions then call the registration capabilities that have to be provided for given OS.
+This plugin would run *register* action on `vagrant up` before any provisioning and *unregister* on `vagrant halt` or `vagrant destroy`. The actions then call the registration capabilities that have to be provided for given OS.
 
 
 ## Installation
 
 Install vagrant-registration as any other Vagrant plugin:
 
-```ruby
-vagrant plugin install vagrant-registration
+```shell
+$ vagrant plugin install vagrant-registration
+```
+
+If you are on Fedora, you can install the packaged version of the plugin by running:
+
+```shell
+# dnf install vagrant-registration
 ```
 
 ## Usage
 
-The plugin is designed in an registration-manager-agnostic way which means that plugin itself does not depend on any OS nor way of registration. vagrant-registration only calls registration capabilities for given guest, passes the configuration options to them and handles
-interactive registration.
+The plugin is designed in an registration-manager-agnostic way which means that plugin itself does not depend on any OS nor way of registration. vagrant-registration only calls registration capabilities for given guest, passes the configuration options to them and handles interactive registration.
 
 That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager. Feel free to submit others.
 
@@ -45,11 +49,17 @@ if Vagrant.has_plugin?('vagrant-registration')
   config.registration.username = 'foo'
   config.registration.password = 'bar'
 end
+
+# Alternatively
+if Vagrant.has_plugin?('vagrant-registration')
+  config.registration.org = 'foo'
+  config.registration.activationkey = 'bar'
+end
 ```
 
 This should go, preferably, into the Vagrantfile in your Vagrant home directory
 (defaults to ~/.vagrant.d), to make it available for every project. It can be
-later overriden in an individual project's Vagrantfile, if needed.
+later overridden in an individual project's Vagrantfile if needed.
 
 If you prefer not to store your username and/or password on your filesystem,
 you can optionally configure vagrant-registration plugin to use environment
@@ -61,6 +71,9 @@ variables, such as:
 ```
 
 If you do not provide credentials, you will be prompted for them in the "up process."
+
+Please note the the interactive mode asks you for the preferred registration pair only.
+In case of a subscription-manager, you would be ask on your username/password combination.
 
 #### subscription-manager Default Options
 
@@ -76,6 +89,8 @@ If you do not provide credentials, you will be prompted for them in the "up proc
 ```ruby
   config.registration.auto_attach = false
 ```
+
+Note that the `auto_attach` option is set to false when using org/activationkey for registration.
 
 #### subscription-manager Options Reference
 
