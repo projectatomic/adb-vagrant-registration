@@ -4,7 +4,7 @@ module VagrantPlugins
       class SubscriptionManager
         # Test that we have subscription-manager installed
         def self.subscription_manager(machine)
-          machine.communicate.test("/sbin/subscription-manager", sudo: true)
+          machine.communicate.test("/usr/sbin/subscription-manager", sudo: true)
         end
 
         # Register the machine using 'register' option, config is (Open)Struct
