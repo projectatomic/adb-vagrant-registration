@@ -8,15 +8,22 @@ module VagrantPlugins
         end
       end
 
-      def self.action_unregister
+      def self.action_unregister_on_halt
         Vagrant::Action::Builder.new.tap do |b|
-          b.use Unregister
+          b.use UnregisterOnHalt
+        end
+      end
+
+      def self.action_unregister_on_destroy
+        Vagrant::Action::Builder.new.tap do |b|
+          b.use UnregisterOnDestroy
         end
       end
 
       action_root = Pathname.new(File.expand_path("../action", __FILE__))
       autoload :Register, action_root.join("register")
-      autoload :Unregister, action_root.join("unregister")
+      autoload :UnregisterOnHalt, action_root.join("unregister_on_halt")
+      autoload :UnregisterOnDestroy, action_root.join("unregister_on_destroy")
     end
   end
 end

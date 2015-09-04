@@ -7,6 +7,16 @@ module VagrantPlugins
       # just calls the capabilities of the selected registration manager
       # (from config.registration.manager).
       class Registration
+        # Is the machine already registered?
+        def self.registration_registered?(machine)
+          cap = "#{self.registration_manager(machine).to_s}_registered?".to_sym
+          if machine.guest.capability?(cap)
+            machine.guest.capability(cap)
+          else
+            false
+          end
+        end
+
         # Register the given machine
         def self.registration_register(machine)
           cap = "#{self.registration_manager(machine).to_s}_register".to_sym

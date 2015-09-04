@@ -18,7 +18,7 @@ module VagrantPlugins
           machine = env[:machine]
           guest = env[:machine].guest
 
-          if capabilities_provided?(guest) && manager_installed?(guest) && !config.skip
+          if should_register?(machine)
             env[:ui].info("Registering box with vagrant-registration...")
 
             unless credentials_provided? machine
@@ -41,9 +41,19 @@ module VagrantPlugins
 
         private
 
+        # Shall we register the box?
+        def should_register?(machine)
+          !machine.config.registration.skip &&
+          capabilities_provided?(machine.guest) &&
+          manager_installed?(machine.guest) &&
+          !machine.guest.capability(:registration_registered?)
+        end
+
         # Check if registration capabilities are available
         def capabilities_provided?(guest)
-          if guest.capability?(:registration_register) && guest.capability?(:registration_manager_installed)
+          if guest.capability?(:registration_register) &&
+             guest.capability?(:registration_manager_installed) &&
+             guest.capability?(:registration_registered?)
             true
           else
             @logger.debug("Registration is skipped due to the missing guest capability")

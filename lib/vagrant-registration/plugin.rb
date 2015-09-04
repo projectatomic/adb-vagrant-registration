@@ -20,9 +20,14 @@ module VagrantPlugins
                      VagrantPlugins::Registration::Action.action_register)
         end
 
-        def unregister(hook)
+        def unregister_on_halt(hook)
           setup_logging
-          hook.prepend(VagrantPlugins::Registration::Action.action_unregister)
+          hook.prepend(VagrantPlugins::Registration::Action.action_unregister_on_halt)
+        end
+
+        def unregister_on_destroy(hook)
+          setup_logging
+          hook.prepend(VagrantPlugins::Registration::Action.action_unregister_on_destroy)
         end
       end
 
@@ -34,8 +39,8 @@ module VagrantPlugins
 
       action_hook(:registration_register, :machine_action_up, &method(:register))
       action_hook(:registration_register, :machine_action_provision, &method(:register))
-      action_hook(:registration_unregister, :machine_action_halt, &method(:unregister))
-      action_hook(:registration_unregister, :machine_action_destroy, &method(:unregister))
+      action_hook(:registration_unregister_on_halt, :machine_action_halt, &method(:unregister_on_halt))
+      action_hook(:registration_unregister_on_destroy, :machine_action_destroy, &method(:unregister_on_destroy))
 
       config(:registration) do
         setup_logging

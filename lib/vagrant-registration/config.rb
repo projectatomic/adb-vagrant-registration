@@ -12,6 +12,8 @@ module VagrantPlugins
       def finalize!
         get_config
         @conf.skip = false unless @conf.skip
+        # Unregister on halt by default
+        @conf.unregister_on_halt = true if @conf.unregister_on_halt.nil?
         @logger.info "Final registration configuration: #{@conf.inspect}"
       end
 

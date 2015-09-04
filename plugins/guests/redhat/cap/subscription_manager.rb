@@ -2,6 +2,13 @@ module VagrantPlugins
   module GuestRedHat
     module Cap
       class SubscriptionManager
+        # Test that the machine is already registered
+        def self.subscription_manager_registered?(machine)
+          false if machine.communicate.execute("/usr/sbin/subscription-manager list --consumed | grep 'No consumed subscription pools to list'", sudo: true)
+        rescue
+          true
+        end
+
         # Test that we have subscription-manager installed
         def self.subscription_manager(machine)
           machine.communicate.test("/usr/sbin/subscription-manager", sudo: true)

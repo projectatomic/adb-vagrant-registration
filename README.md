@@ -29,10 +29,16 @@ That being said, this plugin currently ships only with registration capability f
 
 ### Plugin Configuration
 
-- **skip**: If you wish to skip the registration process altogether, you can do so by setting a `skip` option to `true`:
+- **skip** skips the registration. If you wish to skip the registration process altogether, you can do so by setting a `skip` option to `true`:
 
 ```ruby
   config.registration.skip = true
+```
+
+- **unregister_on_halt** disables or enables automatic unregistration on halt (on shut down) so the box will unregister only on destroy. By default the plugin unregisters on halt, you can however change that by setting the option to `false`:
+
+```ruby
+  config.registration.unregister_on_halt = false
 ```
 
 ### subscription-manager Configuration
