@@ -16,7 +16,12 @@ Gem::Specification.new do |s|
   # Note that the entire gitignore(5) syntax is not supported, specifically
   # the "!" syntax, but it should mostly work correctly.
   root_path      = File.dirname(__FILE__)
-  all_files      = Dir.chdir(root_path) { Dir.glob("**/{*,.*}") }
+  all_files      = Dir.chdir(root_path) {
+    Dir.glob("lib/**/{*,.*}") +
+    Dir.glob("plugins/**/{*,.*}") +
+    Dir.glob("tests/**/{*,.*}") +
+    ['Rakefile', 'Gemfile', 'README.md', 'CHANGELOG.md', 'LICENSE.md', 'vagrant-registration.gemspec']
+  }
   all_files.reject! { |file| [".", ".."].include?(File.basename(file)) }
   gitignore_path = File.join(root_path, ".gitignore")
   gitignore      = File.readlines(gitignore_path)
