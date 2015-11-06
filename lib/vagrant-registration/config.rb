@@ -4,6 +4,8 @@ require "ostruct"
 module VagrantPlugins
   module Registration
     class Config < Vagrant.plugin("2", :config)
+      attr_reader :conf
+
       def initialize(region_specific=false)
         @conf = UNSET_VALUE
         @logger = Log4r::Logger.new("vagrant_registration::config")

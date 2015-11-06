@@ -1,6 +1,9 @@
 module VagrantPlugins
   module GuestRedHat
     module Cap
+      # Common configuration options for all managers
+      DEFAULT_CONFIGURATION_OPTIONS = [:skip, :unregister_on_halt]
+
       # This provides registration capabilities for vagrant-registration
       #
       # As we might support more registration options (managers), this
@@ -59,6 +62,17 @@ module VagrantPlugins
             machine.guest.capability(cap)
           else
             []
+          end
+        end
+
+        # Return all available options for a given registration manager together
+        # with general options available to any.
+        def self.registration_options(machine)
+          cap = "#{self.registration_manager(machine).to_s}_options".to_sym
+          if machine.guest.capability?(cap)
+            DEFAULT_CONFIGURATION_OPTIONS + machine.guest.capability(cap)
+          else
+            DEFAULT_CONFIGURATION_OPTIONS
           end
         end
 

@@ -20,6 +20,7 @@ module VagrantPlugins
 
           if should_register?(machine)
             env[:ui].info("Registering box with vagrant-registration...")
+            check_configuration_options(machine, env[:ui])
 
             unless credentials_provided? machine
               @logger.debug("Credentials for registration not provided")
@@ -47,6 +48,17 @@ module VagrantPlugins
           capabilities_provided?(machine.guest) &&
           manager_installed?(machine.guest) &&
           !machine.guest.capability(:registration_registered?)
+        end
+
+        # Issues warning if an unsupported option is used
+        def check_configuration_options(machine, ui)
+          available_options = machine.guest.capability(:registration_options)
+          machine.config.registration.conf.each_pair do |pair|
+            option = pair[0].to_sym
+            unless available_options.include? option
+              ui.warn("WARNING: #{option} is not supported for a given subscription manager")
+            end
+          end
         end
 
         # Check if registration capabilities are available
