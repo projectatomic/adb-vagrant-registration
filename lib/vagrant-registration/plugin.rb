@@ -6,13 +6,13 @@ end
 
 # This is a sanity check to make sure no one is attempting to install
 # this into an early Vagrant version.
-if Vagrant::VERSION < "1.2.0"
-  raise "The Vagrant RHEL plugin is only compatible with Vagrant 1.2+"
+if Vagrant::VERSION < '1.2.0'
+  fail 'The Vagrant RHEL plugin is only compatible with Vagrant 1.2+.'
 end
 
 module VagrantPlugins
   module Registration
-    class Plugin < Vagrant.plugin("2")
+    class Plugin < Vagrant.plugin('2')
       class << self
         def register(hook)
           setup_logging
@@ -31,7 +31,7 @@ module VagrantPlugins
         end
       end
 
-      name "Registration"
+      name 'Registration'
       description <<-DESC
       This plugin adds register and unregister functionality to Vagrant Guests that
       support the capability
@@ -64,7 +64,7 @@ module VagrantPlugins
         # Some constants, such as "true" resolve to booleans, so the
         # above error checking doesn't catch it. This will check to make
         # sure that the log level is an integer, as Log4r requires.
-        level = nil if !level.is_a?(Integer)
+        level = nil unless level.is_a?(Integer)
         # Set the logging level on all "vagrant" namespaced
         # logs as long as we have a valid level.
         if level

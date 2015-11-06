@@ -3,12 +3,12 @@ require "ostruct"
 
 module VagrantPlugins
   module Registration
-    class Config < Vagrant.plugin("2", :config)
+    class Config < Vagrant.plugin('2', :config)
       attr_reader :conf
 
       def initialize(region_specific=false)
         @conf = UNSET_VALUE
-        @logger = Log4r::Logger.new("vagrant_registration::config")
+        @logger = Log4r::Logger.new('vagrant_registration::config')
       end
 
       def finalize!
@@ -28,16 +28,16 @@ module VagrantPlugins
 
       private
 
-        # Don't set @conf to OpenStruct in initialize
-        # to preserve config hierarchy
-        def get_config
-          @conf = OpenStruct.new if @conf == UNSET_VALUE
-        end
+      # Don't set @conf to OpenStruct in initialize
+      # to preserve config hierarchy
+      def get_config
+        @conf = OpenStruct.new if @conf == UNSET_VALUE
+      end
 
-        def adjust_arguments(args)
-          return '' if args.size < 1
-          args.map{|a| a.is_a?(String) ? "'#{a}'" : a}.join(',')
-        end
+      def adjust_arguments(args)
+        return '' if args.size < 1
+        args.map { |a| a.is_a?(String) ? "'#{a}'" : a }.join(',')
+      end
     end
   end
 end
