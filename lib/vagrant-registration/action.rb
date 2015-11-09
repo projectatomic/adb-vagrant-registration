@@ -20,10 +20,10 @@ module VagrantPlugins
         end
       end
 
-      action_root = Pathname.new(File.expand_path("../action", __FILE__))
-      autoload :Register, action_root.join("register")
-      autoload :UnregisterOnHalt, action_root.join("unregister_on_halt")
-      autoload :UnregisterOnDestroy, action_root.join("unregister_on_destroy")
+      action_root = Pathname.new(File.expand_path('../action', __FILE__))
+      autoload :Register, action_root.join('register')
+      autoload :UnregisterOnHalt, action_root.join('unregister_on_halt')
+      autoload :UnregisterOnDestroy, action_root.join('unregister_on_destroy')
     end
   end
 end

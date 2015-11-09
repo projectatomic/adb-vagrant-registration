@@ -1,4 +1,4 @@
-require "log4r"
+require 'log4r'
 
 module VagrantPlugins
   module Registration
@@ -7,7 +7,7 @@ module VagrantPlugins
       class UnregisterOnDestroy
         def initialize(app, env)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_registration::action::unregister_on_destroy")
+          @logger = Log4r::Logger.new('vagrant_registration::action::unregister_on_destroy')
         end
 
         def call(env)
@@ -15,17 +15,17 @@ module VagrantPlugins
           guest = env[:machine].guest
 
           if capabilities_provided?(guest) && manager_installed?(guest) && !config.skip
-            env[:ui].info("Unregistering box with vagrant-registration...")
+            env[:ui].info('Unregistering box with vagrant-registration...')
             guest.capability(:registration_unregister)
           end
 
-          @logger.debug("Unregistration is skipped due to the configuration") if config.skip
+          @logger.debug('Unregistration is skipped due to the configuration') if config.skip
           @app.call(env)
 
         # Guest might not be available after halting, so log the exception and continue
         rescue => e
           @logger.info(e)
-          @logger.debug("Guest is not available, ignore unregistration")
+          @logger.debug('Guest is not available, ignore unregistration')
           @app.call(env)
         end
 
@@ -36,7 +36,7 @@ module VagrantPlugins
           if guest.capability?(:registration_unregister) && guest.capability?(:registration_manager_installed)
             true
           else
-            @logger.debug("Unregistration is skipped due to the missing guest capability")
+            @logger.debug('Unregistration is skipped due to the missing guest capability')
             false
           end
         end
@@ -46,7 +46,7 @@ module VagrantPlugins
           if guest.capability(:registration_manager_installed)
             true
           else
-            @logger.debug("Registration manager not found on guest")
+            @logger.debug('Registration manager not found on guest')
             false
           end
         end

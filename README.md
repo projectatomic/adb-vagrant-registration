@@ -150,6 +150,21 @@ Note that the `auto_attach` option is set to false when using org/activationkey 
   config.registration.skip
 ```
 
+## Tests
+
+Tests currently test the plugin with `subscription-manager` on RHEL 7.1 guest
+and Fedora host. You need an imported RHEL 7.1 Vagrant box named `rhel-7.1`.
+
+To run them:
+
+```
+export VAGRANT_REGISTRATION_USERNAME=
+export VAGRANT_REGISTRATION_PASSWORD=
+export VAGRANT_REGISTRATION_ORG=
+export VAGRANT_REGISTRATION_ACTIVATIONKEY=
+./tests/run.sh
+```
+
 ## Acknowledgements
 
 The project would like to make sure we thank [purpleidea](https://github.com/purpleidea/), [humaton](https://github.com/humaton/), [strzibny](https://github.com/strzibny), [scollier](https://github.com/scollier/), [puzzle](https://github.com/puzzle), [voxik](https://github.com/voxik), [lukaszachy](https://github.com/lukaszachy) and [goern](https://github.com/goern) (in no particular order) for their contributions of ideas, code and testing for this project.

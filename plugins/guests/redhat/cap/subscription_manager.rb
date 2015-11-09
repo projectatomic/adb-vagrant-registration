@@ -30,6 +30,13 @@ module VagrantPlugins
           [[:username, :password], [:org, :activationkey]]
         end
 
+        # Return all available options for subscription-manager
+        def self.subscription_manager_options(machine)
+          [:username, :password, :serverurl, :baseurl, :org, :environment,
+           :name, :auto_attach, :activationkey, :servicelevel, :release,
+           :force, :type]
+        end
+
         # Return secret options for subscription-manager
         def self.subscription_manager_secrets(machine)
           [:password]

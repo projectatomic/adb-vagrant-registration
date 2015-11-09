@@ -5,9 +5,9 @@ module VagrantPlugins
     module Action
       # This registers the guest if the guest plugin supports it
       class Register
-        def initialize(app, env)
+        def initialize(app, _)
           @app    = app
-          @logger = Log4r::Logger.new("vagrant_registration::action::register")
+          @logger = Log4r::Logger.new('vagrant_registration::action::register')
         end
 
         def call(env)
@@ -19,13 +19,14 @@ module VagrantPlugins
           guest = env[:machine].guest
 
           if should_register?(machine)
-            env[:ui].info("Registering box with vagrant-registration...")
+            env[:ui].info('Registering box with vagrant-registration...')
+            check_configuration_options(machine, env[:ui])
 
             unless credentials_provided? machine
-              @logger.debug("Credentials for registration not provided")
+              @logger.debug('Credentials for registration not provided')
 
               # Offer to register ATM or skip
-              register_now = env[:ui].ask("Would you like to register the system now (default: yes)? [y|n] ")
+              register_now = env[:ui].ask('Would you like to register the system now (default: yes)? [y|n]')
 
               if register_now == 'n'
                 config.skip = true
@@ -36,7 +37,7 @@ module VagrantPlugins
             guest.capability(:registration_register) unless config.skip
           end
 
-          @logger.debug("Registration is skipped due to the configuration") if config.skip
+          @logger.debug('Registration is skipped due to the configuration') if config.skip
         end
 
         private
@@ -49,6 +50,31 @@ module VagrantPlugins
           !machine.guest.capability(:registration_registered?)
         end
 
+        # Issues warning if an unsupported option is used and displays
+        # a list of supported options
+        def check_configuration_options(machine, ui)
+          manager = machine.guest.capability(:registration_manager).to_s
+          available_options = machine.guest.capability(:registration_options)
+          options = machine.config.registration.conf.each_pair.map { |pair| pair[0] }
+
+          if unsupported_options_provided?(manager, available_options, options, ui)
+            ui.warn("WARNING: #{manager} supports only the following options:" +
+                    "\nWARNING: " + available_options.join(', '))
+          end
+        end
+
+        # Return true if there are any unsupported options
+        def unsupported_options_provided?(manager, available_options, options, ui)
+          warned = false
+          options.each do |option|
+            unless available_options.include? option
+              ui.warn("WARNING: #{option} option is not supported for " + manager)
+              warned = true
+            end
+          end
+          warned
+        end
+
         # Check if registration capabilities are available
         def capabilities_provided?(guest)
           if guest.capability?(:registration_register) &&
@@ -56,7 +82,7 @@ module VagrantPlugins
              guest.capability?(:registration_registered?)
             true
           else
-            @logger.debug("Registration is skipped due to the missing guest capability")
+            @logger.debug('Registration is skipped due to the missing guest capability')
             false
           end
         end
@@ -66,7 +92,7 @@ module VagrantPlugins
           if guest.capability(:registration_manager_installed)
             true
           else
-            @logger.debug("Registration manager not found on guest")
+            @logger.debug('Registration manager not found on guest')
             false
           end
         end
@@ -112,7 +138,7 @@ module VagrantPlugins
             unless machine.config.registration.send(option)
               echo = !(secrets(machine).include? option)
               response = ui.ask("#{option}: ", echo: echo)
-              machine.config.registration.send("#{option.to_s}=".to_sym, response)
+              machine.config.registration.send("#{option}=".to_sym, response)
             end
           end
           machine.config.registration
