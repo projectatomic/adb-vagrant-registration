@@ -50,16 +50,29 @@ module VagrantPlugins
           !machine.guest.capability(:registration_registered?)
         end
 
-        # Issues warning if an unsupported option is used
+        # Issues warning if an unsupported option is used and displays
+        # a list of supported options
         def check_configuration_options(machine, ui)
+          manager = machine.guest.capability(:registration_manager).to_s
           available_options = machine.guest.capability(:registration_options)
-          machine.config.registration.conf.each_pair do |pair|
-            option = pair[0].to_sym
+          options = machine.config.registration.conf.each_pair.map { |pair| pair[0] }
+
+          if unsupported_options_provided?(manager, available_options, options, ui)
+            ui.warn("WARNING: #{manager} supports only the following options:" +
+                    "\nWARNING: " + available_options.join(', '))
+          end
+        end
+
+        # Return true if there are any unsupported options
+        def unsupported_options_provided?(manager, available_options, options, ui)
+          warned = false
+          options.each do |option|
             unless available_options.include? option
-              ui.warn("WARNING: #{option} option is not supported for " +
-                      machine.guest.capability(:registration_manager).to_s)
+              ui.warn("WARNING: #{option} option is not supported for " + manager)
+              warned = true
             end
           end
+          warned
         end
 
         # Check if registration capabilities are available
