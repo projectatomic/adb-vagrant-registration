@@ -111,6 +111,9 @@ Note that the `auto_attach` option is set to false when using org/activationkey 
   # Asset Manager, defaults to Customer Portal Subscription Management)
   config.registration.serverurl
 
+  # A path to a CA certificate, this file would be copied to /etc/rhsm/ca
+  config.registration.ca_cert
+
   # Give the hostname of the content delivery server to use to receive updates
   # (required for Satellite 6)
   config.registration.baseurl
