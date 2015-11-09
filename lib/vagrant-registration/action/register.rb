@@ -56,7 +56,8 @@ module VagrantPlugins
           machine.config.registration.conf.each_pair do |pair|
             option = pair[0].to_sym
             unless available_options.include? option
-              ui.warn("WARNING: #{option} is not supported for a given subscription manager")
+              ui.warn("WARNING: #{option} option is not supported for " +
+                      machine.guest.capability(:registration_manager).to_s)
             end
           end
         end
