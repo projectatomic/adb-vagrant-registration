@@ -25,8 +25,6 @@ The plugin is designed in an registration-manager-agnostic way which means that 
 
 That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager. Feel free to submit others.
 
-*Note:* This plugin is still alpha. Please help us to find and fix any bugs.
-
 ### Plugin Configuration
 
 - **skip** skips the registration. If you wish to skip the registration process altogether, you can do so by setting a `skip` option to `true`:
