@@ -1,29 +1,29 @@
-$:.unshift File.expand_path("../lib", __FILE__)
-require "vagrant-registration/version"
+$LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
+require 'vagrant-registration/version'
 
 Gem::Specification.new do |s|
-  s.name          = "vagrant-registration"
+  s.name          = 'vagrant-registration'
   s.version       = VagrantPlugins::Registration::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.license       = "GPL-2.0"
-  s.authors       = ["Langdon White", "Josef Strzibny", "et al"]
-  s.email         = ["langdon@fedoraproject.org", "strzibny@strzibny.name"]
-  s.summary       = "Automatic guest registration for Vagrant"
-  s.description   = "Enables guests to be registered automatically which is especially useful for RHEL or SLES guests."
-  s.homepage      = "https://github.com/projectatomic/adb-vagrant-registration"
-  s.required_rubygems_version = ">= 1.3.6"
+  s.license       = 'GPL-2.0'
+  s.authors       = ['Langdon White', 'Josef Strzibny', 'et al']
+  s.email         = ['langdon@fedoraproject.org', 'strzibny@strzibny.name']
+  s.summary       = 'Automatic guest registration for Vagrant'
+  s.description   = 'Enables guests to be registered automatically which is especially useful for RHEL or SLES guests.'
+  s.homepage      = 'https://github.com/projectatomic/adb-vagrant-registration'
+  s.required_rubygems_version = '>= 1.3.6'
 
   # Note that the entire gitignore(5) syntax is not supported, specifically
-  # the "!" syntax, but it should mostly work correctly.
+  # the '!' syntax, but it should mostly work correctly.
   root_path      = File.dirname(__FILE__)
   all_files      = Dir.chdir(root_path) {
-    Dir.glob("lib/**/{*,.*}") +
-    Dir.glob("plugins/**/{*,.*}") +
-    Dir.glob("tests/**/{*,.*}") +
+    Dir.glob('lib/**/{*,.*}') +
+    Dir.glob('plugins/**/{*,.*}') +
+    Dir.glob('tests/**/{*,.*}') +
     ['Rakefile', 'Gemfile', 'README.md', 'CHANGELOG.md', 'LICENSE.md', 'vagrant-registration.gemspec']
   }
-  all_files.reject! { |file| [".", ".."].include?(File.basename(file)) }
-  gitignore_path = File.join(root_path, ".gitignore")
+  all_files.reject! { |file| ['.', '..'].include?(File.basename(file)) }
+  gitignore_path = File.join(root_path, '.gitignore')
   gitignore      = File.readlines(gitignore_path)
   gitignore.map!    { |line| line.chomp.strip }
   gitignore.reject! { |line| line.empty? || line =~ /^(#|!)/ }
@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
     #
     gitignore.any? do |ignore|
       File.fnmatch(ignore, file, File::FNM_PATHNAME) ||
-        File.fnmatch(ignore, File.basename(file), File::FNM_PATHNAME)
+      File.fnmatch(ignore, File.basename(file), File::FNM_PATHNAME)
     end
   end
 
