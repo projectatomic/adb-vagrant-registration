@@ -22,11 +22,15 @@ module VagrantPlugins
         end
 
         # Upload provided CA cert to the standard /etc/rhsm/ca path on the guest
+        #
+        # Since subscription-manager recognizes only .pem files, we rename those
+        # files not ending with '.pem' extension.
         def self.subscription_manager_upload_certificate(machine, ui)
           ui.info("Uploading CA certificate from #{machine.config.registration.ca_cert}...")
           if File.exist?(machine.config.registration.ca_cert)
             cert_file_content = File.read(machine.config.registration.ca_cert)
             cert_file_name = File.basename(machine.config.registration.ca_cert)
+            cert_file_name = "#{cert_file_name}.pem" unless cert_file_name.end_with? '.pem'
             machine.communicate.execute("echo '#{cert_file_content}' > /etc/rhsm/ca/#{cert_file_name}", sudo: true)
           else
             ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
