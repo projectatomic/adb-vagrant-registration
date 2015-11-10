@@ -4,6 +4,7 @@
 
 - Support providing a CA certificate via `config.registration.ca_cert` option
 - Issue warnings on unsupported configuration options
+- Do not ship tests
 
 ## 0.0.19
 
