@@ -34,7 +34,7 @@ module VagrantPlugins
                 config = register_on_screen(machine, env[:ui])
               end
             end
-            guest.capability(:registration_register) unless config.skip
+            guest.capability(:registration_register, env[:ui]) unless config.skip
           end
 
           @logger.debug('Registration is skipped due to the configuration') if config.skip

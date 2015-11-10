@@ -21,10 +21,10 @@ module VagrantPlugins
         end
 
         # Register the given machine
-        def self.registration_register(machine)
+        def self.registration_register(machine, ui)
           cap = "#{self.registration_manager(machine).to_s}_register".to_sym
           if machine.guest.capability?(cap)
-            machine.guest.capability(cap, machine.config.registration)
+            machine.guest.capability(cap, ui)
           else
             false
           end
