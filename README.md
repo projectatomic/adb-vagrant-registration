@@ -25,6 +25,14 @@ The plugin is designed in an registration-manager-agnostic way which means that 
 
 That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager. Feel free to submit others.
 
+To configure the plugin, always include the configuration options mentioned in this file within the following configuration block in your Vagrantfile.
+
+```
+Vagrant.configure('2') do |config|
+...
+end
+```
+
 ### Plugin Configuration
 
 - **skip** skips the registration. If you wish to skip the registration process altogether, you can do so by setting a `skip` option to `true`:
@@ -49,15 +57,19 @@ description).
 Setting up the credentials can be done as follows:
 
 ```ruby
-if Vagrant.has_plugin?('vagrant-registration')
-  config.registration.username = 'foo'
-  config.registration.password = 'bar'
-end
-
-# Alternatively
-if Vagrant.has_plugin?('vagrant-registration')
-  config.registration.org = 'foo'
-  config.registration.activationkey = 'bar'
+Vagrant.configure('2') do |config|
+...
+  if Vagrant.has_plugin?('vagrant-registration')
+    config.registration.username = 'foo'
+    config.registration.password = 'bar'
+  end
+  
+  # Alternatively
+  if Vagrant.has_plugin?('vagrant-registration')
+    config.registration.org = 'foo'
+    config.registration.activationkey = 'bar'
+  end
+...
 end
 ```
 
@@ -70,8 +82,12 @@ you can optionally configure vagrant-registration plugin to use environment
 variables, such as:
 
 ```ruby
+Vagrant.configure('2') do |config|
+...
   config.registration.username = ENV['SUB_USERNAME']
   config.registration.password = ENV['SUB_PASSWORD']
+...
+end
 ```
 
 If you do not provide credentials, you will be prompted for them in the "up process."
