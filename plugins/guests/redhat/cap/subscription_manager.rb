@@ -32,6 +32,8 @@ module VagrantPlugins
             cert_file_name = File.basename(machine.config.registration.ca_cert)
             cert_file_name = "#{cert_file_name}.pem" unless cert_file_name.end_with? '.pem'
             machine.communicate.execute("echo '#{cert_file_content}' > /etc/rhsm/ca/#{cert_file_name}", sudo: true)
+            ui.info('Setting repo_ca_cert option in /etc/rhsm/rhsm.conf...')
+            machine.communicate.execute("sed -i 's|^repo_ca_cert\s*=.*|repo_ca_cert = /etc/rhsm/ca/#{cert_file_name}|g' /etc/rhsm/rhsm.conf", sudo: true)
           else
             ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
           end
