@@ -32,6 +32,7 @@ setup_tests
 
 # Test correct username/password and org/activationkey credentials in a multi-machine setup
 clean_up
+export VAGRANT_REGISTRATION_MANAGER=subscription_manager
 export VAGRANT_VAGRANTFILE=$DIR/vagrantfiles/Vagrantfile.rhel_multi_machine
 
 test_success 'vagrant up on RHEL multi_machine setup' 'vagrant up rhel1-valid-credentials'

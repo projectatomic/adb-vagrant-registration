@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   all_files      = Dir.chdir(root_path) {
     Dir.glob('lib/**/{*,.*}') +
     Dir.glob('plugins/**/{*,.*}') +
+    Dir.glob('resources/**/{*,.*}') +
     ['Rakefile', 'Gemfile', 'README.md', 'CHANGELOG.md', 'LICENSE.md', 'vagrant-registration.gemspec']
   }
   all_files.reject! { |file| ['.', '..'].include?(File.basename(file)) }

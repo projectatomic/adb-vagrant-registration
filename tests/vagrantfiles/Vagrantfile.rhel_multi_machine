@@ -2,16 +2,19 @@
 
 ENV['VAGRANT_DEFAULT_PROVIDER'] ||= 'libvirt'
 ENV['VAGRANT_REGISTRATION_RHEL_BOX'] ||= 'rhel-7.1'
+ENV['VAGRANT_REGISTRATION_MANAGER'] ||= 'subscription_manager'
 
 Vagrant.configure('2') do |config|
   config.vm.box = ENV['VAGRANT_REGISTRATION_RHEL_BOX']
 
   config.vm.define "rhel1-valid-credentials" do |c|
+    c.registration.manager = ENV['VAGRANT_REGISTRATION_MANAGER']
     c.registration.username = ENV['VAGRANT_REGISTRATION_USERNAME']
     c.registration.password = ENV['VAGRANT_REGISTRATION_PASSWORD']
   end
 
   config.vm.define "rhel2-valid-credentials" do |c|
+    c.registration.manager = ENV['VAGRANT_REGISTRATION_MANAGER']
     c.registration.org = ENV['VAGRANT_REGISTRATION_ORG']
     c.registration.activationkey = ENV['VAGRANT_REGISTRATION_ACTIVATIONKEY']
   end

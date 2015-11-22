@@ -47,12 +47,13 @@ end
   config.registration.unregister_on_halt = false
 ```
 
-### subscription-manager Configuration
+- **manager** select the registration manager implementation. By default the plugin will use the implementation for the subscription-manager's register command, you can however change that by setting the option to a different implementation:
 
-vagrant-registration supports all the options of subscription-manager's register command.
-You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'`
-in your Vagrantfile (please see the subscription-manager's documentation for option
-description).
+```ruby
+  config.registration.manager = subscription_manager
+```
+
+### Credentials Configuration
 
 Setting up the credentials can be done as follows:
 
@@ -63,7 +64,7 @@ Vagrant.configure('2') do |config|
     config.registration.username = 'foo'
     config.registration.password = 'bar'
   end
-  
+
   # Alternatively
   if Vagrant.has_plugin?('vagrant-registration')
     config.registration.org = 'foo'
@@ -95,6 +96,25 @@ If you do not provide credentials, you will be prompted for them in the "up proc
 Please note the the interactive mode asks you for the preferred registration pair only.
 In case of a subscription-manager, you would be ask on your username/password combination.
 
+### subscription-manager Configuration
+
+vagrant-registration will use the subscription-manager registration manager implementation by default or can be explicitly configured by setting the `mananager` option to `subscription_manager`:
+
+```ruby
+Vagrant.configure('2') do |config|
+...
+  if Vagrant.has_plugin?('vagrant-registration')
+    config.registration.manager = 'subscription_manager'
+  end
+...
+end
+```
+
+vagrant-registration supports all the options of subscription-manager's register command.
+You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'`
+in your Vagrantfile (please see the subscription-manager's documentation for option
+description).
+
 #### subscription-manager Default Options
 
 - **--force**: Subscription Manager will fail if you attempt to register an already registered machine (see the man page for explanation), therefore vagrant-registration appends the `--force` flag automatically when subscribing. If you would like to disable this feature, set `force` option to `false`:
@@ -102,9 +122,9 @@ In case of a subscription-manager, you would be ask on your username/password co
 ```ruby
   config.registration.force = false
 ```
+
 - **--auto-attach**: Vagrant would fail to install packages on registered RHEL system if the subscription is not attached, therefore vagrant-registration appends the
 `--auto-attach` flag automatically when subscribing. To disable this option, set `auto_attach` option to `false`:
-
 
 ```ruby
   config.registration.auto_attach = false
@@ -168,6 +188,90 @@ Note that the `auto_attach` option is set to false when using org/activationkey 
   config.registration.skip
 ```
 
+### rhn-register Configuration
+
+vagrant-registration will use the rhn-register registration manager implementation only if explicitly configured by setting the `mananager` option to `rhn_register`:
+
+```ruby
+Vagrant.configure('2') do |config|
+...
+  if Vagrant.has_plugin?('vagrant-registration')
+    config.registration.manager = 'rhn_register'
+  end
+...
+end
+```
+
+vagrant-registration supports all the options of rhnreg_ks's command.
+You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'`
+in your Vagrantfile (please see the rhnreg_ks's documentation for option description).
+To reduce the number of accepted options for configuring the plugin,
+the options for `rhn-register` manager will reuse the naming of `subscription-manager`'s command
+options where possible.
+
+#### rhn-register Default Options
+
+- **--force**: rhnreg_ks command will fail if you attempt to register an already registered machine (see the man page for explanation), therefore vagrant-registration appends the `--force` flag automatically when subscribing. If you would like to disable this feature, set `force` option to `false`:
+
+```ruby
+  config.registration.force = false
+```
+
+#### rhn-register Options Reference
+
+```ruby
+  # The username to register the system with under Spacewalk Server, Red Hat Satellite or
+  # Red Hat Network Classic. This can be an existing Spacewalk, Red Hat Satellite or
+  # Red Hat Network Classic username, or a new  user‐name.
+  config.registration.username
+
+  # The password associated with the username specified with the `--username` option.
+  # This is an unencrypted password.
+  config.registration.password
+
+  # Give the URL of the subscription service to use (required for  registering a
+  # system with the "Spacewalk Server", "Red Hat Satellite" or "Red Hat Network Classic").
+  # The configuration name is mapped to the `--serverUrl` option of rhnreg_ks command.
+  config.registration.serverurl
+
+  # A path to a CA certificate, this file would be copied to /usr/share/rhn/
+  # The configuration name is mapped to the `--sslCACert` option of rhnreg_ks command.
+  config.registration.ca_cert
+
+  # Give the organization to which to join the system (required, except for
+  # hosted environments)
+  # The configuration name is mapped to the `--systemorgid` option of rhnreg_ks command.
+  config.registration.org
+
+  # Name of the subscribed system (optional, defaults to hostname if unset)
+  # The configuration name is mapped to the `--profilename` option of rhnreg_ks command.
+  config.registration.name
+
+  # Attach existing subscriptions as part of the registration process (optional)
+  config.registration.activationkey
+
+  # Subscribe this system to the EUS channel tied to the system's redhat-release (optional)
+  config.registration.use_eus_channel
+
+  # Do not probe or upload any hardware info (optional)
+  config.registration.nohardware
+
+  #  Do not profile or upload any package info (optional)
+  config.registration.nopackages
+
+  # Do not upload any virtualization info (optional)
+  config.registration.novirtinfo
+
+  # Do not start rhnsd after completion (optional)
+  config.registration.norhnsd
+
+  # Force the registration (optional, force if true, defaults to true)
+  config.registration.force
+
+  # Skip the registration (optional, skip if true, defaults to false)
+  config.registration.skip
+```
+
 ## Tests
 
 Tests currently test the plugin with `subscription-manager` on RHEL 7.1 guest
@@ -176,6 +280,7 @@ and Fedora host. You need an imported RHEL 7.1 Vagrant box named `rhel-7.1`.
 To run them:
 
 ```
+export VAGRANT_REGISTRATION_MANAGER=
 export VAGRANT_REGISTRATION_USERNAME=
 export VAGRANT_REGISTRATION_PASSWORD=
 export VAGRANT_REGISTRATION_ORG=
