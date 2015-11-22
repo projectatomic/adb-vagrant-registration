@@ -229,7 +229,7 @@ options where possible.
   # This is an unencrypted password.
   config.registration.password
 
-  # Give the URL of the subscription service to use (required for  registering a
+  # Give the URL of the subscription service to use (required for registering a
   # system with the "Spacewalk Server", "Red Hat Satellite" or "Red Hat Network Classic").
   # The configuration name is mapped to the `--serverUrl` option of rhnreg_ks command.
   config.registration.serverurl
@@ -285,6 +285,8 @@ export VAGRANT_REGISTRATION_USERNAME=
 export VAGRANT_REGISTRATION_PASSWORD=
 export VAGRANT_REGISTRATION_ORG=
 export VAGRANT_REGISTRATION_ACTIVATIONKEY=
+export VAGRANT_REGISTRATION_SERVERURL=
+export VAGRANT_REGISTRATION_CA_CERT=
 ./tests/run.sh
 ```
 
