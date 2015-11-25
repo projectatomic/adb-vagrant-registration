@@ -25,23 +25,18 @@ module VagrantPlugins
 
         # Unregister the machine using 'rhn_unregister.py' resource script
         def self.rhn_register_unregister(machine)
-          tmp = '/tmp/rhn_unregister'
-          username = machine.config.registration.username
-          password = machine.config.registration.password
-
           machine.communicate.tap do |comm|
-            # No api call can be made without username/password
-            if username && password
-              serverurl = machine.config.registration.serverurl
-              # Generate the api url
-              serverurl = serverurl.sub(/XMLRPC$/, 'rpc/api')
-              comm.sudo("rm -f #{tmp}", error_check: false)
-              comm.upload(resource('rhn_unregister.py'), tmp)
-              comm.sudo("python #{tmp} -u #{username} -p #{password} -s #{serverurl}")
-              comm.sudo("rm -f #{tmp}")
-            end
+            tmp = '/tmp/rhn_unregister'
+            system_id = '/etc/sysconfig/rhn/systemid'
+            server_url = machine.config.registration.serverurl
+            # Generate the api url
+            server_url = server_url.sub(/XMLRPC$/, 'rpc/api')
+            comm.sudo("rm -f #{tmp}", error_check: false)
+            comm.upload(resource('rhn_unregister.py'), tmp)
+            comm.sudo("python #{tmp} -s #{server_url} -f #{system_id}")
+            comm.sudo("rm -f #{tmp}")
             # guest still "thinks" it is a part of RHN network until systemdid file is removed
-            comm.sudo('rm -f /etc/sysconfig/rhn/systemid')
+            comm.sudo("rm -f #{system_id}")
           end
         end
 
