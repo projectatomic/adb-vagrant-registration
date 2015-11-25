@@ -47,10 +47,10 @@ end
   config.registration.unregister_on_halt = false
 ```
 
-- **manager** select the registration manager implementation. By default the plugin will use the implementation for the subscription-manager's register command, you can however change that by setting the option to a different implementation:
+- **manager** select the registration manager provider. By default the plugin will use the `subscription_manager` manager, you can however change that by setting the option to a different manager:
 
 ```ruby
-  config.registration.manager = subscription_manager
+  config.registration.manager = 'subscription_manager'
 ```
 
 ### Credentials Configuration
@@ -98,7 +98,7 @@ In case of a subscription-manager, you would be ask on your username/password co
 
 ### subscription-manager Configuration
 
-vagrant-registration will use the subscription-manager registration manager implementation by default or can be explicitly configured by setting the `mananager` option to `subscription_manager`:
+vagrant-registration will use the `subscription_manager` manager by default or can be explicitly configured by setting the `mananager` option to `subscription_manager`:
 
 ```ruby
 Vagrant.configure('2') do |config|
@@ -190,7 +190,7 @@ Note that the `auto_attach` option is set to false when using org/activationkey 
 
 ### rhn-register Configuration
 
-vagrant-registration will use the rhn-register registration manager implementation only if explicitly configured by setting the `mananager` option to `rhn_register`:
+vagrant-registration will use the `rhn_register` manager only if explicitly configured by setting the `mananager` option to `rhn_register`:
 
 ```ruby
 Vagrant.configure('2') do |config|
@@ -206,7 +206,7 @@ vagrant-registration supports all the options of rhnreg_ks's command.
 You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'`
 in your Vagrantfile (please see the rhnreg_ks's documentation for option description).
 To reduce the number of accepted options for configuring the plugin,
-the options for `rhn-register` manager will reuse the naming of `subscription-manager`'s command
+the options for `rhn_register` manager will reuse the naming of `subscription-manager`'s command
 options where possible.
 
 #### rhn-register Default Options

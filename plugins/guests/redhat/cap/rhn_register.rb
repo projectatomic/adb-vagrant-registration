@@ -41,12 +41,12 @@ module VagrantPlugins
         end
 
         # Return required configuration options for rhn register
-        def self.rhn_register_credentials(_)
+        def self.rhn_register_credentials(machine)
           [[:username, :password], [:org, :activationkey]]
         end
 
         # Return all available options for rhn register
-        def self.rhn_register_options(_)
+        def self.rhn_register_options(machine)
           [:name, :username, :password, :org, :serverurl,
            :ca_cert, :activationkey, :use_eus_channel,
            :nohardware, :nopackages, :novirtinfo, :norhnsd,
@@ -54,7 +54,7 @@ module VagrantPlugins
         end
 
         # Return secret options for rhreg_ks
-        def self.rhn_register_secrets(_)
+        def self.rhn_register_secrets(manager)
           [:password]
         end
 
