@@ -1,8 +1,10 @@
 # Changelog
 
+- Print warning if specifically selected manager is not available
+
 ## 1.0.1
 
-- Fix: Set repo_ca_cert option in /etc/rhsm/rhsm.conf after uploading a certificate 
+- Fix: Set repo_ca_cert option in /etc/rhsm/rhsm.conf after uploading a certificate
 
 ## 1.0.0
 
