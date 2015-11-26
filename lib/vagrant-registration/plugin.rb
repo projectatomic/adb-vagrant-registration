@@ -16,7 +16,7 @@ module VagrantPlugins
       class << self
         def register(hook)
           setup_logging
-          hook.after(::Vagrant::Action::Builtin::SyncedFolders,
+          hook.after(::Vagrant::Action::Builtin::WaitForCommunicator,
                      VagrantPlugins::Registration::Action.action_register)
         end
 
