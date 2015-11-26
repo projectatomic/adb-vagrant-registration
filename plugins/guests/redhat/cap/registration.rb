@@ -2,7 +2,7 @@ module VagrantPlugins
   module GuestRedHat
     module Cap
       # Common configuration options for all managers
-      DEFAULT_CONFIGURATION_OPTIONS = [:skip, :unregister_on_halt]
+      DEFAULT_CONFIGURATION_OPTIONS = [:manager, :skip, :unregister_on_halt]
 
       # This provides registration capabilities for vagrant-registration
       #
@@ -41,13 +41,14 @@ module VagrantPlugins
         end
 
         # Check that the machine has the selected registration manager installed
-        def self.registration_manager_installed(machine)
+        # and warn if the user specifically selected a manager that is not available
+        def self.registration_manager_installed(machine, ui)
           cap = "#{self.registration_manager(machine).to_s}".to_sym
-          if machine.guest.capability?(cap)
-            machine.guest.capability(cap)
-          else
-            false
+          return machine.guest.capability(cap) if machine.guest.capability?(cap)
+          if machine.config.registration.manager != ''
+            ui.error("WARNING: Selected registration manager #{machine.config.registration.manager} is not available, skipping.")
           end
+          false
         end
 
         # Required configuration options of the registration manager

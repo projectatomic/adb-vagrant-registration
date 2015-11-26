@@ -18,7 +18,7 @@ module VagrantPlugins
           machine = env[:machine]
           guest = env[:machine].guest
 
-          if should_register?(machine)
+          if should_register?(machine, env[:ui])
             env[:ui].info('Registering box with vagrant-registration...')
             check_configuration_options(machine, env[:ui])
 
@@ -43,10 +43,10 @@ module VagrantPlugins
         private
 
         # Shall we register the box?
-        def should_register?(machine)
+        def should_register?(machine, ui)
           !machine.config.registration.skip &&
           capabilities_provided?(machine.guest) &&
-          manager_installed?(machine.guest) &&
+          manager_installed?(machine.guest, ui) &&
           !machine.guest.capability(:registration_registered?)
         end
 
@@ -88,8 +88,8 @@ module VagrantPlugins
         end
 
         # Check if selected registration manager is installed
-        def manager_installed?(guest)
-          if guest.capability(:registration_manager_installed)
+        def manager_installed?(guest, ui)
+          if guest.capability(:registration_manager_installed, ui)
             true
           else
             @logger.debug('Registration manager not found on guest')
