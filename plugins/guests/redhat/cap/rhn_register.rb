@@ -17,7 +17,7 @@ module VagrantPlugins
 
         # Register the machine using 'rhnreg_ks' command, config is (Open)Struct
         def self.rhn_register_register(machine, ui)
-          rhn_register_upload_certificate(machine, ui) if machine.config.registration.ca_cert
+          rhn_register_upload_certificate(machine, ui)
           rhn_register_server_url(machine, ui) if machine.config.registration.serverurl
           command = "rhnreg_ks #{configuration_to_options(machine.config.registration)}"
           machine.communicate.execute("cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi", sudo: true)
@@ -41,8 +41,11 @@ module VagrantPlugins
         end
 
         # Return required configuration options for rhn register
+        #
+        # For rhn_register the Server URL is mandatory and must be always
+        # provided together with the credentials
         def self.rhn_register_credentials(machine)
-          [[:username, :password], [:org, :activationkey]]
+          [[:username, :password, :serverurl], [:org, :activationkey, :serverurl]]
         end
 
         # Return all available options for rhn register
@@ -61,16 +64,26 @@ module VagrantPlugins
         private
 
         # Upload provided SSL CA cert to the standard /usr/share/rhn/ path on the guest
+        # and configure the correct path in `up2date` system configuration
         def self.rhn_register_upload_certificate(machine, ui)
-          ui.info("Uploading CA certificate from #{machine.config.registration.ca_cert}...")
-          if File.exist?(machine.config.registration.ca_cert)
-            cert_file_content = File.read(machine.config.registration.ca_cert)
-            cert_file_name = File.basename(machine.config.registration.ca_cert)
-            machine.communicate.execute("echo '#{cert_file_content}' > /usr/share/rhn/#{cert_file_name}", sudo: true)
-            machine.communicate.execute("sed -i 's|^sslCACert=.*$|sslCACert=/usr/share/rhn/#{cert_file_name}|' /etc/sysconfig/rhn/up2date", sudo: true)
-          else
-            ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
+          # set as default the CA certificate file that is present on Fedora, CentOS and RHEL
+          cert_file_name = 'RHNS-CA-CERT'
+          # handle CA certificate upload only if `ca_cert` configuration is set
+          if machine.config.registration.ca_cert
+            if File.exist?(machine.config.registration.ca_cert)
+              ui.info("Uploading CA certificate from #{machine.config.registration.ca_cert}...")
+              # make sure the provided CA certificate file will be configured
+              cert_file_name = File.basename(machine.config.registration.ca_cert)
+              # upload the provided CA certificate in guest
+              cert_file_content = File.read(machine.config.registration.ca_cert, tmp)
+              machine.communicate.execute("echo '#{cert_file_content}' > /usr/share/rhn/#{cert_file_name}", sudo: true)
+            else
+              ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
+            end
           end
+          # make sure the correct CA certificate file is always configured
+          ui.info("Update CA certificate to /usr/share/rhn/#{cert_file_name}`...")
+          machine.communicate.execute("sed -i 's|^sslCACert\s*=.*$|sslCACert=/usr/share/rhn/#{cert_file_name}|g' /etc/sysconfig/rhn/up2date", sudo: true)
         end
 
         # Update configuration file '/etc/sysconfig/rhn/up2date' with

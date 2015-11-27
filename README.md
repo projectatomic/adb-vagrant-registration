@@ -93,8 +93,8 @@ end
 
 If you do not provide credentials, you will be prompted for them in the "up process."
 
-Please note the the interactive mode asks you for the preferred registration pair only.
-In case of a subscription-manager, you would be ask on your username/password combination.
+Please note the the interactive mode asks you for the preferred registration pair only
+of the configured manager.
 
 ### subscription-manager Configuration
 
@@ -109,6 +109,9 @@ Vagrant.configure('2') do |config|
 ...
 end
 ```
+
+In case of `subscription_manager` manager for the preferred registration pair,
+you would be ask on your username/password combination.
 
 vagrant-registration supports all the options of subscription-manager's register command.
 You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'`
@@ -202,6 +205,9 @@ Vagrant.configure('2') do |config|
 end
 ```
 
+In case of a `rhn_register` manager for the preferred registration pair,
+you would be ask on your username/password/serverurl combination.
+
 vagrant-registration supports all the options of rhnreg_ks's command.
 You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'`
 in your Vagrantfile (please see the rhnreg_ks's documentation for option description).
@@ -232,10 +238,21 @@ options where possible.
   # Give the URL of the subscription service to use (required for registering a
   # system with the "Spacewalk Server", "Red Hat Satellite" or "Red Hat Network Classic").
   # The configuration name is mapped to the `--serverUrl` option of rhnreg_ks command.
+  #
+  # The serverurl is mandatory and if you do not provide a value,
+  # you will be prompted for them in the "up process."
   config.registration.serverurl
 
-  # A path to a CA certificate, this file would be copied to /usr/share/rhn/
+  # A path to a CA certificate file (optional)
   # The configuration name is mapped to the `--sslCACert` option of rhnreg_ks command.
+  #
+  # The CA certificate file is be uploaded to /usr/share/rhn/<ca_file_name> in guest
+  # and the configuration  in `/etc/sysconfig/rhn/up2date` is updated to:
+  # `sslCACert=/usr/share/rhn/<ca_file_name>`
+  #
+  # As default only the configuration in `/etc/sysconfig/rhn/up2date` is updated
+  # to point to the CA certificate file that is present on Fedora, CentOS and RHEL:
+  # `sslCACert=/usr/share/rhn/RHNS-CA-CERT`
   config.registration.ca_cert
 
   # Give the organization to which to join the system (required, except for
