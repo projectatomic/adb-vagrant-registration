@@ -16,8 +16,14 @@ module VagrantPlugins
       class << self
         def register(hook)
           setup_logging
-          hook.after(::Vagrant::Action::Builtin::WaitForCommunicator,
-                     VagrantPlugins::Registration::Action.action_register)
+
+          if vbguest_plugin?
+            hook.before(VagrantVbguest::Middleware,
+                                 VagrantPlugins::Registration::Action.action_register)
+          else
+            hook.after(::Vagrant::Action::Builtin::SyncedFolders,
+                               VagrantPlugins::Registration::Action.action_register)
+          end
         end
 
         def unregister_on_halt(hook)
@@ -73,6 +79,13 @@ module VagrantPlugins
           logger.level = level
           logger = nil
         end
+      end
+
+      def self.vbguest_plugin?
+        @@vbguest_plugin ||= (
+          defined?(VagrantPlugins::ProviderVirtualBox::Provider) &&
+          defined?(VagrantVbguest::Middleware)
+        )
       end
     end
   end

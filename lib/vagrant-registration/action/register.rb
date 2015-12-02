@@ -11,6 +11,8 @@ module VagrantPlugins
         end
 
         def call(env)
+          @app.call(env) unless Plugin.vbguest_plugin?
+
           # Configuration from Vagrantfile
           config = env[:machine].config.registration
           machine = env[:machine]
@@ -36,7 +38,8 @@ module VagrantPlugins
           end
 
           @logger.debug('Registration is skipped due to the configuration') if config.skip
-          @app.call(env)
+
+          @app.call(env) if Plugin.vbguest_plugin?
         end
 
         private
