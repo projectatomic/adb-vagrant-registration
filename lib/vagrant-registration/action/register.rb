@@ -11,6 +11,9 @@ module VagrantPlugins
         end
 
         def call(env)
+          # Vbguest plugin (if present) is called next. Therefore registration
+          # needs to be done first. This does not work with the default
+          # 'action_register' hook.
           @app.call(env) unless Plugin.vbguest_plugin?
 
           # Configuration from Vagrantfile
