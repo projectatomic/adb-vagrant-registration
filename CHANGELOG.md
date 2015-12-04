@@ -1,6 +1,7 @@
 # Changelog
 
 - Print warning if specifically selected manager is not available
+- Support running alongside vagrant-vbguest
 
 ## 1.0.1
 

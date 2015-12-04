@@ -1,5 +1,7 @@
 *.gem
 *.rbc
+*~
+*.swp
 /.config
 /coverage/
 /InstalledFiles
@@ -9,6 +11,7 @@
 /test/version_tmp/
 /tmp/
 .idea/
+
 ## Specific to RubyMotion:
 .dat*
 .repl_history

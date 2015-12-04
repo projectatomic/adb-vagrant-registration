@@ -14,10 +14,22 @@ module VagrantPlugins
   module Registration
     class Plugin < Vagrant.plugin('2')
       class << self
+
+        # Vbguest plugin updates GuestAdditions for VirtualBox before
+        # '::Vagrant::Action::Builtin::SyncedFolders' and therefore needs
+        # to be registered. Prepending Vbguest hook ensures that, but this
+        # is done only with Vbguest plugin and VirtualBox provider. In other
+        # cases the behavior is unchanged.
         def register(hook)
           setup_logging
-          hook.after(::Vagrant::Action::Builtin::SyncedFolders,
-                     VagrantPlugins::Registration::Action.action_register)
+
+          if vbguest_plugin?
+            hook.before(::VagrantVbguest::Middleware,
+                                 VagrantPlugins::Registration::Action.action_register)
+          else
+            hook.after(::Vagrant::Action::Builtin::SyncedFolders,
+                               VagrantPlugins::Registration::Action.action_register)
+          end
         end
 
         def unregister_on_halt(hook)
@@ -73,6 +85,14 @@ module VagrantPlugins
           logger.level = level
           logger = nil
         end
+      end
+
+      # Determines if both VirtualBox provider and Vbguest plugin are present.
+      def self.vbguest_plugin?
+        @@vbguest_plugin ||= (
+          defined?(VagrantPlugins::ProviderVirtualBox::Provider) &&
+          defined?(VagrantVbguest::Middleware)
+        )
       end
     end
   end
