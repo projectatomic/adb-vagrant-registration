@@ -30,6 +30,12 @@ DIR=$(dirname $(readlink -f "$0"))
 
 setup_tests
 
+# Check that we have the server URL to run the test suite
+if [ "$VAGRANT_REGISTRATION_SERVERURL" = "" ]; then
+  echo "VAGRANT_REGISTRATION_SERVERURL needs to be provided."
+  exit 1
+fi
+
 # Test correct username/password and org/activationkey credentials in a multi-machine setup
 clean_up
 export VAGRANT_REGISTRATION_MANAGER=rhn_register
