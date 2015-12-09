@@ -47,7 +47,7 @@ end
   config.registration.unregister_on_halt = false
 ```
 
-- **manager** select the registration manager provider. By default the plugin will use the `subscription_manager` manager, you can however change that by setting the option to a different manager:
+- **manager** selects the registration manager provider. By default the plugin will use the `subscription_manager` manager, you can however change that by setting the option to a different manager:
 
 ```ruby
   config.registration.manager = 'subscription_manager'
