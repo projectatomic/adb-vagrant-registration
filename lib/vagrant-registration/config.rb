@@ -34,9 +34,11 @@ module VagrantPlugins
         @conf = OpenStruct.new if @conf == UNSET_VALUE
       end
 
+      # Serialize strings, nil and boolean values, symbols, arrays and hashes
+      # to be used within eval()
       def adjust_arguments(args)
         return '' if args.size < 1
-        args.map { |a| a.is_a?(String) ? "'#{a}'" : a }.join(',')
+        args.inspect[1..-2]
       end
     end
   end

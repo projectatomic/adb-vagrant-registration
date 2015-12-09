@@ -3,6 +3,7 @@
 - Print warning if specifically selected manager is not available
 - Support running alongside vagrant-vbguest
 - Support rhn_register manager
+- Fix: Handle various types of configuration option values, issue #48
 
 ## 1.0.1
 
