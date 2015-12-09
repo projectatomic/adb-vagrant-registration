@@ -98,7 +98,7 @@ of the configured manager.
 
 ### subscription-manager Configuration
 
-vagrant-registration will use the `subscription_manager` manager by default or can be explicitly configured by setting the `mananager` option to `subscription_manager`:
+vagrant-registration will use the `subscription_manager` manager by default or can be explicitly configured by setting the `manager` option to `subscription_manager`:
 
 ```ruby
 Vagrant.configure('2') do |config|
@@ -193,7 +193,7 @@ Note that the `auto_attach` option is set to false when using org/activationkey 
 
 ### rhn-register Configuration
 
-vagrant-registration will use the `rhn_register` manager only if explicitly configured by setting the `mananager` option to `rhn_register`:
+vagrant-registration will use the `rhn_register` manager only if explicitly configured by setting the `manager` option to `rhn_register`:
 
 ```ruby
 Vagrant.configure('2') do |config|
