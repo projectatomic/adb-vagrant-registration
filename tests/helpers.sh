@@ -1,3 +1,12 @@
+
+LOG_STDOUT="1>/dev/null"
+LOG_STDERR="2>/dev/null"
+
+if [ ${DEBUG:-0} -eq 1 ] ; then
+  LOG_STDOUT=""
+  LOG_STDERR=""
+fi
+
 # Set up test environment
 function setup_tests() {
   check_credentials
@@ -68,7 +77,7 @@ function install_dependencies() {
 #
 #   test_success "ls won't fail" "ls -all"
 function test_success() {
-  eval $2 >&1 >/dev/null
+  eval $2 $LOG_STDOUT $LOG_STDERR
   if [ $? -ne 0 ]; then
     printf "F"
     FAILED=$((FAILED + 1))
@@ -91,7 +100,7 @@ function test_success() {
 #
 #   test_failure "this should fail" "echoo"
 function test_failure() {
-  eval $2 >&1 >/dev/null
+  eval $2 $LOG_STDOUT $LOG_STDERR
   if [ $? -ne 0 ]; then
     SUCCEDED=$((SUCCEDED + 1))
     printf '.'

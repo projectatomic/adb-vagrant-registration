@@ -15,9 +15,9 @@
 # NOTE: This will install a development version of
 # vagrant-registration on your system.
 #
-# == subscription-manager
+# == rhn-register
 #
-# For testing subscription-manager on RHEL export
+# For testing RHN Classic on RHEL export
 # VAGRANT_REGISTRATION_USERNAME with VAGRANT_REGISTRATION_PASSWORD
 # for username/password registration and VAGRANT_REGISTRATION_ORG
 # with VAGRANT_REGISTRATION_ACTIVATIONKEY for org/activationkey one.
@@ -30,24 +30,28 @@ DIR=$(dirname $(readlink -f "$0"))
 
 setup_tests
 
+# Check that we have the server URL to run the test suite
+if [ "$VAGRANT_REGISTRATION_SERVERURL" = "" ]; then
+  echo "VAGRANT_REGISTRATION_SERVERURL needs to be provided."
+  exit 1
+fi
+
 # Test correct username/password and org/activationkey credentials in a multi-machine setup
 clean_up
-export VAGRANT_REGISTRATION_MANAGER=subscription_manager
+export VAGRANT_REGISTRATION_MANAGER=rhn_register
 export VAGRANT_VAGRANTFILE=$DIR/vagrantfiles/Vagrantfile.rhel_multi_machine
 
 test_success 'vagrant up on RHEL multi_machine setup' 'vagrant up rhel1-valid-credentials'
 
-test_output 'first machine is registered with given username/password' \
-            'vagrant ssh rhel1-valid-credentials -c '\''sudo subscription-manager register'\''' \
-            'This system is already registered.'
+test_success 'first machine is registered with given username/password' \
+            'vagrant ssh rhel1-valid-credentials -c '\''sudo rhn_check'\'''
 
 test_success 'vagrant halt on RHEL multi_machine setup' 'vagrant halt rhel1-valid-credentials'
 test_success 'vagrant halt on RHEL multi_machine setup' 'vagrant destroy'
 test_success 'vagrant up on RHEL multi_machine setup' 'vagrant up rhel2-valid-credentials'
 
-test_output 'second machine is registered with given org/activationkey' \
-            'vagrant ssh rhel2-valid-credentials -c '\''sudo subscription-manager register'\''' \
-            'This system is already registered.'
+test_success 'second machine is registered with given org/activationkey' \
+            'vagrant ssh rhel2-valid-credentials -c '\''sudo rhn_check'\'''
 
 test_success 'vagrant halt on RHEL multi_machine setup' 'vagrant destroy'
 
