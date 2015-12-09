@@ -23,7 +23,7 @@ If you are on Fedora, you can install the packaged version of the plugin by runn
 
 The plugin is designed in an registration-manager-agnostic way which means that plugin itself does not depend on any OS nor way of registration. vagrant-registration only calls registration capabilities for given guest, passes the configuration options to them and handles interactive registration.
 
-That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager. Feel free to submit others.
+That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager and `rhn_register`. Feel free to submit others.
 
 To configure the plugin, always include the configuration options mentioned in this file within the following configuration block in your Vagrantfile.
 
@@ -205,19 +205,12 @@ Vagrant.configure('2') do |config|
 end
 ```
 
-In case of a `rhn_register` manager for the preferred registration pair,
-you would be ask on your username/password/serverurl combination.
-
-vagrant-registration supports all the options of rhnreg_ks's command.
-You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'`
-in your Vagrantfile (please see the rhnreg_ks's documentation for option description).
-To reduce the number of accepted options for configuring the plugin,
-the options for `rhn_register` manager will reuse the naming of `subscription-manager`'s command
-options where possible.
+In case of a `rhn_register` manager for the preferred registration pair, you would be ask on your username/password/serverurl combination. vagrant-registration supports all the options of rhnreg_ks's command. You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'` in your Vagrantfile (please see the `rhnreg_ks`'s documentation for option description).
+To reduce the number of accepted options for configuring the plugin, the options for `rhn_register` manager will reuse the naming of `subscription-manager`'s command options where possible.
 
 #### rhn-register Default Options
 
-- **--force**: rhnreg_ks command will fail if you attempt to register an already registered machine (see the man page for explanation), therefore vagrant-registration appends the `--force` flag automatically when subscribing. If you would like to disable this feature, set `force` option to `false`:
+- **--force**: `rhnreg_ks` command will fail if you attempt to register an already registered machine (see the man page for explanation), therefore vagrant-registration appends the `--force` flag automatically when subscribing. If you would like to disable this feature, set `force` option to `false`:
 
 ```ruby
   config.registration.force = false
@@ -291,8 +284,7 @@ options where possible.
 
 ## Tests
 
-Tests currently test the plugin with `subscription-manager` on RHEL 7.1 guest
-and Fedora host. You need an imported RHEL 7.1 Vagrant box named `rhel-7.1`.
+Tests currently test the plugin with `subscription-manager` and  `rhn_register` on RHEL 7.1 guest and Fedora host. You need an imported RHEL 7.1 Vagrant box named `rhel-7.1`.
 
 To run them:
 
@@ -305,9 +297,10 @@ export VAGRANT_REGISTRATION_ACTIVATIONKEY=
 export VAGRANT_REGISTRATION_SERVERURL=
 export VAGRANT_REGISTRATION_CA_CERT=
 ./tests/run.sh
+./tests/run_rhn_register.sh
 ```
 
-To show the vagrant output on the console during the tests run, set the `DEBUG`
+To show the Vagrant output on the console during the tests run, set the `DEBUG`
 environment variable on `1` before executing the test script:
 
 ```
