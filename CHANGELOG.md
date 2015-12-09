@@ -4,6 +4,7 @@
 - Support running alongside vagrant-vbguest
 - Support rhn_register manager
 - Fix: Handle various types of configuration option values, issue #48
+- Fix: Hide password on registration failure, issue #47
 
 ## 1.0.1
 
