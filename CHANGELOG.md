@@ -2,7 +2,7 @@
 
 - Print warning if specifically selected manager is not available
 - Support running alongside vagrant-vbguest
-- Added rhn_register manager
+- Support rhn_register manager
 
 ## 1.0.1
 
