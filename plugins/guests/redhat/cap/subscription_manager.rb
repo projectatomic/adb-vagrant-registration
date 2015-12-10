@@ -22,9 +22,8 @@ module VagrantPlugins
           # Handle exception to avoid displaying password
           begin
             error = String.new
-            machine.communicate.sudo("cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then " \
-              + "echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi") do |type, data|
-                error += "#{data}\n" if type == :stderr
+            machine.communicate.sudo(registration_command(command)) do |type, data|
+              error += "#{data}\n" if type == :stderr
             end
           rescue Vagrant::Errors::VagrantError
             raise Vagrant::Errors::VagrantError.new, error.squeeze("\n")
@@ -74,6 +73,11 @@ module VagrantPlugins
           else
             ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
           end
+        end
+
+        # Build registration command that skips registration if the system is registered
+        def self.registration_command(command)
+          "cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi"
         end
 
         # Build additional subscription-manager options based on plugin configuration

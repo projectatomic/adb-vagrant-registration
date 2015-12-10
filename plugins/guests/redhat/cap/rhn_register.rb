@@ -24,9 +24,8 @@ module VagrantPlugins
           # Handle exception to avoid displaying password
           begin
             error = String.new
-            machine.communicate.sudo("cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then " \
-              + "echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi") do |type, data|
-                error += "#{data}\n" if type == :stderr
+            machine.communicate.sudo(registration_command(command)) do |type, data|
+              error += "#{data}\n" if type == :stderr
             end
           rescue Vagrant::Errors::VagrantError
             raise Vagrant::Errors::VagrantError.new, error.squeeze("\n")
@@ -91,6 +90,11 @@ module VagrantPlugins
           # Make sure the correct CA certificate file is always configured
           ui.info("Updating CA certificate to /usr/share/rhn/#{cert_file_name}`...")
           machine.communicate.execute("sed -i 's|^sslCACert\s*=.*$|sslCACert=/usr/share/rhn/#{cert_file_name}|g' /etc/sysconfig/rhn/up2date", sudo: true)
+        end
+
+        # Build registration command that skips registration if the system is registered
+        def self.registration_command(command)
+          "cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi"
         end
 
         # Update configuration file '/etc/sysconfig/rhn/up2date' with
