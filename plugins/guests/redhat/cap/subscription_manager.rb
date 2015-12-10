@@ -26,7 +26,7 @@ module VagrantPlugins
               error += "#{data}\n" if type == :stderr
             end
           rescue Vagrant::Errors::VagrantError
-            raise Vagrant::Errors::VagrantError.new, error.squeeze("\n")
+            raise Vagrant::Errors::VagrantError.new, error.strip
           end
         end
 
