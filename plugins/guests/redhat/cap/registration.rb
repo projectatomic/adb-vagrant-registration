@@ -12,7 +12,7 @@ module VagrantPlugins
       class Registration
         # Is the machine already registered?
         def self.registration_registered?(machine)
-          cap = "#{self.registration_manager(machine).to_s}_registered?".to_sym
+          cap = "#{registration_manager(machine).to_s}_registered?".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap)
           else
@@ -22,7 +22,7 @@ module VagrantPlugins
 
         # Register the given machine
         def self.registration_register(machine, ui)
-          cap = "#{self.registration_manager(machine).to_s}_register".to_sym
+          cap = "#{registration_manager(machine).to_s}_register".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap, ui)
           else
@@ -32,7 +32,7 @@ module VagrantPlugins
 
         # Unregister the given machine
         def self.registration_unregister(machine)
-          cap = "#{self.registration_manager(machine).to_s}_unregister".to_sym
+          cap = "#{registration_manager(machine).to_s}_unregister".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap)
           else
@@ -43,7 +43,7 @@ module VagrantPlugins
         # Check that the machine has the selected registration manager installed
         # and warn if the user specifically selected a manager that is not available
         def self.registration_manager_installed(machine, ui)
-          cap = "#{self.registration_manager(machine).to_s}".to_sym
+          cap = "#{registration_manager(machine).to_s}".to_sym
           return machine.guest.capability(cap) if machine.guest.capability?(cap)
           if machine.config.registration.manager != ''
             ui.error("WARNING: Selected registration manager #{machine.config.registration.manager} is not available, skipping.")
@@ -58,7 +58,7 @@ module VagrantPlugins
         #
         # e.g. [[:username, :password]]
         def self.registration_credentials(machine)
-          cap = "#{self.registration_manager(machine).to_s}_credentials".to_sym
+          cap = "#{registration_manager(machine).to_s}_credentials".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap)
           else
@@ -69,7 +69,7 @@ module VagrantPlugins
         # Return all available options for a given registration manager together
         # with general options available to any.
         def self.registration_options(machine)
-          cap = "#{self.registration_manager(machine).to_s}_options".to_sym
+          cap = "#{registration_manager(machine).to_s}_options".to_sym
           if machine.guest.capability?(cap)
             DEFAULT_CONFIGURATION_OPTIONS + machine.guest.capability(cap)
           else
@@ -79,7 +79,7 @@ module VagrantPlugins
 
         # Return secret options for the registration manager
         def self.registration_secrets(machine)
-          cap = "#{self.registration_manager(machine).to_s}_secrets".to_sym
+          cap = "#{registration_manager(machine).to_s}_secrets".to_sym
           if machine.guest.capability?(cap)
             machine.guest.capability(cap)
           else
