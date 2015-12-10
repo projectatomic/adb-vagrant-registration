@@ -44,14 +44,14 @@ export VAGRANT_VAGRANTFILE=$DIR/vagrantfiles/Vagrantfile.rhel_multi_machine
 test_success 'vagrant up on RHEL multi_machine setup' 'vagrant up rhel1-valid-credentials'
 
 test_success 'first machine is registered with given username/password' \
-            'vagrant ssh rhel1-valid-credentials -c '\''sudo rhn_check'\'''
+             'vagrant ssh rhel1-valid-credentials -c '\''sudo rhn_check'\'''
 
 test_success 'vagrant halt on RHEL multi_machine setup' 'vagrant halt rhel1-valid-credentials'
 test_success 'vagrant halt on RHEL multi_machine setup' 'vagrant destroy'
 test_success 'vagrant up on RHEL multi_machine setup' 'vagrant up rhel2-valid-credentials'
 
 test_success 'second machine is registered with given org/activationkey' \
-            'vagrant ssh rhel2-valid-credentials -c '\''sudo rhn_check'\'''
+             'vagrant ssh rhel2-valid-credentials -c '\''sudo rhn_check'\'''
 
 test_success 'vagrant halt on RHEL multi_machine setup' 'vagrant destroy'
 
