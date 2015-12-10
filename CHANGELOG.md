@@ -1,7 +1,9 @@
 # Changelog
 
+## 1.1.0
+
 - Print warning if specifically selected manager is not available
-- Support running alongside vagrant-vbguest
+- Support running alongside vagrant-vbguest, issue #40
 - Support rhn_register manager
 - Fix: Handle various types of configuration option values, issue #48
 - Fix: Hide password on registration failure, issue #47
