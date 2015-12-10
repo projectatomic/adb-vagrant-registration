@@ -20,7 +20,17 @@ module VagrantPlugins
           rhn_register_upload_certificate(machine, ui)
           rhn_register_server_url(machine, ui) if machine.config.registration.serverurl
           command = "rhnreg_ks #{configuration_to_options(machine.config.registration)}"
-          machine.communicate.execute("cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi", sudo: true)
+
+          # Handle exception to avoid displaying password
+          begin
+            error = String.new
+            machine.communicate.sudo("cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then " \
+              + "echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi") do |type, data|
+                error += "#{data}\n" if type == :stderr
+            end
+          rescue Vagrant::Errors::VagrantError
+            raise Vagrant::Errors::VagrantError.new, error.squeeze("\n")
+          end
         end
 
         # Unregister the machine using 'rhn_unregister.py' resource script

@@ -18,15 +18,15 @@ module VagrantPlugins
         def self.subscription_manager_register(machine, ui)
           subscription_manager_upload_certificate(machine, ui) if machine.config.registration.ca_cert
           command = "subscription-manager register #{configuration_to_options(machine.config.registration)}"
-          error = ''
 
           # Handle exception to avoid displaying password
           begin
+            error = String.new
             machine.communicate.sudo("cmd=$(#{command}); if [ \"$?\" != \"0\" ]; then " \
-              + "echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi") do |_, data|
-			    error += "#{data}\n"
+              + "echo $cmd | grep 'This system is already registered' || (echo $cmd 1>&2 && exit 1) ; fi") do |type, data|
+                error += "#{data}\n" if type == :stderr
             end
-          rescue Vagrant::Errors::VagrantError => e
+          rescue Vagrant::Errors::VagrantError
             raise Vagrant::Errors::VagrantError.new, error.squeeze("\n")
           end
         end
