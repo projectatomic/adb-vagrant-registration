@@ -20,7 +20,7 @@ module VagrantPlugins
           end
 
           @logger.debug('Unregistration is skipped due to the configuration') if config.skip
-          @logger.debug('Unregistration is skipped on halt due to the configuration') if !config.unregister_on_halt
+          @logger.debug('Unregistration is skipped on halt due to the configuration') unless config.unregister_on_halt
           @app.call(env)
 
         # Guest might not be available after halting, so log the exception and continue
