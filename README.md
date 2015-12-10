@@ -205,8 +205,11 @@ Vagrant.configure('2') do |config|
 end
 ```
 
-In case of a `rhn_register` manager for the preferred registration pair, you would be ask on your username/password/serverurl combination. vagrant-registration supports all the options of rhnreg_ks's command. You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'` in your Vagrantfile (please see the `rhnreg_ks`'s documentation for option description).
-To reduce the number of accepted options for configuring the plugin, the options for `rhn_register` manager will reuse the naming of `subscription-manager`'s command options where possible.
+In case of a `rhn_register` manager, the preferred registration pair is the username/password/serverurl combination.
+
+vagrant-registration supports most of the options of rhnreg_ks's command. You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'` in your Vagrantfile (please see the `rhnreg_ks`'s documentation for option description).
+
+`rhn_register` manager reuse the naming of `subscription-manager`'s command options where possible.
 
 #### rhn-register Default Options
 
