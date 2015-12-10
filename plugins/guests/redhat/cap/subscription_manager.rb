@@ -23,7 +23,7 @@ module VagrantPlugins
           begin
             error = String.new
             machine.communicate.sudo(registration_command(command)) do |type, data|
-              error += "#{data}\n" if type == :stderr
+              error += "#{data}" if type == :stderr
             end
           rescue Vagrant::Errors::VagrantError
             raise Vagrant::Errors::VagrantError.new, error.strip
