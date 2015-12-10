@@ -121,7 +121,7 @@ module VagrantPlugins
           options << "--systemorgid='#{config.org}'" if config.org
           options << "--serverUrl='#{config.serverurl}'" if config.serverurl
           options << "--activationkey='#{config.activationkey}'" if config.activationkey
-          options << '--use_eus_channel' if config.use_eus_channel
+          options << '--use-eus-channel' if config.use_eus_channel
           options << '--nohardware' if config.nohardware
           options << '--nopackages' if config.nopackages
           options << '--novirtinfo' if config.novirtinfo
