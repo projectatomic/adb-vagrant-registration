@@ -11,7 +11,7 @@ module VagrantPlugins
 
         # Test that we have subscription-manager installed
         def self.subscription_manager(machine)
-          machine.communicate.test("/usr/sbin/subscription-manager", sudo: true)
+          machine.communicate.test('/usr/sbin/subscription-manager', sudo: true)
         end
 
         # Register the machine using 'register' option, config is (Open)Struct
@@ -41,7 +41,7 @@ module VagrantPlugins
 
         # Unregister the machine using 'unregister' option
         def self.subscription_manager_unregister(machine)
-          machine.communicate.execute("subscription-manager unregister || :", sudo: true)
+          machine.communicate.execute('subscription-manager unregister || :', sudo: true)
         end
 
         # Return required configuration options for subscription-manager
@@ -85,11 +85,11 @@ module VagrantPlugins
           options << "--org='#{config.org}'" if config.org
           options << "--environment='#{config.environment}'" if config.environment
           options << "--name='#{config.name}'" if config.name
-          options << "--auto-attach" if config.auto_attach
+          options << '--auto-attach' if config.auto_attach
           options << "--activationkey='#{config.activationkey}'" if config.activationkey
           options << "--servicelevel='#{config.servicelevel}'" if config.servicelevel
           options << "--release='#{config.release}'" if config.release
-          options << "--force" if config.force
+          options << '--force' if config.force
           options << "--type='#{config.type}'" if config.type
           options.join(' ')
         end

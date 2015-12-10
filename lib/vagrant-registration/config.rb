@@ -1,5 +1,5 @@
-require "vagrant"
-require "ostruct"
+require 'vagrant'
+require 'ostruct'
 
 module VagrantPlugins
   module Registration
