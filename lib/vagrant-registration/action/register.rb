@@ -63,8 +63,8 @@ module VagrantPlugins
           options = machine.config.registration.conf.each_pair.map { |pair| pair[0] }
 
           if unsupported_options_provided?(manager, available_options, options, ui)
-            ui.warn("WARNING: #{manager} supports only the following options:" +
-                    "\nWARNING: " + available_options.join(', '))
+            ui.warn("WARNING: #{manager} supports only the following options:" \
+                    "\nWARNING: #{available_options.join(', ')}")
           end
         end
 
@@ -73,7 +73,7 @@ module VagrantPlugins
           warned = false
           options.each do |option|
             unless available_options.include? option
-              ui.warn("WARNING: #{option} option is not supported for " + manager)
+              ui.warn("WARNING: #{option} option is not supported for #{manager}")
               warned = true
             end
           end
