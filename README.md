@@ -209,7 +209,7 @@ In case of a `rhn_register` manager, the preferred registration pair is the user
 
 vagrant-registration supports most of the options of rhnreg_ks's command. You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'` in your Vagrantfile (please see the `rhnreg_ks`'s documentation for option description).
 
-`rhn_register` manager reuse the naming of `subscription-manager`'s command options where possible.
+`rhn_register` manager reuses the naming of `subscription-manager`'s command options where possible.
 
 #### rhn-register Default Options
 
