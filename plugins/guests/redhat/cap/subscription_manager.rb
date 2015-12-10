@@ -37,7 +37,7 @@ module VagrantPlugins
           else
             ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
           end
-       end
+        end
 
         # Unregister the machine using 'unregister' option
         def self.subscription_manager_unregister(machine)
