@@ -88,7 +88,7 @@ module VagrantPlugins
           if config.org && config.activationkey
             config.auto_attach = false
           else
-            config.auto_attach = true unless config.auto_attach
+            config.auto_attach = true if config.auto_attach.nil?
           end
 
           options = []

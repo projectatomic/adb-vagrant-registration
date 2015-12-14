@@ -1,5 +1,7 @@
 # Changelog
 
+- Fix: option auto-attach to accept user-defined values
+
 ## 1.1.0
 
 - Print warning if specifically selected manager is not available
