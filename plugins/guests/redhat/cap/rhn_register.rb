@@ -116,7 +116,7 @@ module VagrantPlugins
 
         # Build additional rhreg_ks options based on the plugin configuration
         def self.configuration_to_options(config)
-          config.force = true unless config.force
+          config.force = true if config.force.nil?
 
           options = []
           options << "--profilename='#{config.name}'" if config.name

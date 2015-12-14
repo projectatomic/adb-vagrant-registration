@@ -1,6 +1,6 @@
 # Changelog
 
-- Fix: option auto-attach to accept user-defined values
+- Fix: options auto-attach and force to accept user-defined values
 
 ## 1.1.0
 
