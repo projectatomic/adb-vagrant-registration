@@ -133,7 +133,7 @@ description).
   config.registration.auto_attach = false
 ```
 
-Note that the `auto_attach` option is set to false when using org/activationkey for registration.
+Note that the `auto_attach` option is set to false when using org/activationkey for registration or if pools are specified.
 
 #### subscription-manager Options Reference
 
@@ -189,6 +189,12 @@ Note that the `auto_attach` option is set to false when using org/activationkey 
 
   # Skip the registration (optional, skip if true, defaults to false)
   config.registration.skip
+
+  # Attach to specified pool(s) (optional)
+  #
+  # Example:
+  #   config.registration.pools = [ 'POOL-ID-1', 'POOL-ID-2' ]
+  config.registration.pools
 ```
 
 ### rhn-register Configuration
