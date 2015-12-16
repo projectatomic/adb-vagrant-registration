@@ -1,6 +1,7 @@
 # Changelog
 
 - Fix: Allow auto-attach and force options to be configured
+- Fix: Remove unnecessary shebang from python script
 
 ## 1.1.0
 
@@ -9,7 +10,6 @@
 - Support rhn_register manager
 - Fix: Handle various types of configuration option values, issue #48
 - Fix: Hide password on registration failure, issue #47
-- Fix: Remove unnecessary shebang from python script
 
 ## 1.0.1
 
