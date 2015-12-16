@@ -1,5 +1,7 @@
 # Changelog
 
+- Fix: Allow auto-attach and force options to be configured
+
 ## 1.1.0
 
 - Print warning if specifically selected manager is not available
