@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import argparse
 import xmlrpclib
 import os.path
