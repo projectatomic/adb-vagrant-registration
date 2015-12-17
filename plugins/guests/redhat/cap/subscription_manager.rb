@@ -28,6 +28,8 @@ module VagrantPlugins
           rescue Vagrant::Errors::VagrantError
             raise Vagrant::Errors::VagrantError.new, error.strip
           end
+
+          attach_pools(machine, machine.config.registration.pools)
         end
 
         # Unregister the machine using 'unregister' option
@@ -47,7 +49,7 @@ module VagrantPlugins
         def self.subscription_manager_options(machine)
           [:username, :password, :serverurl, :baseurl, :org, :environment,
            :name, :auto_attach, :activationkey, :servicelevel, :release,
-           :force, :type, :ca_cert]
+           :force, :type, :ca_cert, :pools]
         end
 
         # Return secret options for subscription-manager
@@ -85,7 +87,8 @@ module VagrantPlugins
           config.force = true if config.force.nil?
 
           # --auto-attach cannot be used in case of org/activationkey registration
-          if config.org && config.activationkey
+          # or if pools are specified
+          if (config.org && config.activationkey) || config.pools
             config.auto_attach = false
           else
             config.auto_attach = true if config.auto_attach.nil?
@@ -106,6 +109,22 @@ module VagrantPlugins
           options << '--force' if config.force
           options << "--type='#{config.type}'" if config.type
           options.join(' ')
+        end
+
+        # Attach subscription pools
+        def self.attach_pools(machine, pools)
+          if pools
+            command = "subscription-manager attach #{pools_to_options(pools)}"
+            machine.communicate.sudo(command)
+          end
+        end
+
+        # Return pools options for subscription-manager
+        def self.pools_to_options(pools)
+          pools = [pools] if pools.kind_of?(String)
+          pools.map do |pool|
+            "--pool=#{pool}"
+          end.join(' ')
         end
       end
     end

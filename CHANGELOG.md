@@ -2,6 +2,7 @@
 
 - Fix: Allow auto-attach and force options to be configured
 - Fix: Remove unnecessary shebang from python script
+- Support for attaching to specified subscription pool(s), issue #36
 
 ## 1.1.0
 
