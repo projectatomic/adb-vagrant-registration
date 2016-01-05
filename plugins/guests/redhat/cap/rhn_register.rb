@@ -4,15 +4,15 @@ module VagrantPlugins
       class RhnRegister
         # Test that the machine is already registered
         def self.rhn_register_registered?(machine)
-          true if machine.communicate.execute('/usr/sbin/rhn_check', sudo: true)
+          true if machine.communicate.sudo('/usr/sbin/rhn_check')
         rescue
           false
         end
 
         # Test that we have rhn installed
         def self.rhn_register(machine)
-          machine.communicate.test('/usr/sbin/rhn_check --version', sudo: true) &&
-          machine.communicate.test('/usr/sbin/rhnreg_ks --version', sudo: true)
+          machine.communicate.test('/usr/sbin/rhn_check --version') &&
+          machine.communicate.test('/usr/sbin/rhnreg_ks --version')
         end
 
         # Register the machine using 'rhnreg_ks' command, config is (Open)Struct
@@ -81,15 +81,15 @@ module VagrantPlugins
             if File.exist?(machine.config.registration.ca_cert)
               # Make sure the provided CA certificate file will be configured
               cert_file_name = File.basename(machine.config.registration.ca_cert)
-              cert_file_content = File.read(machine.config.registration.ca_cert)
-              machine.communicate.execute("echo '#{cert_file_content}' > /usr/share/rhn/#{cert_file_name}", sudo: true)
+              cert_file_content = File.read(machine.config.registration.ca_cert, tmp)
+              machine.communicate.sudo("echo '#{cert_file_content}' > /usr/share/rhn/#{cert_file_name}")
             else
               ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
             end
           end
           # Make sure the correct CA certificate file is always configured
           ui.info("Updating CA certificate to /usr/share/rhn/#{cert_file_name}`...")
-          machine.communicate.execute("sed -i 's|^sslCACert\s*=.*$|sslCACert=/usr/share/rhn/#{cert_file_name}|g' /etc/sysconfig/rhn/up2date", sudo: true)
+          machine.communicate.sudo("sed -i 's|^sslCACert\s*=.*$|sslCACert=/usr/share/rhn/#{cert_file_name}|g' /etc/sysconfig/rhn/up2date")
         end
 
         # Build registration command that skips registration if the system is registered
@@ -101,7 +101,7 @@ module VagrantPlugins
         # provided server URL
         def self.rhn_register_server_url(machine, ui)
           ui.info("Update server URL to #{machine.config.registration.serverurl}...")
-          machine.communicate.execute("sed -i 's|^serverURL=.*$|serverURL=/usr/share/rhn/#{machine.config.registration.serverurl}|' /etc/sysconfig/rhn/up2date", sudo: true)
+          machine.communicate.sudo("sed -i 's|^serverURL=.*$|serverURL=/usr/share/rhn/#{machine.config.registration.serverurl}|' /etc/sysconfig/rhn/up2date")
         end
 
         # The absolute path to the resource file
