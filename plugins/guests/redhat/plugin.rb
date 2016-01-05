@@ -58,11 +58,6 @@ module VagrantPlugins
         Cap::SubscriptionManager
       end
 
-      guest_capability('redhat', 'subscription_manager_upload_certificate') do
-        require_relative 'cap/subscription_manager'
-        Cap::SubscriptionManager
-      end
-
       guest_capability('redhat', 'subscription_manager_unregister') do
         require_relative 'cap/subscription_manager'
         Cap::SubscriptionManager
