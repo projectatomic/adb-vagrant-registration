@@ -4,14 +4,14 @@ module VagrantPlugins
       class SubscriptionManager
         # Test that the machine is already registered
         def self.subscription_manager_registered?(machine)
-          false if machine.communicate.execute("/usr/sbin/subscription-manager list --consumed | grep 'No consumed subscription pools to list'", sudo: true)
+          false if machine.communicate.sudo("/usr/sbin/subscription-manager list --consumed | grep 'No consumed subscription pools to list'")
         rescue
           true
         end
 
         # Test that we have subscription-manager installed
         def self.subscription_manager(machine)
-          machine.communicate.test('/usr/sbin/subscription-manager', sudo: true)
+          machine.communicate.test('/usr/sbin/subscription-manager')
         end
 
         # Register the machine using 'register' option, config is (Open)Struct
@@ -34,7 +34,7 @@ module VagrantPlugins
 
         # Unregister the machine using 'unregister' option
         def self.subscription_manager_unregister(machine)
-          machine.communicate.execute('subscription-manager unregister || :', sudo: true)
+          machine.communicate.sudo('subscription-manager unregister || :')
         end
 
         # Return required configuration options for subscription-manager
@@ -69,9 +69,9 @@ module VagrantPlugins
             cert_file_content = File.read(machine.config.registration.ca_cert)
             cert_file_name = File.basename(machine.config.registration.ca_cert)
             cert_file_name = "#{cert_file_name}.pem" unless cert_file_name.end_with? '.pem'
-            machine.communicate.execute("echo '#{cert_file_content}' > /etc/rhsm/ca/#{cert_file_name}", sudo: true)
+            machine.communicate.sudo("echo '#{cert_file_content}' > /etc/rhsm/ca/#{cert_file_name}")
             ui.info('Setting repo_ca_cert option in /etc/rhsm/rhsm.conf...')
-            machine.communicate.execute("sed -i 's|^repo_ca_cert\s*=.*|repo_ca_cert = /etc/rhsm/ca/#{cert_file_name}|g' /etc/rhsm/rhsm.conf", sudo: true)
+            machine.communicate.sudo("sed -i 's|^repo_ca_cert\s*=.*|repo_ca_cert = /etc/rhsm/ca/#{cert_file_name}|g' /etc/rhsm/rhsm.conf")
           else
             ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
           end
