@@ -1,10 +1,13 @@
 # Changelog
 
+## 1.2.0
+
 - Fix: `vagrant destroy` not triggering subscription deactivation and removal, issue #57
 - Fix: Allow auto-attach and force options to be configured
 - Fix: Remove unnecessary shebang from python script
 - Support for attaching to specified subscription pool(s), issue #36
 - Fix: rhn_register upload certificate fails, issue #60
+- Fix: `vagrant destroy` not triggering subscription deactivation and removal, issue #57
 
 ## 1.1.0
 
