@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.1
+
+- Fix regression: Use sudo when asking on registration managers being present
+
 ## 1.2.0
 
 - Fix: `vagrant destroy` not triggering subscription deactivation and removal, issue #57
