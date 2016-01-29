@@ -11,8 +11,8 @@ module VagrantPlugins
 
         # Test that we have rhn installed
         def self.rhn_register(machine)
-          machine.communicate.test('/usr/sbin/rhn_check --version') &&
-          machine.communicate.test('/usr/sbin/rhnreg_ks --version')
+          machine.communicate.test('/usr/sbin/rhn_check --version', sudo: true) &&
+          machine.communicate.test('/usr/sbin/rhnreg_ks --version', sudo: true)
         end
 
         # Register the machine using 'rhnreg_ks' command, config is (Open)Struct
