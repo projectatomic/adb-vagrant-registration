@@ -1,5 +1,5 @@
 module VagrantPlugins
-  module GuestRedHat
+  module GuestSUSE
     module Cap
       class RhnRegister
         # Test that the machine is already registered
