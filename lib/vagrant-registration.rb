@@ -13,5 +13,7 @@ module VagrantPlugins
 
     # Temporally load the extra capability files for Red Hat
     load(File.join(source_root, 'plugins/guests/redhat/plugin.rb'))
+    # Temporally load the extra capability files for SuSE
+    load(File.join(source_root, 'plugins/guests/suse/plugin.rb'))
   end
 end
