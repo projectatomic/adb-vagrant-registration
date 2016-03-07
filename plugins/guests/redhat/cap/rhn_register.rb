@@ -19,7 +19,7 @@ module VagrantPlugins
         def self.rhn_register_register(machine, ui)
           rhn_register_upload_certificate(machine, ui)
           rhn_register_server_url(machine, ui) if machine.config.registration.serverurl
-          command = "rhnreg_ks #{configuration_to_options(machine.config.registration)}"
+          command = "/usr/sbin/rhnreg_ks #{configuration_to_options(machine.config.registration)}"
 
           # Handle exception to avoid displaying password
           begin
@@ -81,7 +81,7 @@ module VagrantPlugins
             if File.exist?(machine.config.registration.ca_cert)
               # Make sure the provided CA certificate file will be configured
               cert_file_name = File.basename(machine.config.registration.ca_cert)
-              cert_file_content = File.read(machine.config.registration.ca_cert, tmp)
+              cert_file_content = File.read(machine.config.registration.ca_cert)
               machine.communicate.sudo("echo '#{cert_file_content}' > /usr/share/rhn/#{cert_file_name}")
             else
               ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
