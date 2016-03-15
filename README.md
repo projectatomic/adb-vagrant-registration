@@ -23,7 +23,7 @@ If you are on Fedora, you can install the packaged version of the plugin by runn
 
 The plugin is designed in an registration-manager-agnostic way which means that plugin itself does not depend on any OS nor way of registration. vagrant-registration only calls registration capabilities for given guest, passes the configuration options to them and handles interactive registration.
 
-That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager and `rhn_register`. Feel free to submit others.
+That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager and `rhn_register` which is used by Redhat Satellite and Suse Manager. Feel free to submit others.
 
 To configure the plugin, always include the configuration options mentioned in this file within the following configuration block in your Vagrantfile.
 
@@ -47,7 +47,7 @@ end
   config.registration.unregister_on_halt = false
 ```
 
-- **manager** selects the registration manager provider. By default the plugin will use the `subscription_manager` manager, you can however change that by setting the option to a different manager:
+- **manager** selects the registration manager provider. By default the plugin will use the `subscription_manager` manager for redhat and the `rhn_register`manager for suse, you can however change that by setting the option to a different manager:
 
 ```ruby
   config.registration.manager = 'subscription_manager'
@@ -211,7 +211,7 @@ Vagrant.configure('2') do |config|
 end
 ```
 
-In case of a `rhn_register` manager, the preferred registration pair is the username/password/serverurl combination.
+In case of a `rhn_register` manager, the preferred registration pair is the org/activationkey/serverurl combination.
 
 vagrant-registration supports most of the options of rhnreg_ks's command. You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'` in your Vagrantfile (please see the `rhnreg_ks`'s documentation for option description).
 
@@ -228,9 +228,10 @@ vagrant-registration supports most of the options of rhnreg_ks's command. You ca
 #### rhn-register Options Reference
 
 ```ruby
-  # The username to register the system with under Spacewalk Server, Red Hat Satellite or
-  # Red Hat Network Classic. This can be an existing Spacewalk, Red Hat Satellite or
-  # Red Hat Network Classic username, or a new  user‐name.
+  # The username to register the system with under Spacewalk Server, Red Hat Satellite,
+  # Red Hat Network Classic or Suse Manager. This can be an existing Spacewalk,
+  # Red Hat Satellite, Red Hat Network Classic or Suse Manager username, 
+  # or a new  user‐name.
   config.registration.username
 
   # The password associated with the username specified with the `--username` option.
@@ -238,7 +239,8 @@ vagrant-registration supports most of the options of rhnreg_ks's command. You ca
   config.registration.password
 
   # Give the URL of the subscription service to use (required for registering a
-  # system with the "Spacewalk Server", "Red Hat Satellite" or "Red Hat Network Classic").
+  # system with the "Spacewalk Server", "Red Hat Satellite", "Red Hat Network Classic"
+  # or "Suse Manager").
   # The configuration name is mapped to the `--serverUrl` option of rhnreg_ks command.
   #
   # The serverurl is mandatory and if you do not provide a value,
