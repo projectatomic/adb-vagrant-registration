@@ -23,7 +23,7 @@ If you are on Fedora, you can install the packaged version of the plugin by runn
 
 The plugin is designed in an registration-manager-agnostic way which means that plugin itself does not depend on any OS nor way of registration. vagrant-registration only calls registration capabilities for given guest, passes the configuration options to them and handles interactive registration.
 
-That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager and `rhn_register` which is used by Redhat Satellite and Suse Manager. Feel free to submit others.
+That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager and `rhn_register` which is used by Red Hat Satellite and Suse Manager. Feel free to submit others.
 
 To configure the plugin, always include the configuration options mentioned in this file within the following configuration block in your Vagrantfile.
 
