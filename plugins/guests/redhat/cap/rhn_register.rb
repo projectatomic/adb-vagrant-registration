@@ -101,7 +101,7 @@ module VagrantPlugins
         # provided server URL
         def self.rhn_register_server_url(machine, ui)
           ui.info("Update server URL to #{machine.config.registration.serverurl}...")
-          machine.communicate.sudo("sed -i 's|^serverURL=.*$|serverURL=/usr/share/rhn/#{machine.config.registration.serverurl}|' /etc/sysconfig/rhn/up2date")
+          machine.communicate.sudo("sed -i 's|^serverURL=.*$|serverURL=#{machine.config.registration.serverurl}|' /etc/sysconfig/rhn/up2date")
         end
 
         # The absolute path to the resource file
