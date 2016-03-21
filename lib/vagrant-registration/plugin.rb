@@ -15,20 +15,34 @@ module VagrantPlugins
     class Plugin < Vagrant.plugin('2')
       class << self
 
-        # Vbguest plugin updates GuestAdditions for VirtualBox before
-        # '::Vagrant::Action::Builtin::SyncedFolders' and therefore needs
-        # to be registered. Prepending Vbguest hook ensures that, but this
-        # is done only with Vbguest plugin and VirtualBox provider. In other
-        # cases the behavior is unchanged.
+        # vagrant-vbguest plugin updates GuestAdditions for VirtualBox
+        # and therefore needs to be run after the box got registered.
+        # See https://github.com/projectatomic/adb-vagrant-registration/issues/69
+        #
+        # vagrant-vbguest hooks before VagrantPlugins::ProviderVirtualBox::Action::CheckGuestAdditions
+        # (see https://github.com/mitchellh/vagrant/blob/master/plugins/providers/virtualbox/action.rb#L81)
+        # For registration to occur in time, it has to happen before that. Using WaitForCommunicator
+        # to be sure - https://github.com/dotless-de/vagrant-vbguest/blob/master/lib/vagrant-vbguest.rb#L53
+        #
+        # For vagrant-libvirt WaitTillUp is used
         def register(hook)
           setup_logging
 
-          if vbguest_plugin?
-            hook.before(::VagrantVbguest::Middleware,
-                                 VagrantPlugins::Registration::Action.action_register)
-          else
-            hook.after(::Vagrant::Action::Builtin::SyncedFolders,
-                               VagrantPlugins::Registration::Action.action_register)
+          registered = false
+          if virtual_box?
+            hook.after(VagrantPlugins::ProviderVirtualBox::Action::WaitForCommunicator,
+                        VagrantPlugins::Registration::Action.action_register)
+            registered = true
+          end
+          if libvirt?
+            hook.after(VagrantPlugins::ProviderLibvirt::Action::WaitTillUp,
+                      VagrantPlugins::Registration::Action.action_register)
+            registered = true
+          end
+          # Best guess for the other providers
+          unless registered
+            hook.after(Vagrant::Action::Builtin::WaitForCommunicator,
+                      VagrantPlugins::Registration::Action.action_register)
           end
         end
 
@@ -87,12 +101,14 @@ module VagrantPlugins
         end
       end
 
-      # Determines if both VirtualBox provider and Vbguest plugin are present.
-      def self.vbguest_plugin?
-        @@vbguest_plugin ||= (
-          defined?(VagrantPlugins::ProviderVirtualBox::Provider) &&
-          defined?(VagrantVbguest::Middleware)
-        )
+      # Determines if VirtualBox is provider
+      def self.virtual_box?
+        defined?(VagrantPlugins::ProviderVirtualBox::Provider)
+      end
+
+      # Determines if LibVirt is provider
+      def self.libvirt?
+        defined?(VagrantPlugins::ProviderLibvirt::Provider)
       end
     end
   end

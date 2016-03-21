@@ -11,11 +11,6 @@ module VagrantPlugins
         end
 
         def call(env)
-          # Vbguest plugin (if present) is called next. Therefore registration
-          # needs to be done first. This does not work with the default
-          # 'action_register' hook.
-          @app.call(env) unless Plugin.vbguest_plugin?
-
           # Configuration from Vagrantfile
           config = env[:machine].config.registration
           machine = env[:machine]
@@ -42,7 +37,8 @@ module VagrantPlugins
 
           @logger.debug('Registration is skipped due to the configuration') if config.skip
 
-          @app.call(env) if Plugin.vbguest_plugin?
+          # Call next middleware in chain
+          @app.call(env)
         end
 
         private
