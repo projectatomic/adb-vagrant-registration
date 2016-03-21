@@ -1,10 +1,30 @@
 # vagrant-registration
 
+<!-- MarkdownTOC -->
+
+- [Installation](#installation)
+- [Usage](#usage)
+  - [Plugin Configuration](#plugin-configuration)
+  - [Credentials Configuration](#credentials-configuration)
+  - [subscription-manager Configuration](#subscription-manager-configuration)
+    - [subscription-manager Default Options](#subscription-manager-default-options)
+    - [subscription-manager Options Reference](#subscription-manager-options-reference)
+  - [rhn-register Configuration](#rhn-register-configuration)
+    - [rhn-register Default Options](#rhn-register-default-options)
+    - [rhn-register Options Reference](#rhn-register-options-reference)
+- [Development](#development)
+  - [Tests](#tests)
+    - [Shell script based tests](#shell-script-based-tests)
+    - [Acceptance tests](#acceptance-tests)
+- [Acknowledgements](#acknowledgements)
+
+<!-- /MarkdownTOC -->
+
 vagrant-registration plugin for Vagrant allows developers to easily register their guests for updates on systems with a subscription model (like Red Hat Enterprise Linux).
 
 This plugin would run *register* action on `vagrant up` before any provisioning and *unregister* on `vagrant halt` or `vagrant destroy`. The actions then call the registration capabilities that have to be provided for given OS.
 
-
+<a name="installation"></a>
 ## Installation
 
 Install vagrant-registration as any other Vagrant plugin:
@@ -19,6 +39,7 @@ If you are on Fedora, you can install the packaged version of the plugin by runn
 # dnf install vagrant-registration
 ```
 
+<a name="usage"></a>
 ## Usage
 
 The plugin is designed in an registration-manager-agnostic way which means that plugin itself does not depend on any OS nor way of registration. vagrant-registration only calls registration capabilities for given guest, passes the configuration options to them and handles interactive registration.
@@ -33,6 +54,7 @@ Vagrant.configure('2') do |config|
 end
 ```
 
+<a name="plugin-configuration"></a>
 ### Plugin Configuration
 
 - **skip** skips the registration. If you wish to skip the registration process altogether, you can do so by setting a `skip` option to `true`:
@@ -53,6 +75,7 @@ end
   config.registration.manager = 'subscription_manager'
 ```
 
+<a name="credentials-configuration"></a>
 ### Credentials Configuration
 
 Setting up the credentials can be done as follows:
@@ -96,6 +119,7 @@ If you do not provide credentials, you will be prompted for them in the "up proc
 Please note the the interactive mode asks you for the preferred registration pair only
 of the configured manager.
 
+<a name="subscription-manager-configuration"></a>
 ### subscription-manager Configuration
 
 vagrant-registration will use the `subscription_manager` manager by default or can be explicitly configured by setting the `manager` option to `subscription_manager`:
@@ -118,6 +142,7 @@ You can set any option easily by setting `config.registration.OPTION_NAME = 'OPT
 in your Vagrantfile (please see the subscription-manager's documentation for option
 description).
 
+<a name="subscription-manager-default-options"></a>
 #### subscription-manager Default Options
 
 - **--force**: Subscription Manager will fail if you attempt to register an already registered machine (see the man page for explanation), therefore vagrant-registration appends the `--force` flag automatically when subscribing. If you would like to disable this feature, set `force` option to `false`:
@@ -135,6 +160,7 @@ description).
 
 Note that the `auto_attach` option is set to false when using org/activationkey for registration or if pools are specified.
 
+<a name="subscription-manager-options-reference"></a>
 #### subscription-manager Options Reference
 
 ```ruby
@@ -197,6 +223,7 @@ Note that the `auto_attach` option is set to false when using org/activationkey 
   config.registration.pools
 ```
 
+<a name="rhn-register-configuration"></a>
 ### rhn-register Configuration
 
 vagrant-registration will use the `rhn_register` manager only if explicitly configured by setting the `manager` option to `rhn_register`:
@@ -217,6 +244,7 @@ vagrant-registration supports most of the options of rhnreg_ks's command. You ca
 
 `rhn_register` manager reuses the naming of `subscription-manager`'s command options where possible.
 
+<a name="rhn-register-default-options"></a>
 #### rhn-register Default Options
 
 - **--force**: `rhnreg_ks` command will fail if you attempt to register an already registered machine (see the man page for explanation), therefore vagrant-registration appends the `--force` flag automatically when subscribing. If you would like to disable this feature, set `force` option to `false`:
@@ -225,6 +253,7 @@ vagrant-registration supports most of the options of rhnreg_ks's command. You ca
   config.registration.force = false
 ```
 
+<a name="rhn-register-options-reference"></a>
 #### rhn-register Options Reference
 
 ```ruby
@@ -291,7 +320,23 @@ vagrant-registration supports most of the options of rhnreg_ks's command. You ca
   config.registration.skip
 ```
 
-## Tests
+<a name="development"></a>
+## Development
+
+To install a development environment, clone the repo and prepare dependencies by
+
+```
+gem install bundler -v 1.7.5
+bundler install
+```
+
+The use of [RVM|https://rvm.io] is recommended. Verified to work with ruby 2.0.0p643.
+
+<a name="tests"></a>
+### Tests
+
+<a name="shell-script-based-tests"></a>
+#### Shell script based tests
 
 Tests currently test the plugin with `subscription-manager` and  `rhn_register` on RHEL 7.1 guest and Fedora host. You need an imported RHEL 7.1 Vagrant box named `rhel-7.1`.
 
@@ -316,6 +361,37 @@ environment variable on `1` before executing the test script:
 export DEBUG=1
 ```
 
+<a name="acceptance-tests"></a>
+#### Acceptance tests
+
+The source also contains a set of [Cucumber](https://cucumber.io/) acceptance tests. They can be run via:
+
+    $ bundle exec rake features
+
+The tests assume that the CDK box files are available under
+_build/boxes/cdk-\<provider\>.box_. You can either copy the box files manually or
+use the _get_cdk_ Rake task to download them.
+
+Per default only the scenarios for CDK in combination with VirtualBox
+are run. You can also run against Libvirt using the environment variable
+_PROVIDER_:
+
+    # Run tests against Libvirt
+    $ bundle exec rake features  PROVIDER=libvirt
+
+    # Run against VirtualBox and Libvirt
+    $ bundle exec rake features PROVIDER=virtualbox,libvirt
+
+You can also run a single feature specifying the explicit feature file to use:
+
+    $ bundle exec rake features FEATURE=features/<feature-filename>.feature
+
+After test execution the Cucumber test reports can be found under _build/features_report.html_.
+They can also be opened via
+
+    $ bundle exec rake features:open_report
+
+<a name="acknowledgements"></a>
 ## Acknowledgements
 
 The project would like to make sure we thank [purpleidea](https://github.com/purpleidea/), [humaton](https://github.com/humaton/), [strzibny](https://github.com/strzibny), [scollier](https://github.com/scollier/), [puzzle](https://github.com/puzzle), [voxik](https://github.com/voxik), [lukaszachy](https://github.com/lukaszachy), [goern](https://github.com/goern), [iconoeugen](https://github.com/iconoeugen)  and [pvalena](https://github.com/pvalena) (in no particular order) for their contributions of ideas, code and testing for this project.
