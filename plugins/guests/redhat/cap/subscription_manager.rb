@@ -17,7 +17,7 @@ module VagrantPlugins
         # Register the machine using 'register' option, config is (Open)Struct
         def self.subscription_manager_register(machine, ui)
           subscription_manager_upload_certificate(machine, ui) if machine.config.registration.ca_cert
-          command = "subscription-manager register #{configuration_to_options(machine.config.registration)}"
+          command = "/usr/sbin/subscription-manager register #{configuration_to_options(machine.config.registration)}"
 
           # Handle exception to avoid displaying password
           begin
@@ -34,7 +34,7 @@ module VagrantPlugins
 
         # Unregister the machine using 'unregister' option
         def self.subscription_manager_unregister(machine)
-          machine.communicate.sudo('subscription-manager unregister || :')
+          machine.communicate.sudo('/usr/sbin/subscription-manager unregister || :')
         end
 
         # Return required configuration options for subscription-manager
@@ -114,7 +114,7 @@ module VagrantPlugins
         # Attach subscription pools
         def self.attach_pools(machine, pools)
           if pools
-            command = "subscription-manager attach #{pools_to_options(pools)}"
+            command = "/usr/sbin/subscription-manager attach #{pools_to_options(pools)}"
             machine.communicate.sudo(command)
           end
         end
