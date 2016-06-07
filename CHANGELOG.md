@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.2
+
+- Introducing Cucumber based acceptance tests.
+- Fix: Handling of vagrant-registration action hooks depending on provider used.
+
 ## 1.2.1
 
 - Fix regression: Use sudo when asking on registration managers being present
