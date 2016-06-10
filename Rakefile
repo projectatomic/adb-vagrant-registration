@@ -1,5 +1,6 @@
 require 'bundler/gem_tasks'
 require 'rake/clean'
+require 'rake/testtask'
 require 'cucumber/rake/task'
 require 'yard'
 require 'rubygems/comparator'
@@ -19,6 +20,13 @@ end
 
 task :init do
   FileUtils.mkdir_p 'build'
+end
+
+# Default test task
+desc 'Run all unit tests'
+Rake::TestTask.new do |t|
+  t.pattern = 'test/**/*_test.rb'
+  t.libs << 'test'
 end
 
 # Cucumber acceptance test tasks

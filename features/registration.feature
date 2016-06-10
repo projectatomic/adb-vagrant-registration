@@ -101,4 +101,4 @@ Feature: Booting VM with various registration settings
     Examples:
       | provider   |
       | virtualbox |
-      | libvirt    |
+  #    | libvirt    |
