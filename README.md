@@ -4,8 +4,9 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
-  - [Plugin Configuration](#plugin-configuration)
-  - [Credentials Configuration](#credentials-configuration)
+  - [General Configuration](#general-configuration)
+  - [Credential Configuration](#credential-configuration)
+  - [HTTP Proxy Configuration](#http-proxy-configuration)
   - [subscription-manager Configuration](#subscription-manager-configuration)
     - [subscription-manager Default Options](#subscription-manager-default-options)
     - [subscription-manager Options Reference](#subscription-manager-options-reference)
@@ -14,7 +15,7 @@
     - [rhn-register Options Reference](#rhn-register-options-reference)
 - [Development](#development)
   - [Tests](#tests)
-    - [Shell script based tests](#shell-script-based-tests)
+    - [Minitest](#minitest)
     - [Acceptance tests](#acceptance-tests)
 - [Acknowledgements](#acknowledgements)
 
@@ -54,8 +55,8 @@ Vagrant.configure('2') do |config|
 end
 ```
 
-<a name="plugin-configuration"></a>
-### Plugin Configuration
+<a name="general-configuration"></a>
+### General Configuration
 
 - **skip** skips the registration. If you wish to skip the registration process altogether, you can do so by setting a `skip` option to `true`:
 
@@ -75,8 +76,8 @@ end
   config.registration.manager = 'subscription_manager'
 ```
 
-<a name="credentials-configuration"></a>
-### Credentials Configuration
+<a name="credential-configuration"></a>
+### Credential Configuration
 
 Setting up the credentials can be done as follows:
 
@@ -119,10 +120,32 @@ If you do not provide credentials, you will be prompted for them in the "up proc
 Please note the the interactive mode asks you for the preferred registration pair only
 of the configured manager.
 
+<a name="http-proxy-configuration"></a>
+### HTTP Proxy Configuration
+
+HTTP Proxies can be configured via the _proxy_, _proxyUser_ and _proxyPassword_ configuration options:
+
+```ruby
+Vagrant.configure('2') do |config|
+...
+  if Vagrant.has_plugin?('vagrant-registration')
+    config.registration.proxy = 'mongo:8080'
+    config.registration.proxyUser = 'flash'
+    config.registration.proxyPassword = 'zarkov'
+  end
+...
+end
+```
+
+As described in the [credentials configuration](#credentials-configuration) section, these settings
+can also either be placed into the Vagrantfile in your Vagrant home directory or provided as
+environment variables.
+
 <a name="subscription-manager-configuration"></a>
 ### subscription-manager Configuration
 
-vagrant-registration will use the `subscription_manager` manager by default or can be explicitly configured by setting the `manager` option to `subscription_manager`:
+vagrant-registration will use the `subscription_manager` manager by default or can be explicitly
+configured by setting the `manager` option to `subscription_manager`:
 
 ```ruby
 Vagrant.configure('2') do |config|
@@ -158,7 +181,8 @@ description).
   config.registration.auto_attach = false
 ```
 
-Note that the `auto_attach` option is set to false when using org/activationkey for registration or if pools are specified.
+Note that the `auto_attach` option is set to false when using org/activationkey for registration
+or if pools are specified.
 
 <a name="subscription-manager-options-reference"></a>
 #### subscription-manager Options Reference
@@ -215,6 +239,15 @@ Note that the `auto_attach` option is set to false when using org/activationkey 
 
   # Skip the registration (optional, skip if true, defaults to false)
   config.registration.skip
+
+  # Specify a HTTP proxy to use. This config option if of the format [<host>|<ip>:<port>], eg mongo:8080
+  config.registration.proxy
+
+  # Specify a username to use with an authenticated HTTP proxy
+  config.registration.proxyUser
+
+  # Specify a password to use with an authenticated HTTP proxy
+  config.registration.proxyPassword
 
   # Attach to specified pool(s) (optional)
   #
@@ -318,6 +351,15 @@ vagrant-registration supports most of the options of rhnreg_ks's command. You ca
 
   # Skip the registration (optional, skip if true, defaults to false)
   config.registration.skip
+
+  # Specify a HTTP proxy to use. This config option if of the format [<host>|<ip>:<port>], eg mongo:8080
+  config.registration.proxy
+
+  # Specify a username to use with an authenticated HTTP proxy
+  config.registration.proxyUser
+
+  # Specify a password to use with an authenticated HTTP proxy
+  config.registration.proxyPassword
 ```
 
 <a name="development"></a>
@@ -326,40 +368,22 @@ vagrant-registration supports most of the options of rhnreg_ks's command. You ca
 To install a development environment, clone the repo and prepare dependencies by
 
 ```
-gem install bundler -v 1.7.5
+gem install bundler
 bundler install
 ```
 
-The use of [RVM|https://rvm.io] is recommended. Verified to work with ruby 2.0.0p643.
+The use of [RVM](https://rvm.io) is recommended. Verified to work with ruby 2.0.0p643.
 
 <a name="tests"></a>
 ### Tests
 
-<a name="shell-script-based-tests"></a>
-#### Shell script based tests
+<a name="minitest"></a>
+#### Minitest
 
-Tests currently test the plugin with `subscription-manager` and  `rhn_register` on RHEL 7.1 guest and Fedora host. You need an imported RHEL 7.1 Vagrant box named `rhel-7.1`.
+The source contains a set of [Minitest](http://ruby-doc.org/stdlib-2.0.0/libdoc/minitest/rdoc/MiniTest.html)
+unit tests. They can be run via:
 
-To run them:
-
-```
-export VAGRANT_REGISTRATION_MANAGER=
-export VAGRANT_REGISTRATION_USERNAME=
-export VAGRANT_REGISTRATION_PASSWORD=
-export VAGRANT_REGISTRATION_ORG=
-export VAGRANT_REGISTRATION_ACTIVATIONKEY=
-export VAGRANT_REGISTRATION_SERVERURL=
-export VAGRANT_REGISTRATION_CA_CERT=
-./tests/run.sh
-./tests/run_rhn_register.sh
-```
-
-To show the Vagrant output on the console during the tests run, set the `DEBUG`
-environment variable on `1` before executing the test script:
-
-```
-export DEBUG=1
-```
+    $ bundle exec rake test
 
 <a name="acceptance-tests"></a>
 #### Acceptance tests

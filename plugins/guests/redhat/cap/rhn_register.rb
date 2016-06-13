@@ -61,7 +61,7 @@ module VagrantPlugins
         def self.rhn_register_options(machine)
           [:name, :username, :password, :org, :serverurl, :ca_cert,
            :activationkey, :use_eus_channel, :nohardware, :nopackages,
-           :novirtinfo, :norhnsd, :force]
+           :novirtinfo, :norhnsd, :force, :proxy, :proxyUser, :proxyPassword]
         end
 
         # Return secret options for rhreg_ks
@@ -131,6 +131,9 @@ module VagrantPlugins
           options << '--novirtinfo' if config.novirtinfo
           options << '--norhnsd' if config.norhnsd
           options << '--force' if config.force
+          options << "--proxy='#{config.proxy}'" if config.proxy
+          options << "--proxyUser='#{config.proxyUser}'" if config.proxyUser
+          options << "--proxyPassword='#{config.proxyPassword}'" if config.proxyPassword
           options.join(' ')
         end
       end

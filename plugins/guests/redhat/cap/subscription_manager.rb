@@ -49,7 +49,7 @@ module VagrantPlugins
         def self.subscription_manager_options(machine)
           [:username, :password, :serverurl, :baseurl, :org, :environment,
            :name, :auto_attach, :activationkey, :servicelevel, :release,
-           :force, :type, :ca_cert, :pools]
+           :force, :type, :ca_cert, :pools, :proxy, :proxyUser, :proxyPassword]
         end
 
         # Return secret options for subscription-manager
@@ -108,6 +108,9 @@ module VagrantPlugins
           options << "--release='#{config.release}'" if config.release
           options << '--force' if config.force
           options << "--type='#{config.type}'" if config.type
+          options << "--proxy='#{config.proxy}'" if config.proxy
+          options << "--proxyuser='#{config.proxyUser}'" if config.proxyUser
+          options << "--proxypassword='#{config.proxyPassword}'" if config.proxyPassword
           options.join(' ')
         end
 

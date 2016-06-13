@@ -5,14 +5,15 @@ require 'bundler/setup'
 
 require 'vagrant-registration'
 require 'guests/redhat/cap/subscription_manager'
+require 'guests/redhat/cap/rhn_register'
 
 require 'minitest/autorun'
 require 'mocha/mini_test'
 
-require 'support/fake_ui'
+require_relative 'support/fake_ui.rb'
 
 def fake_environment(options = { enabled: true })
-  { machine: fake_machine(options), ui: FakeUI, home_path: '/Users/hardy/work/developer-platform/vagrant/adb-vagrant-registration/build' }
+  { machine: fake_machine(options), ui: FakeUI }
 end
 
 class RecordingCommunicator
@@ -34,6 +35,7 @@ class RecordingCommunicator
   end
 
   def execute(command)
+    #puts "EXECUTE: #{command}"
     commands[:execute] << command
     responses[command].split("\n").each do |line|
       yield(:stdout, "#{line}\n")
@@ -80,14 +82,14 @@ module Registration
 end
 
 def fake_machine(options={})
-  env = options.fetch(:env, Vagrant::Environment.new({home_path: '/Users/hardy/work/developer-platform/vagrant/adb-vagrant-registration/build'}))
+  env = options.fetch(:env, Vagrant::Environment.new)
   machine = Vagrant::Machine.new(
       'fake_machine',
       'fake_provider',
       Registration::FakeProvider,
       'provider_config',
-      {}, # provider_options
-      env.vagrantfile.config, # config
+      {},                          # provider_options
+      env.vagrantfile.config,      # config
       Pathname('data_dir'),
       'box',
       options.fetch(:env, Vagrant::Environment.new),
