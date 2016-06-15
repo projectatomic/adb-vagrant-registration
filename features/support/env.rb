@@ -31,7 +31,7 @@ end
 # Some shared step definitions
 ##############################################################################
 Given /provider is (.*)/ do |current_provider|
-  requested_provider =  ENV.has_key?('PROVIDER') ? ENV['PROVIDER']: 'virtualbox'
+  requested_provider = ENV.has_key?('PROVIDER') ? ENV['PROVIDER'] : 'virtualbox'
 
   unless requested_provider.include?(current_provider)
     #puts "Skipping scenario '#{@scenario_name}' for provider '#{current_provider}', since this provider is not explicitly enabled via environment variable 'PROVIDER'"
@@ -40,7 +40,7 @@ Given /provider is (.*)/ do |current_provider|
 end
 
 Given /box is (.*)/ do |current_box|
-  requested_box =  ENV.has_key?('BOX') ? ENV['BOX']: 'cdk'
+  requested_box = ENV.has_key?('BOX') ? ENV['BOX'] : 'cdk'
 
   unless requested_box.include?(current_box)
     #puts "Skipping scenario '#{@scenario_name}' for box '#{current_box}', since this box is not explicitly enabled via environment variable 'BOX'"
@@ -49,5 +49,16 @@ Given /box is (.*)/ do |current_box|
 end
 
 Then(/^stdout from "([^"]*)" should match \/(.*)\/$/) do |cmd, regexp|
-  aruba.command_monitor.find(Aruba.platform.detect_ruby(cmd)).send(:stdout)  =~ /#{regexp}/
+  aruba.command_monitor.find(Aruba.platform.detect_ruby(cmd)).send(:stdout) =~ /#{regexp}/
+end
+
+Then(/^registration should( not)? be successful$/) do |negated|
+  run("vagrant ssh -c \"sudo subscription-manager version\"")
+
+  expect(last_command_started).to have_exit_status(0)
+  if negated
+    expect(last_command_started).to have_output(/This system is currently not registered/)
+  else
+    expect(last_command_started).to have_output(/Red Hat Subscription Management/)
+  end
 end

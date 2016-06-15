@@ -69,7 +69,7 @@ Feature: Booting VM with various registration settings
     """
 
     When I run `bundle exec vagrant up --provider <provider>`
-    Then registration should be skipped
+    Then registration should not be successful
 
     Examples:
       | provider   |
