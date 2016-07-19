@@ -21,9 +21,9 @@
 
 <!-- /MarkdownTOC -->
 
-vagrant-registration plugin for Vagrant allows developers to easily register their guests for updates on systems with a subscription model (like Red Hat Enterprise Linux).
+The vagrant-registration plugin for Vagrant allows developers to easily register their guests for updates on systems with a subscription model (like Red Hat Enterprise Linux).
 
-This plugin would run *register* action on `vagrant up` before any provisioning and *unregister* on `vagrant halt` or `vagrant destroy`. The actions then call the registration capabilities that have to be provided for given OS.
+This plugin would run *register* action on `vagrant up` before any provisioning and *unregister* on `vagrant halt` or `vagrant destroy`. The actions then call the registration capabilities that have to be provided for the given OS.
 
 <a name="installation"></a>
 ## Installation
@@ -43,7 +43,7 @@ If you are on Fedora, you can install the packaged version of the plugin by runn
 <a name="usage"></a>
 ## Usage
 
-The plugin is designed in an registration-manager-agnostic way which means that plugin itself does not depend on any OS nor way of registration. vagrant-registration only calls registration capabilities for given guest, passes the configuration options to them and handles interactive registration.
+The plugin is designed in a registration-manager agnostic way, which means, that the plugin itself, depends neither on any OS nor on the way of registration. The vagrant-registration plugin only calls registration capabilities for the given guest, passes the configuration options to them and handles interactive registration.
 
 That being said, this plugin currently ships only with registration capability files for RHEL's Subscription Manager and `rhn_register`. Feel free to submit others.
 
@@ -51,7 +51,7 @@ To configure the plugin, always include the configuration options mentioned in t
 
 ```
 Vagrant.configure('2') do |config|
-...
+  ...
 end
 ```
 
@@ -64,13 +64,13 @@ end
   config.registration.skip = true
 ```
 
-- **unregister_on_halt** disables or enables automatic unregistration on halt (on shut down) so the box will unregister only on destroy. By default the plugin unregisters on halt, you can however change that by setting the option to `false`:
+- **unregister_on_halt** disables or enables automatic unregistration on halt (on shut down). By default the plugin unregisters on halt, you can however change that by setting the option to `false` so that the box will unregister only on destroy:
 
 ```ruby
   config.registration.unregister_on_halt = false
 ```
 
-- **manager** selects the registration manager provider. By default the plugin will use the `subscription_manager` manager, you can however change that by setting the option to a different manager:
+- **manager** selects the registration manager provider. By default the plugin will use the `subscription_manager` as the registration manager provider. You can however, change that by setting the option to a different manager:
 
 ```ruby
   config.registration.manager = 'subscription_manager'
@@ -79,11 +79,11 @@ end
 <a name="credential-configuration"></a>
 ### Credential Configuration
 
-Setting up the credentials can be done as follows:
+You can set up the credentials as follows:
 
 ```ruby
 Vagrant.configure('2') do |config|
-...
+  ...
   if Vagrant.has_plugin?('vagrant-registration')
     config.registration.username = 'foo'
     config.registration.password = 'bar'
@@ -94,7 +94,7 @@ Vagrant.configure('2') do |config|
     config.registration.org = 'foo'
     config.registration.activationkey = 'bar'
   end
-...
+  ...
 end
 ```
 
@@ -104,63 +104,60 @@ later overridden in an individual project's Vagrantfile if needed.
 
 If you prefer not to store your username and/or password on your filesystem,
 you can optionally configure vagrant-registration plugin to use environment
-variables, such as:
+variables such as:
 
 ```ruby
 Vagrant.configure('2') do |config|
-...
+  ...
   config.registration.username = ENV['SUB_USERNAME']
   config.registration.password = ENV['SUB_PASSWORD']
-...
+  ...
 end
 ```
 
-If you do not provide credentials, you will be prompted for them in the "up process."
+If you do not provide credentials, you will be prompted for them during the "vagrant up" process.
 
-Please note the the interactive mode asks you for the preferred registration pair only
-of the configured manager.
+Please note that the interactive mode asks you for the preferred registration pair only for the configured manager.
 
 <a name="http-proxy-configuration"></a>
 ### HTTP Proxy Configuration
 
-HTTP Proxies can be configured via the _proxy_, _proxyUser_ and _proxyPassword_ configuration options:
+HTTP Proxy can be configured via the _proxy_, _proxyUser_ and _proxyPassword_ configuration options:
 
 ```ruby
 Vagrant.configure('2') do |config|
-...
+  ...
   if Vagrant.has_plugin?('vagrant-registration')
     config.registration.proxy = 'mongo:8080'
     config.registration.proxyUser = 'flash'
     config.registration.proxyPassword = 'zarkov'
   end
-...
+  ...
 end
 ```
 
 As described in the [credentials configuration](#credentials-configuration) section, these settings
-can also either be placed into the Vagrantfile in your Vagrant home directory or provided as
+can be placed either into the Vagrantfile in the Vagrant home directory or provided as
 environment variables.
 
 <a name="subscription-manager-configuration"></a>
 ### subscription-manager Configuration
 
-vagrant-registration will use the `subscription_manager` manager by default or can be explicitly
-configured by setting the `manager` option to `subscription_manager`:
+The vagrant-registration plugin uses `subscription_manager` as the default manager. This can also be explicitly configured by setting the `manager` option to `subscription_manager`:
 
 ```ruby
 Vagrant.configure('2') do |config|
-...
+  ...
   if Vagrant.has_plugin?('vagrant-registration')
     config.registration.manager = 'subscription_manager'
   end
-...
+  ...
 end
 ```
 
-In case of `subscription_manager` manager for the preferred registration pair,
-you would be ask on your username/password combination.
+In case you choose `subscription_manager` as the manager, you would be asked for your user credentials, such as the username and password.
 
-vagrant-registration supports all the options of subscription-manager's register command.
+The vagrant-registration plugin supports all the options for the subscription-manager's register command.
 You can set any option easily by setting `config.registration.OPTION_NAME = 'OPTION_VALUE'`
 in your Vagrantfile (please see the subscription-manager's documentation for option
 description).
@@ -263,11 +260,11 @@ vagrant-registration will use the `rhn_register` manager only if explicitly conf
 
 ```ruby
 Vagrant.configure('2') do |config|
-...
+  ...
   if Vagrant.has_plugin?('vagrant-registration')
     config.registration.manager = 'rhn_register'
   end
-...
+  ...
 end
 ```
 
@@ -365,7 +362,7 @@ vagrant-registration supports most of the options of rhnreg_ks's command. You ca
 <a name="development"></a>
 ## Development
 
-To install a development environment, clone the repo and prepare dependencies by
+To install a development environment, clone the repo and prepare dependencies by:
 
 ```
 gem install bundler
@@ -381,27 +378,26 @@ The use of [RVM](https://rvm.io) is recommended. Verified to work with ruby 2.0.
 #### Minitest
 
 The source contains a set of [Minitest](http://ruby-doc.org/stdlib-2.0.0/libdoc/minitest/rdoc/MiniTest.html)
-unit tests. They can be run via:
+based unit tests. They can be run via:
 
     $ bundle exec rake test
 
 <a name="acceptance-tests"></a>
 #### Acceptance tests
 
-The source also contains a set of [Cucumber](https://cucumber.io/) acceptance tests. They can be run via:
+The source also contains a set of [Cucumber](https://cucumber.io/) based acceptance tests. They can be run via:
 
     $ bundle exec rake features
 
 The tests assume that the CDK box files are available under
 _build/boxes/cdk-\<provider\>.box_. You can either copy the box files manually or
-use the _get_cdk_ Rake task to download them.
+use the _get_cdk_ rake task to download them.
 
-Per default only the scenarios for CDK in combination with VirtualBox
-are run. You can also run against Libvirt using the environment variable
-_PROVIDER_:
+As per default, only the scenarios for CDK in combination with VirtualBox
+are run. You can also run the tests against Libvirt, using the environment variable _PROVIDER_:
 
     # Run tests against Libvirt
-    $ bundle exec rake features  PROVIDER=libvirt
+    $ bundle exec rake features PROVIDER=libvirt
 
     # Run against VirtualBox and Libvirt
     $ bundle exec rake features PROVIDER=virtualbox,libvirt
@@ -410,8 +406,8 @@ You can also run a single feature specifying the explicit feature file to use:
 
     $ bundle exec rake features FEATURE=features/<feature-filename>.feature
 
-After test execution the Cucumber test reports can be found under _build/features_report.html_.
-They can also be opened via
+After test execution the acceptance test reports can be found under _build/features_report.html_.
+They can also be opened via:
 
     $ bundle exec rake features:open_report
 
