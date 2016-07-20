@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   all_files      = Dir.chdir(root_path) do
     Dir.glob('lib/**/{*,.*}') +
     Dir.glob('plugins/**/{*,.*}') +
+    Dir.glob('locales/**/{*,.*}') +
     Dir.glob('resources/**/{*,.*}') +
     ['Rakefile', 'Gemfile', 'README.md', 'CHANGELOG.md', 'LICENSE.md', 'vagrant-registration.gemspec']
   end
@@ -49,5 +50,4 @@ Gem::Specification.new do |s|
   s.files         = unignored_files
   s.executables   = unignored_files.map { |f| f[/^bin\/(.*)/, 1] }.compact
   s.require_path  = 'lib'
-
 end

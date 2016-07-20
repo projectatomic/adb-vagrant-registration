@@ -17,14 +17,14 @@ module VagrantPlugins
           guest = env[:machine].guest
 
           if should_register?(machine, env[:ui])
-            env[:ui].info('Registering box with vagrant-registration...')
+            env[:ui].info I18n.t('registration.action.register.registration_info')
             check_configuration_options(machine, env[:ui])
 
             unless credentials_provided? machine
-              @logger.debug('Credentials for registration not provided')
+              @logger.debug I18n.t('registration.action.register.no_credentials')
 
               # Offer to register ATM or skip
-              register_now = env[:ui].ask('Would you like to register the system now (default: yes)? [y|n]')
+              register_now = env[:ui].ask I18n.t('registration.action.register.prompt')
 
               if register_now == 'n'
                 config.skip = true
@@ -35,7 +35,7 @@ module VagrantPlugins
             guest.capability(:registration_register, env[:ui]) unless config.skip
           end
 
-          @logger.debug('Registration is skipped due to the configuration') if config.skip
+          @logger.debug(I18n.t('registration.action.register.skip_due_config')) if config.skip
 
           # Call next middleware in chain
           @app.call(env)
@@ -59,8 +59,8 @@ module VagrantPlugins
           options = machine.config.registration.conf.each_pair.map { |pair| pair[0] }
 
           if unsupported_options_provided?(manager, available_options, options, ui)
-            ui.warn("WARNING: #{manager} supports only the following options:" \
-                    "\nWARNING: #{available_options.join(', ')}")
+            ui.warn(I18n.t('registration.action.register.options_support_warning',
+                           manager: manager, options: available_options.join(', ')))
           end
         end
 
@@ -69,7 +69,8 @@ module VagrantPlugins
           warned = false
           options.each do |option|
             unless available_options.include? option
-              ui.warn("WARNING: #{option} option is not supported for #{manager}")
+              ui.warn(I18n.t('registration.action.register.unsupported_option',
+                             manager: manager, option: option))
               warned = true
             end
           end
@@ -83,7 +84,7 @@ module VagrantPlugins
              guest.capability?(:registration_registered?)
             true
           else
-            @logger.debug('Registration is skipped due to the missing guest capability')
+            @logger.debug I18n.t('registration.action.register.skip_missing_guest_capability')
             false
           end
         end
@@ -93,7 +94,7 @@ module VagrantPlugins
           if guest.capability(:registration_manager_installed, ui)
             true
           else
-            @logger.debug('Registration manager not found on guest')
+            @logger.debug I18n.t('registration.action.manager_not_found')
             false
           end
         end

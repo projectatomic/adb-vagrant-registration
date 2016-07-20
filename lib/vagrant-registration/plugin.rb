@@ -7,14 +7,13 @@ end
 # This is a sanity check to make sure no one is attempting to install
 # this into an early Vagrant version.
 if Vagrant::VERSION < '1.2.0'
-  fail 'The Vagrant RHEL plugin is only compatible with Vagrant 1.2+.'
+  fail I18n.t('registration.plugin.compatible_message')
 end
 
 module VagrantPlugins
   module Registration
     class Plugin < Vagrant.plugin('2')
       class << self
-
         # vagrant-vbguest plugin updates GuestAdditions for VirtualBox
         # and therefore needs to be run after the box got registered.
         # See https://github.com/projectatomic/adb-vagrant-registration/issues/69
@@ -57,11 +56,8 @@ module VagrantPlugins
         end
       end
 
-      name 'Registration'
-      description <<-DESC
-      This plugin adds register and unregister functionality to Vagrant Guests that
-      support the capability
-      DESC
+      name I18n.t('registration.plugin.name')
+      description I18n.t('registration.plugin.description')
 
       action_hook(:registration_register, :machine_action_up, &method(:register))
       action_hook(:registration_register, :machine_action_provision, &method(:register))

@@ -1,0 +1,29 @@
+en:
+  registration:
+    config:
+      final_message: 'Final registration configuration: %{conf}'
+      method_missing_command: 'Evaluating registration configuration: %{command}'
+    plugin:
+      compatible_message: 'The Vagrant RHEL plugin is only compatible with Vagrant 1.2+.'
+      name: 'Registration'
+      description: |-
+        This plugin adds register and unregister functionality to Vagrant Guests that
+        support the capability
+    action:
+      manager_not_found: 'Registration manager not found on guest'
+      register:
+        registration_info: 'Registering box with vagrant-registration...'
+        no_credentials: 'Credentials for registration not provided'
+        prompt: 'Would you like to register the system now (default: yes)? [y|n]'
+        skip_due_config: 'Registration is skipped due to the configuration'
+        options_support_warning: |-
+          WARNING: %{manager} supports only the following options:
+          WARNING: %{options}"
+        unsupported_option: "WARNING: %{option} option is not supported for %{manager}"
+        skip_missing_guest_capability: 'Registration is skipped due to the missing guest capability'
+      unregister:
+        unregistration_info: 'Unregistering box with vagrant-registration...'
+        skip_due_config: 'Unregistration is skipped due to the configuration'
+        skip_on_halt_due_config: 'Unregistration is skipped on halt due to the configuration'
+        guest_unavailable: 'Guest is not available, ignore unregistration'
+        skip_missing_guest_capability: 'Unregistration is skipped due to the missing guest capability'

@@ -15,17 +15,17 @@ module VagrantPlugins
           guest = env[:machine].guest
 
           if capabilities_provided?(guest) && manager_installed?(guest, env[:ui]) && !config.skip
-            env[:ui].info('Unregistering box with vagrant-registration...')
+            env[:ui].info I18n.t('registration.action.unregister.unregistration_info')
             guest.capability(:registration_unregister)
           end
 
-          @logger.debug('Unregistration is skipped due to the configuration') if config.skip
+          @logger.debug(I18n.t('registration.action.unregister.skip_due_config')) if config.skip
           @app.call(env)
 
         # Guest might not be available after halting, so log the exception and continue
         rescue => e
           @logger.info(e)
-          @logger.debug('Guest is not available, ignore unregistration')
+          @logger.debug I18n.t('registration.action.unregister.guest_unavailable')
           @app.call(env)
         end
 
@@ -36,7 +36,7 @@ module VagrantPlugins
           if guest.capability?(:registration_unregister) && guest.capability?(:registration_manager_installed)
             true
           else
-            @logger.debug('Unregistration is skipped due to the missing guest capability')
+            @logger.debug I18n.t('registration.action.unregister.skip_missing_guest_capability')
             false
           end
         end
@@ -46,7 +46,7 @@ module VagrantPlugins
           if guest.capability(:registration_manager_installed, ui)
             true
           else
-            @logger.debug('Registration manager not found on guest')
+            @logger.debug I18n.t('registration.action.manager_not_found')
             false
           end
         end
