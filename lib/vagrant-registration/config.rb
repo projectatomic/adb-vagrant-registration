@@ -16,13 +16,13 @@ module VagrantPlugins
         @conf.skip = false unless @conf.skip
         # Unregister on halt by default
         @conf.unregister_on_halt = true if @conf.unregister_on_halt.nil?
-        @logger.info "Final registration configuration: #{@conf.inspect}"
+        @logger.info I18n.t('registration.config.final_message', conf: @conf.inspect)
       end
 
       def method_missing(method_sym, *arguments, &block)
         get_config
         command = "@conf.#{method_sym} #{adjust_arguments(arguments)}"
-        @logger.info "Evaluating registration configuration: #{command}"
+        @logger.info I18n.t('registration.config.method_missing_command', command: command)
         eval command
       end
 
