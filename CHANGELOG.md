@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.3
+
+- Issue #90 Use locale based messaging
+- Issue #65 Adding cucumber tests for proxy settings
+- Issue #65 Adding proxy options to rhn_register and subscription_manager
+- Adding minitest as unit test framework and setting up basic test harness for Vagrant plugins
+- Issue #65 Removing obsolete bash tests
+
 ## 1.2.2
 
 - Introducing Cucumber based acceptance tests.
