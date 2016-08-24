@@ -5,34 +5,36 @@ module VagrantPlugins
     module Action
       # This registers the guest if the guest plugin supports it
       class Register
+        MAX_REGISTRATION_ATTEMPTS = 3
+
         def initialize(app, _)
           @app    = app
           @logger = Log4r::Logger.new('vagrant_registration::action::register')
         end
 
         def call(env)
+          ui = env[:ui]
           # Configuration from Vagrantfile
           config = env[:machine].config.registration
           machine = env[:machine]
           guest = env[:machine].guest
 
-          if should_register?(machine, env[:ui])
-            env[:ui].info I18n.t('registration.action.register.registration_info')
-            check_configuration_options(machine, env[:ui])
+          if should_register?(machine, ui)
+            ui.info I18n.t('registration.action.register.registration_info')
+            check_configuration_options(machine, ui)
 
             unless credentials_provided? machine
               @logger.debug I18n.t('registration.action.register.no_credentials')
 
               # Offer to register ATM or skip
-              register_now = env[:ui].ask I18n.t('registration.action.register.prompt')
+              register_now = ui.ask I18n.t('registration.action.register.prompt')
 
               if register_now == 'n'
                 config.skip = true
               else
-                config = register_on_screen(machine, env[:ui])
+                config = process_registration(guest, machine, ui, config)
               end
             end
-            guest.capability(:registration_register, env[:ui]) unless config.skip
           end
 
           @logger.debug(I18n.t('registration.action.register.skip_due_config')) if config.skip
@@ -144,6 +146,40 @@ module VagrantPlugins
             end
           end
           machine.config.registration
+        end
+
+        def process_registration(guest, machine, ui, config)
+          attempt_count = 1
+
+          MAX_REGISTRATION_ATTEMPTS.times do
+            config = register_on_screen(machine, ui)
+
+            begin
+              guest.capability(:registration_register, ui)
+              ui.info I18n.t('registration.action.register.registration_success')
+              # break out of loop on successful registration
+              break
+            rescue StandardError => e
+              if attempt_count == MAX_REGISTRATION_ATTEMPTS
+                ui.error e.message
+                exit 126
+              else
+                # reset registration config
+                reset_registration_config(machine)
+                attempt_count += 1
+                ui.info I18n.t('registration.action.register.registration_retry',
+                               attempt_count: attempt_count, max_attempt: MAX_REGISTRATION_ATTEMPTS)
+              end
+            end
+          end
+
+          config
+        end
+
+        def reset_registration_config(machine)
+          credentials_required(machine)[0].each do |option|
+            machine.config.registration.send("#{option}=".to_sym, nil)
+          end
         end
       end
     end
