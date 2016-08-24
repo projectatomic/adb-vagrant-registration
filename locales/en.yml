@@ -21,6 +21,9 @@ en:
           WARNING: %{options}"
         unsupported_option: "WARNING: %{option} option is not supported for %{manager}"
         skip_missing_guest_capability: 'Registration is skipped due to the missing guest capability'
+        registration_retry: |-
+          Invalid username/password. Try again (%{attempt_count}/%{max_attempt})
+        registration_success: 'Registration successful.'
       unregister:
         unregistration_info: 'Unregistering box with vagrant-registration...'
         skip_due_config: 'Unregistration is skipped due to the configuration'

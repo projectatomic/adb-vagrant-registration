@@ -115,7 +115,7 @@ Vagrant.configure('2') do |config|
 end
 ```
 
-If you do not provide credentials, you will be prompted for them during the "vagrant up" process.
+If you do not configure your credentials as outlined above, you will receive a maximum of 3 prompts for them during the `vagrant up` process.
 
 Please note that the interactive mode asks you for the preferred registration pair only for the configured manager.
 
