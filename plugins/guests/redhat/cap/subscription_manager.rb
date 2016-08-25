@@ -34,7 +34,7 @@ module VagrantPlugins
 
         # Unregister the machine using 'unregister' option
         def self.subscription_manager_unregister(machine)
-          machine.communicate.sudo('subscription-manager unregister || :')
+          machine.communicate.sudo("subscription-manager unregister #{configuration_to_options_unregister(machine.config.registration)}")
         end
 
         # Return required configuration options for subscription-manager
@@ -108,6 +108,15 @@ module VagrantPlugins
           options << "--release='#{config.release}'" if config.release
           options << '--force' if config.force
           options << "--type='#{config.type}'" if config.type
+          options << "--proxy='#{config.proxy}'" if config.proxy
+          options << "--proxyuser='#{config.proxyUser}'" if config.proxyUser
+          options << "--proxypassword='#{config.proxyPassword}'" if config.proxyPassword
+          options.join(' ')
+        end
+
+        # Build subscription manager options for unregistering the Vagrant guest
+        def self.configuration_to_options_unregister(config)
+          options = []
           options << "--proxy='#{config.proxy}'" if config.proxy
           options << "--proxyuser='#{config.proxyUser}'" if config.proxyUser
           options << "--proxypassword='#{config.proxyPassword}'" if config.proxyPassword
