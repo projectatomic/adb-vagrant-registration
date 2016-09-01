@@ -23,17 +23,14 @@ module VagrantPlugins
             ui.info I18n.t('registration.action.register.registration_info')
             check_configuration_options(machine, ui)
 
-            unless credentials_provided? machine
+            if credentials_provided? machine
+              guest.capability(:registration_register, ui)
+            else
               @logger.debug I18n.t('registration.action.register.no_credentials')
 
               # Offer to register ATM or skip
               register_now = ui.ask I18n.t('registration.action.register.prompt')
-
-              if register_now == 'n'
-                config.skip = true
-              else
-                config = process_registration(guest, machine, ui, config)
-              end
+              process_registration(guest, machine, ui, config) if register_now == 'y'
             end
           end
 
