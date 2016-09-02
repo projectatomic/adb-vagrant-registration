@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0
+
+- Fixed formatting, typo, grammar in README
+- Added MAINTAINERS file
+- Fix #44 allow more than one try to fill username and password
+- Fixes #99 using proxy info to unregister
+- Fix #107 register when passing credentials as env variables
+
 ## 1.2.3
 
 - Issue #90 Use locale based messaging
