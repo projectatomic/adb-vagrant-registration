@@ -30,7 +30,7 @@ module VagrantPlugins
 
               # Offer to register ATM or skip
               register_now = ui.ask I18n.t('registration.action.register.prompt')
-              process_registration(guest, machine, ui, config) if register_now == 'y'
+              process_registration(guest, machine, ui, config) if register_now == 'y' || register_now.empty?
             end
           end
 
