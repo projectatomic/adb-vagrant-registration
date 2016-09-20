@@ -81,7 +81,7 @@ module VagrantPlugins
             if File.exist?(machine.config.registration.ca_cert)
               # Make sure the provided CA certificate file will be configured
               cert_file_name = File.basename(machine.config.registration.ca_cert)
-              cert_file_content = File.read(machine.config.registration.ca_cert, tmp)
+              cert_file_content = File.read(machine.config.registration.ca_cert)
               machine.communicate.sudo("echo '#{cert_file_content}' > /usr/share/rhn/#{cert_file_name}")
             else
               ui.warn("WARNING: Provided CA certificate file #{machine.config.registration.ca_cert} does not exist, skipping")
