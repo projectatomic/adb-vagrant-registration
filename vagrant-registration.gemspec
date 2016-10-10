@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
     Dir.glob('plugins/**/{*,.*}') +
     Dir.glob('locales/**/{*,.*}') +
     Dir.glob('resources/**/{*,.*}') +
-    ['Rakefile', 'Gemfile', 'README.md', 'CHANGELOG.md', 'LICENSE.md', 'vagrant-registration.gemspec']
+    ['Rakefile', 'Gemfile', 'README.adoc', 'CHANGELOG.adoc', 'LICENSE', 'vagrant-registration.gemspec']
   end
   all_files.reject! { |file| ['.', '..'].include?(File.basename(file)) }
   gitignore_path = File.join(root_path, '.gitignore')
