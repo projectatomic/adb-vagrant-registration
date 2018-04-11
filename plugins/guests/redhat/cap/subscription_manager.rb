@@ -4,9 +4,9 @@ module VagrantPlugins
       class SubscriptionManager
         # Test that the machine is already registered
         def self.subscription_manager_registered?(machine)
-          false if machine.communicate.sudo("/usr/sbin/subscription-manager list --consumed | grep 'No consumed subscription pools to list'")
+          true if machine.communicate.sudo("/usr/sbin/subscription-manager list --consumed --pool-only | grep -E '^[a-f0-9]{32}$'")
         rescue
-          true
+          false
         end
 
         # Test that we have subscription-manager installed
