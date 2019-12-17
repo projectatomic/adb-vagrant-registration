@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 group :development do
   gem 'vagrant',
       :git => 'git://github.com/mitchellh/vagrant.git',
-      :ref => 'v1.8.4'
+      :ref => 'v1.9.8'
 
   # test dependencies
   gem 'minitest'
