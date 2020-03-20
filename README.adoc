@@ -398,12 +398,11 @@ option to `false`:
 
 == Development
 
-The use of https://rvm.io[RVM] is recommended. Verified to work with
-ruby 2.0.0p648.
+The use of https://rvm.io[RVM] is recommended. Verified to work with ruby-2.2.10.
 
 ....
-rvm install 2.0
-rvm use 2.0
+rvm install 2.2
+rvm use 2.2
 ....
 
 To install a development environment, clone the repo and prepare
