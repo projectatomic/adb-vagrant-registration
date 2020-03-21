@@ -17,7 +17,7 @@ group :development do
   gem 'mechanize'
 
   # build tool
-  gem 'rake', '10.4.2'
+  gem 'rake'
   gem 'yard'
 
   # virtualization providers (for testing)
